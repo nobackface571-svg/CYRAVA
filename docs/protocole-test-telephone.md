@@ -1,12 +1,12 @@
 # Protocole d'essai sur téléphone réel
 
-Ce protocole sert à tester RefusBot sur un vrai téléphone, avec de vraies fenêtres de cookies. Il distingue ce qu'on peut **constater** de ce qu'on ne peut **pas vérifier**. Toutes les étapes se font depuis le téléphone.
+Ce protocole sert à tester CYRAVA sur un vrai téléphone, avec de vraies fenêtres de cookies. Il distingue ce qu'on peut **constater** de ce qu'on ne peut **pas vérifier**. Toutes les étapes se font depuis le téléphone.
 
 ## 0. Ce que ces essais peuvent prouver, et ce qu'ils ne peuvent pas
 
 | On peut constater | On ne peut pas vérifier depuis le téléphone |
 |---|---|
-| RefusBot reconnaît la fenêtre (Historique : plateforme, confiance). | Que le site a **enregistré** le refus côté serveur. |
+| CYRAVA reconnaît la fenêtre (Historique : plateforme, confiance). | Que le site a **enregistré** le refus côté serveur. |
 | Ce qu'il a cliqué : boutons de navigation, interrupteurs. | Que des cookies **déjà déposés** ont été supprimés : refuser n'efface pas les cookies existants. |
 | Si chaque interrupteur a été **relu désactivé** après le clic (« désactivé(s) et vérifié(s) »). | L'état d'une case dont la page ne publie pas l'état (« d'état illisible, non touché(s) »). |
 | Qu'aucune acceptation n'a été cliquée (aucun choix de votre part n'est passé à « accepté »). | Le comportement d'une autre version de Chrome ou d'Android. |
@@ -15,12 +15,12 @@ Un clic n'est jamais une preuve. Seule la ligne « désactivé(s) et vérifié(s
 
 ## 1. Préparation (une fois)
 
-1. Installer l'APK de test le plus récent : onglet **Actions › 📱 Application — APK de test (compilation) › Artifacts** (fichier `RefusBot-release-test.apk`). Noter son nom exact, il donne la version.
+1. Installer la dernière version : testeurs, depuis l'onglet **Releases** du dépôt GitHub ; mainteneur, l'APK de test de la dernière compilation **CodeMagic** (section **Artifacts**, fichier `app-release.apk`). Noter la version (nom du fichier ou Réglages de l'appli). Pour l'installation et les autorisations (Play Protect, paramètres restreints, accessibilité), suivre la [fiche testeurs](FICHE-TESTEURS.md).
 2. Onglet **Applications** :
    - ne cocher **que** Chrome (et éventuellement une ou deux applis avec fenêtre de cookies connue) ;
    - décocher les applis sensibles (banque, mots de passe, authentification, administration, messagerie) et les jeux avec anti-triche.
-3. **Réglages › Profil de refus › Strict.** En profil « Observation », RefusBot ne clique jamais : rien ne peut être testé.
-4. **Accueil › Ne pas optimiser RefusBot**, puis Samsung : *Batterie › Limites d'utilisation en arrière-plan › Applis jamais en veille*.
+3. **Réglages › Profil de refus › Strict.** En profil « Observation », CYRAVA ne clique jamais : rien ne peut être testé.
+4. **Accueil › Ne pas optimiser CYRAVA**, puis Samsung : *Batterie › Limites d'utilisation en arrière-plan › Applis jamais en veille*.
 5. **Réglages › Diagnostic automatique : activé** pendant les essais seulement. Le désactiver à la fin.
 6. **Historique › Effacer**, pour repartir d'un historique vide.
 
@@ -30,11 +30,11 @@ Dans Chrome, **en navigation privée** : un site qui a déjà reçu votre choix 
 
 1. Ouvrir la page et attendre 10 secondes sans toucher l'écran.
 2. Faire une **capture d'écran avant** l'action, si la fenêtre a eu le temps d'apparaître, et une **après**.
-3. Ouvrir RefusBot › **Historique** et faire une capture de la ligne du site.
+3. Ouvrir CYRAVA › **Historique** et faire une capture de la ligne du site.
 4. Si le résultat n'est pas « interrupteurs vérifiés désactivés » : Réglages › Centre de diagnostic › **Partager** le dernier fichier.
 5. **Contre-vérification manuelle** : rouvrir la page, ouvrir le lien « Cookies » ou « Gérer mes préférences » en bas de page, et faire une capture de l'état des cases. C'est le seul moyen, depuis le téléphone, de voir l'état retenu par le site.
 
-**Après un échec, attendre 10 minutes avant de refaire la même page :** RefusBot ne réessaie pas la même fenêtre avant ce délai.
+**Après un échec, attendre 10 minutes avant de refaire la même page :** CYRAVA ne réessaie pas la même fenêtre avant ce délai.
 
 ## 3. Sites représentatifs à couvrir
 
@@ -54,10 +54,10 @@ Choisir au moins un site par ligne. Ce sont des exemples à vérifier : les site
 |---|---|
 | Site, date, heure | — |
 | Version de l'APK | nom du fichier installé |
-| Résultat RefusBot | Historique, première ligne |
+| Résultat CYRAVA | Historique, première ligne |
 | Interrupteurs : détectés / activés au départ / déjà désactivés / désactivés et vérifiés / restés activés / illisibles | Historique, ligne de compte rendu |
 | État constaté manuellement (étape 2.5) | capture |
-| Concordance RefusBot ↔ constat manuel | oui / non / impossible à dire |
+| Concordance CYRAVA ↔ constat manuel | oui / non / impossible à dire |
 | Fichier de diagnostic partagé | oui / non |
 
 Un essai est **réussi** seulement si : le résultat est « interrupteurs vérifiés désactivés » (ou « refus cliqué, non vérifiable » pour un simple « Tout refuser »), et le constat manuel montre les cases désactivées. Toute autre combinaison est à transmettre telle quelle, sans interprétation. Recopier chaque fiche dans [`essais-reels.md`](essais-reels.md).
@@ -65,5 +65,5 @@ Un essai est **réussi** seulement si : le résultat est « interrupteurs vérif
 ## 5. Ce qu'il ne faut pas conclure
 
 - « La fenêtre a disparu », donc c'est refusé : faux, la fermeture ne prouve pas l'enregistrement.
-- « RefusBot a fait N actions », donc N cases ont été désactivées : faux. Les « clics de navigation » comptent les boutons et les défilements, pas les cases.
-- « Les cookies ont été supprimés » : RefusBot ne supprime aucun cookie, il refuse seulement les nouveaux consentements.
+- « CYRAVA a fait N actions », donc N cases ont été désactivées : faux. Les « clics de navigation » comptent les boutons et les défilements, pas les cases.
+- « Les cookies ont été supprimés » : CYRAVA ne supprime aucun cookie, il refuse seulement les nouveaux consentements.

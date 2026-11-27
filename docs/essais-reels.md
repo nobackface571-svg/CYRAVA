@@ -15,7 +15,7 @@ Règle : on recopie ce qui a été constaté, sans interprétation. Si un champ 
 
 ## Essais
 
-| Date | Version de l'APK | Profil | Site ou appli | Prestataire | Résultat RefusBot | Interrupteurs (détectés / activés au départ / vérifiés désactivés / illisibles) | Constat manuel | Concordance | Diagnostic partagé | Durée |
+| Date | Version de l'APK | Profil | Site ou appli | Prestataire | Résultat CYRAVA | Interrupteurs (détectés / activés au départ / vérifiés désactivés / illisibles) | Constat manuel | Concordance | Diagnostic partagé | Durée |
 |---|---|---|---|---|---|---|---|---|---|---|
 | 16/11/2026 | non relevée | Observation | plusieurs sites dans Chrome | OneTrust, Didomi, Axeptio | fenêtres observées, **aucun clic** (profil Observation) | non relevé | non fait | impossible à dire | non | non mesurée |
 | 22/11/2026 14:08 | 1.1.0-beta.3 | Strict (refus complet, « ne pas valider dans le doute ») | Galaxy Defense | TCF générique | Refus partiel — plus rien ne bougeait à l'écran depuis 12 s | désactivés vérifiés : 86 (autres compteurs non relevés) | non relevé | non relevée | oui | 78.3 s |

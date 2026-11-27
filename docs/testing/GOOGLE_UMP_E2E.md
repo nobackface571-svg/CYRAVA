@@ -10,7 +10,7 @@ Google UMP. Les scénarios `bandeau`, `accepte` et `inspection` restent des fixt
 
 1. Se connecter à [Google AdMob](https://admob.google.com/).
 2. Dans **Applications**, ajouter/enregistrer une application Android de démonstration. L'application
-   peut être distincte de CYRAVA/RefusBot ; utiliser le package de démonstration
+   peut être distincte de CYRAVA ; utiliser le package de démonstration
    `fr.refusbot.demo` si AdMob demande un nom de package.
 3. Ouvrir **Confidentialité et messages** dans la barre latérale.
 4. Dans la fiche des messages liés aux réglementations européennes, choisir **Créer** ou **Gérer**,
@@ -67,14 +67,14 @@ de test. Ne jamais ajouter un identifiant d'appareil réel dans le dépôt.
 - journalisation des événements techniques sous le tag Android `GoogleUMP`.
 
 La réinitialisation UMP est strictement limitée à la démo. Elle ne doit pas être copiée dans
-l'application CYRAVA/RefusBot de production. La production doit actualiser les informations à chaque
+l'application CYRAVA de production. La production doit actualiser les informations à chaque
 lancement et exposer les options de confidentialité lorsque le SDK les déclare requises.
 
 ## Limites de preuve et sécurité
 
 Le statut global UMP (`OBTAINED`, `REQUIRED`, etc.) et `canRequestAds()` ne prouvent pas que les
 finalités facultatives ont été refusées. Le SDK ne fournit pas à une application tierce un relevé
-public détaillé de chaque interrupteur du formulaire. RefusBot doit distinguer une action tentée,
+public détaillé de chaque interrupteur du formulaire. CYRAVA doit distinguer une action tentée,
 une action acceptée par Android et un état relu puis vérifié. Un formulaire affiché ou fermé ne doit
 jamais être compté à lui seul comme un refus réussi.
 

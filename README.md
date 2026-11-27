@@ -94,6 +94,10 @@ Le module `ConsentVerificationEngine` réévalue les preuves d'accessibilité av
 
 ## 1. Installer l'APK depuis le téléphone
 
+> **Testeurs** : la [fiche testeurs](docs/FICHE-TESTEURS.md) résume toutes les étapes d'installation et d'essai en quelques minutes de lecture.
+
+**Avant d'installer : désactiver Google Play Protect.** CYRAVA n'est pas sur le Play Store et utilise l'accessibilité : Play Protect risque fort de bloquer l'installation. Dans l'appli **Play Store** : **photo de profil › Play Protect › ⚙️ (roue dentée)**, désactivez **« Analyser les applis avec Play Protect »**. Une fois CYRAVA installé et activé, vous pouvez le réactiver au même endroit ; s'il affiche un avertissement sur CYRAVA, choisissez de conserver l'appli.
+
 **Testeurs : version officielle** : ouvrez l'onglet **Releases** de ce dépôt GitHub depuis le navigateur du téléphone et téléchargez le fichier `.apk` de la dernière version. Chaque Release est signée avec la clé personnelle du mainteneur. N'installez CYRAVA que depuis cette page : un APK trouvé ailleurs peut avoir été modifié.
 
 **Mainteneur : APK de test** : ouvrez la dernière compilation réussie de **CodeMagic** (workflow « tests et APK de vérification »), section **Artifacts**, et téléchargez `app-release.apk`. Il est signé avec la clé de test rangée dans CodeMagic : il se met à jour par-dessus les APK de test précédents, mais pas par-dessus une version officielle (clés différentes).
@@ -103,7 +107,7 @@ Installation :
 1. Une fois l'APK téléchargé, touchez la notification de téléchargement (ou **Mes fichiers › Téléchargements**) puis le fichier `.apk`.
 2. Si Android affiche *« … n'est pas autorisé à installer des applis inconnues de cette source »* : touchez **Paramètres**, activez **Autoriser depuis cette source**, puis revenez en arrière.
 3. Touchez **Installer**.
-   - Si **Play Protect** affiche un avertissement : **Plus de détails › Installer quand même** (l'appli n'est pas publiée sur le Play Store, c'est normal).
+   - Si **Play Protect** affiche quand même un avertissement : **Plus de détails › Installer quand même** (l'appli n'est pas publiée sur le Play Store, c'est normal). S'il bloque, désactivez-le comme indiqué ci-dessus.
    - Sur Samsung récent, si l'installation est bloquée par le **Blocage automatique** (*Auto Blocker*) : **Paramètres › Sécurité et confidentialité › Blocage automatique**, désactivez-le le temps de l'installation, puis réactivez-le.
 
 > **Mises à jour** : installez la nouvelle version par-dessus l'ancienne. Réglages et historique sont conservés tant que la clé de signature reste la même.

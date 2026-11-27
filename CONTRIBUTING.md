@@ -1,4 +1,4 @@
-# Contribuer à RefusBot
+# Contribuer à CYRAVA
 
 Merci de lire d'abord [SECURITY.md](SECURITY.md) : les règles de sécurité passent avant le taux de réussite. Une modification qui permettrait, même rarement, de cliquer sur une acceptation n'est pas acceptable.
 

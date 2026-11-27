@@ -3,7 +3,7 @@
 > Statut : direction créative retenue, disponibilité juridique non confirmée.
 
 ## Positionnement
-**CYRAVA** est le nom de marque envisagé pour l'application de confidentialité numérique actuellement développée sous le nom de projet RefusBot.
+**CYRAVA** est le nom de l'application de confidentialité numérique (anciennement développée sous le nom de projet RefusBot).
 
 Promesse : aider l'utilisateur à reprendre le contrôle de ses choix de consentement et de sa vie privée numérique, avec des actions prudentes, explicables et vérifiées.
 
@@ -45,4 +45,4 @@ Liens de vérification :
 - https://www.tmdn.org/tmview/
 
 ## Gouvernance
-Cette identité est une direction de marque proposée et retenue pour exploration. Elle ne remplace pas le nom technique historique RefusBot dans le code tant que les changements de nom, d'icône, de package et de publication n'ont pas été planifiés, implémentés et testés séparément.
+Le nom CYRAVA, l'icône et l'identifiant `fr.cyrava` sont en place depuis la 1.1.0 bêta 2. Seuls les dossiers du code source s'appellent encore `fr.refusbot`, ce qui ne se voit pas sur le téléphone.
