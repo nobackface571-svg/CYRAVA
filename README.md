@@ -2,6 +2,8 @@
 
 # CYRAVA
 
+[![Download the latest version](https://img.shields.io/github/v/release/nobackface571-svg/CYRAVA?include_prereleases&label=Download%20the%20latest%20version&style=for-the-badge&color=1f6feb)](https://github.com/nobackface571-svg/CYRAVA/releases)
+
 **CYRAVA automatically rejects cookie / tracker consent pop-ups (GDPR, IAB TCF)** in the Android apps, games and browsers you choose: it taps "Reject all", or opens the options, **turns off every switch (consent AND legitimate interest)** and confirms. **It never taps "Accept".**
 
 - Recognises 38 consent platforms (Google UMP, Didomi, OneTrust, Sourcepoint, InMobi Choice, Usercentrics, Sirdata, Axeptio, Cookiebot, TrustArc, Consentmanager, iubenda, CookieYes, Commanders Act…) and generic "TCF" pop-ups, in 7 languages (French, English, German, Spanish, Italian, Portuguese, Dutch).
