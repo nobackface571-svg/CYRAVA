@@ -224,7 +224,7 @@ fun HistoryRow(e: LogEntry, modifier: Modifier = Modifier, horizontalPadding: Dp
                     null -> if (e.status == OutcomeStatus.OBSERVED) add(stringResource(R.string.hist_d_no_action))
                 }
                 if (e.captureTruncated) add(stringResource(R.string.hist_d_truncated))
-                if (e.platform != "inconnue") add(e.platform)
+                if (e.platform != "inconnue") add(platformText(res, e.platform))
                 add(stringResource(R.string.hist_d_confidence, stringResource(e.confidence.labelRes())))
             }.joinToString(" · ")
             Text(details, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)

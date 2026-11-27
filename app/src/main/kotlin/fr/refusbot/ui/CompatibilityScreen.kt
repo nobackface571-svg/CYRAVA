@@ -25,6 +25,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -212,7 +213,10 @@ private fun AppReportCard(r: AppReport, settings: Settings?, onOpenDiagnostic: (
             else -> stringResource(R.string.cmp_mode_auto, settings?.policy?.text() ?: "?")
         }
         BodyText(stringResource(R.string.cmp_mode, mode))
-        if (r.platforms.isNotEmpty()) BodyText(stringResource(R.string.cmp_platforms, r.platforms.joinToString(", ")))
+        if (r.platforms.isNotEmpty()) {
+            val res = LocalResources.current
+            BodyText(stringResource(R.string.cmp_platforms, r.platforms.joinToString(", ") { platformText(res, it) }))
+        }
         if (r.counts.isNotEmpty()) {
             val lines = OutcomeStatus.entries.filter { (r.counts[it] ?: 0) > 0 }
                 .map { stringResource(R.string.cmp_count, it.text(), r.counts[it] ?: 0) }
