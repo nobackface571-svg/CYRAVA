@@ -5,7 +5,7 @@ ne remplacent pas ces essais. Ne pas activer de tests automatiques sur des appli
 
 ## Préparation
 
-- [ ] Noter modèle Samsung, version Android/One UI, version RefusBot/CYRAVA et version Chrome.
+- [ ] Noter modèle Samsung, version Android/One UI, version CYRAVA et version Chrome.
 - [ ] Installer uniquement l'APK de test dont le commit et le SHA-256 sont connus.
 - [ ] Vérifier les permissions et activer le service d'accessibilité volontairement.
 - [ ] Sélectionner explicitement une application/site de test.
