@@ -92,4 +92,4 @@ Un futur registre pourra distinguer, pour chaque catégorie, `AUTORISÉ`, `REFUS
 
 ## Signaler un problème de sécurité
 
-Ouvrez un ticket (**Issues**) dans le dépôt, sans y coller de fichier de diagnostic contenant des informations personnelles.
+Signalez-le **en privé** avec le formulaire de GitHub : <https://github.com/nobackface571-svg/CYRAVA/security/advisories/new>. Ne publiez jamais une faille dans un ticket public, et n'y collez jamais de fichier de diagnostic contenant des informations personnelles.

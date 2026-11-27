@@ -92,4 +92,4 @@ A future register may distinguish, for each category, `ALLOWED`, `REJECTED` or `
 
 ## Reporting a security issue
 
-Open an issue (**Issues** tab) in the repository, without pasting any diagnostic file that contains personal information.
+Report it **privately** with GitHub's form: <https://github.com/nobackface571-svg/CYRAVA/security/advisories/new>. Never publish a vulnerability in a public issue, and never paste a diagnostic file that contains personal information.
