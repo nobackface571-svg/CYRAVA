@@ -22,6 +22,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import fr.refusbot.R
@@ -169,7 +170,7 @@ private fun ScenarioCard(scenario: LabScenario, report: LabReport?, failure: Str
                 )
             }
             BodyText(if (report.accepted) stringResource(R.string.lab_accepted) else stringResource(R.string.lab_not_accepted))
-            report.outcome?.reason?.let { BodyText(stringResource(R.string.lab_reason, it)) }
+            reasonText(LocalResources.current, report.outcome?.reason)?.let { BodyText(stringResource(R.string.lab_reason, it)) }
             if (report.steps.isEmpty()) {
                 BodyText(stringResource(R.string.lab_no_action))
             } else {

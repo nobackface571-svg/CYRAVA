@@ -4,6 +4,7 @@ import android.accessibilityservice.AccessibilityService
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
+import android.os.SystemClock
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
@@ -86,6 +87,9 @@ class RefusBotAccessibilityService : AccessibilityService() {
     /** Analyses consécutives sans fenêtre de consentement (pour ralentir le rythme). */
     @Volatile private var idleStreak = 0
 
+    /** Vrai si le passage en cours a porté sur une fenêtre de cookies (compteur de travail, 27/11). */
+    @Volatile private var runActed = false
+
     /** Fenêtre de cookies de la session en cours, pour la lecture rapide (voir [rememberPanel]). */
     private var panelRef: AccessibilityNodeInfo? = null
     private var pendingJob: Job? = null
@@ -100,6 +104,8 @@ class RefusBotAccessibilityService : AccessibilityService() {
 
     override fun onServiceConnected() {
         super.onServiceConnected()
+        refusBot.workMeter.reset()
+        refusBot.workState.value = refusBot.workMeter.snapshot()
         installRules(refusBot.rulesRepository.active.value.rules)
         instance = this
         _running.value = true
@@ -186,6 +192,9 @@ class RefusBotAccessibilityService : AccessibilityService() {
     private fun startSession() {
         if (sessionJob?.isActive == true) return
         sessionJob = scope.launch(worker) {
+            // Batterie (27/11) : durée de chaque passage, avec ou sans fenêtre de cookies.
+            val started = SystemClock.elapsedRealtime()
+            runActed = false
             try {
                 runSession()
             } catch (e: CancellationException) {
@@ -193,6 +202,8 @@ class RefusBotAccessibilityService : AccessibilityService() {
             } catch (e: Exception) {
                 Log.e(TAG, "Session interrompue", e)
                 engine.reset()
+            } finally {
+                refusBot.recordWork(SystemClock.elapsedRealtime() - started, runActed)
             }
         }
     }
@@ -315,10 +326,12 @@ class RefusBotAccessibilityService : AccessibilityService() {
                         return
                     }
                     is Step.Wait -> {
+                        runActed = true
                         capture.close()
                         timing.measure(Phase.WAITS) { delay(step.delayMs) }
                     }
                     is Step.Act -> {
+                        runActed = true
                         try {
                             // Type d'étape seulement (« refus », « options »…) : le libellé du bouton est du texte d'écran,
                             // réservé aux fichiers de diagnostic (contre-audit N5).
@@ -346,6 +359,7 @@ class RefusBotAccessibilityService : AccessibilityService() {
                         }
                     }
                     is Step.Done -> {
+                        runActed = true
                         capture.close()
                         onOutcome(step.outcome, timing.summary())
                         return

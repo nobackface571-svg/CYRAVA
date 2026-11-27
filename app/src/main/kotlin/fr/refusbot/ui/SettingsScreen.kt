@@ -35,6 +35,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
@@ -366,6 +367,17 @@ private fun SettingsMenu(padding: PaddingValues, onNavigate: (SettingsPage) -> U
             }
         }
 
+        // --- Batterie (27/11) : travail mesuré depuis le démarrage du service -------------------
+        item {
+            val work by app.workState.collectAsState()
+            SectionCard(title = stringResource(R.string.set_battery), icon = R.drawable.ic_phone) {
+                BodyText(stringResource(R.string.set_battery_since, formatDateTime(work.since)))
+                BodyText(stringResource(R.string.set_battery_idle, work.idleReads, seconds(work.idleMs)))
+                BodyText(stringResource(R.string.set_battery_windows, work.windows, seconds(work.windowMs)))
+                BodyText(stringResource(R.string.set_battery_note))
+            }
+        }
+
         // --- À propos -------------------------------------------------------------------------
         item {
             SectionCard(title = stringResource(R.string.set_about), icon = R.drawable.ic_info) {
@@ -460,3 +472,8 @@ private fun LanguageChoices(context: Context) {
         )
     }
 }
+
+/** Durée en secondes avec une décimale (« 3,4 » / « 3.4 » selon la langue de l'appli). */
+@Composable
+private fun seconds(ms: Long): String =
+    String.format(LocalConfiguration.current.locales[0], "%.1f", ms / 1000.0)

@@ -31,9 +31,17 @@ Si vous voyez CYRAVA cliquer sur une acceptation, c'est un bug grave : signalez-
 
 > **Ce qui a été testé, honnêtement.** À chaque compilation lancée sur CodeMagic, il lance les tests du moteur de décision, l'analyse de code (lint) et la compilation, et vérifie l'absence de permission Internet. Le test complet sur un **téléphone simulé** (émulateur Android, `.github/workflows/e2e.yml`) n'est plus lancé : GitHub Actions n'est plus utilisé. **CYRAVA a aussi été essayé sur un vrai téléphone** (Samsung Galaxy S23 FE, Android 16), en profil Strict, dans Chrome, Firefox, Opera et un jeu, le 22/11/2026 : 20 fenêtres vers 14 h, 17 vers 15 h, puis 14 vers 16 h 45, résultats et durées recopiés dans [docs/essais-reels.md](docs/essais-reels.md), réussites comme échecs. Voir les [limites](#12-précautions-et-limites-connues).
 
-## Dernières mises à jour (26/11/2026)
+## Dernières mises à jour (27/11/2026)
 
 Ce qui a changé, et pourquoi (détail dans [CHANGELOG.md](CHANGELOG.md)) :
+
+**27/11 (version 1.1.0 bêta 4)** — vérifiés par les tests du moteur, pas encore essayés sur le téléphone :
+
+- **Les pages qui parlent de cookies ne sont plus prises pour des fenêtres de cookies** : dans un navigateur, CYRAVA ne démarre sur une page entière que s'il voit un vrai bouton de refus ou d'acceptation, ou l'identifiant d'une plateforme connue (avant, il cliquait sur des liens de menu de pages qui *parlent* de cookies).
+- **Historique dans la langue de l'appli** : avec l'appli en anglais, les explications du moteur (« seul un bouton de validation est proposé… ») et « TCF générique » s'affichent désormais en anglais. L'historique enregistré et les exports JSON/CSV restent en français.
+- **Cartes d'historique simplifiées** : résultat, conseil et « état vérifié » d'abord ; touchez une carte pour voir les compteurs techniques (éléments reconnus dans la fenêtre, gestes tentés…).
+- **Que faire après un échec** : un court conseil 💡 sous chaque résultat raté ou partiel (pas de refus proposé, mur payant, terminer à la main, partager un diagnostic…).
+- **Batterie** : Réglages › Batterie indique le temps de travail de CYRAVA depuis le démarrage du service.
 
 **Du 23/11 au soir au 26/11** — vérifiés par les tests du moteur, pas encore essayés sur le téléphone :
 
@@ -217,6 +225,8 @@ Dans **tous** les profils, CYRAVA ne clique jamais sur une acceptation.
 | **Action interrompue** | Pause, arrêt d'urgence, ou vous avez quitté l'appli pendant le traitement. |
 | **Observé (aucune action)** | Profil Observation ou Prudent : la fenêtre a seulement été analysée. |
 
+Sous un résultat raté ou partiel, une ligne 💡 indique quoi faire. Touchez une carte pour voir ses détails techniques : *éléments reconnus dans la fenêtre* (tous les boutons, liens, onglets et interrupteurs repérés, pas seulement les cases à décocher), *gestes tentés* (clics et défilements) et *interrupteurs désactivés* (les cases réellement décochées).
+
 ### Comment CYRAVA décide
 
 1. Une fenêtre est reconnue si elle contient **au moins 2 indices** (cookies, consentement, partenaires, intérêt légitime, identifiants propres à une plateforme…) **et au moins 1 bouton connu**.
@@ -261,7 +271,7 @@ Scénarios de fenêtres simulées pour vérifier le moteur de décision sur le t
 
 **Dois-je laisser CYRAVA ouvert ?** Non. Une fois le service activé, il fonctionne en arrière-plan, même après un redémarrage.
 
-**Est-ce que ça use la batterie ?** Très peu : Android ne réveille CYRAVA que lorsqu'une appli cochée change d'écran.
+**Est-ce que ça use la batterie ?** Android ne réveille CYRAVA que lorsqu'une appli cochée change d'écran : moins vous cochez d'applis, moins il travaille. **Réglages › Batterie** indique le temps de travail de CYRAVA depuis le démarrage du service (lectures d'écran sans fenêtre de cookies, fenêtres traitées). Ce sont des durées, pas un pourcentage de batterie : la consommation réelle se lit dans les réglages Android (Batterie › Utilisation de la batterie › CYRAVA).
 
 **Rien ne se passe dans une appli.** Vérifiez dans l'ordre :
 1. l'appli est cochée et n'est pas en « Observation seule » ;

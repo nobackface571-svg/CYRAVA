@@ -33,6 +33,15 @@ class RefusBotApp : Application() {
 
     val rules: Rules get() = rulesRepository.active.value.rules
 
+    /** Travail du service depuis son démarrage (batterie, 27/11) : durées seulement, rien n'est enregistré. */
+    val workMeter = fr.refusbot.core.WorkMeter()
+    val workState = kotlinx.coroutines.flow.MutableStateFlow(workMeter.snapshot())
+
+    fun recordWork(durationMs: Long, acted: Boolean) {
+        workMeter.record(durationMs, acted)
+        workState.value = workMeter.snapshot()
+    }
+
     override fun onCreate() {
         // En premier : un plantage pendant le démarrage doit lui aussi être enregistré.
         CrashRecorder.install(this)

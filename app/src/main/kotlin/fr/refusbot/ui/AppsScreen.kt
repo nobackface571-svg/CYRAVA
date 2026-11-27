@@ -48,6 +48,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -314,7 +315,7 @@ private fun AppRow(
                         color = statusColor(lastResult.status),
                     )
                     Text(
-                        lastResult.reason?.takeIf { it.isNotBlank() }
+                        reasonText(LocalResources.current, lastResult.reason)?.takeIf { it.isNotBlank() }
                             ?: lastResultExplanation(lastResult),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,

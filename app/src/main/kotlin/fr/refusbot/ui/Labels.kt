@@ -91,7 +91,7 @@ fun Confidence.labelRes(): Int = when (this) {
 
 /**
  * Résumé traduit d'une entrée d'historique (écran et notifications). Le motif (`reason`) vient du
- * moteur et reste en français, comme les exports JSON/CSV.
+ * moteur en français (comme les exports JSON/CSV) ; il est traduit ici à l'affichage (voir ReasonText).
  */
 fun LogEntry.summaryText(res: Resources): String {
     val label = res.getString(status.labelRes())
@@ -103,7 +103,7 @@ fun LogEntry.summaryText(res: Resources): String {
             1 -> res.getString(R.string.sum_toggles_1, label)
             else -> res.getString(R.string.sum_toggles_n, label, togglesOff)
         }
-        else -> reason?.let { res.getString(R.string.sum_reason, label, it) } ?: label
+        else -> reasonText(res, reason)?.let { res.getString(R.string.sum_reason, label, it) } ?: label
     }
 }
 

@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.content.ActivityNotFoundException
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -200,9 +201,13 @@ fun HistoryScreen(padding: PaddingValues) {
 fun HistoryRow(e: LogEntry, modifier: Modifier = Modifier, horizontalPadding: Dp = 16.dp) {
     val color = statusColor(e.status)
     val res = LocalResources.current
+    // Carte simplifiée (27/11) : l'essentiel d'abord ; les compteurs techniques (éléments reconnus,
+    // gestes tentés…) seulement quand on touche la carte, car ils prêtaient à confusion.
+    var expanded by rememberSaveable(e.time, e.packageName) { mutableStateOf(false) }
     Row(
         modifier
             .fillMaxWidth()
+            .clickable { expanded = !expanded }
             .padding(horizontal = horizontalPadding, vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -211,23 +216,41 @@ fun HistoryRow(e: LogEntry, modifier: Modifier = Modifier, horizontalPadding: Dp
         Column(Modifier.weight(1f)) {
             Text(e.appName, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Medium)
             Text(e.summaryText(res), style = MaterialTheme.typography.bodyMedium, color = color)
-            val details = buildList {
-                if (e.status == OutcomeStatus.OBSERVED) add(stringResource(R.string.hist_d_observed))
-                if (e.consentDetected) add(stringResource(R.string.hist_d_banner))
-                if (e.controlsRecognized > 0) add(stringResource(R.string.hist_d_controls, e.controlsRecognized))
-                if (e.actionAttempts > 0) add(stringResource(R.string.hist_d_attempts, e.actionAttempts))
-                if (e.actionExecutions > 0) add(stringResource(R.string.hist_d_exec, e.actionExecutions))
-                if (e.blockedActions > 0) add(stringResource(R.string.hist_d_blocked, e.blockedActions))
+            adviceRes(e)?.let {
+                Text(
+                    stringResource(it),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+            }
+            val essentials = buildList {
                 when (e.stateVerified) {
                     true -> add(stringResource(R.string.hist_d_verified))
                     false -> add(stringResource(R.string.hist_d_unverified))
                     null -> if (e.status == OutcomeStatus.OBSERVED) add(stringResource(R.string.hist_d_no_action))
                 }
-                if (e.captureTruncated) add(stringResource(R.string.hist_d_truncated))
-                if (e.platform != "inconnue") add(e.platform)
-                add(stringResource(R.string.hist_d_confidence, stringResource(e.confidence.labelRes())))
-            }.joinToString(" · ")
-            Text(details, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                if (e.platform != "inconnue") add(platformText(res, e.platform))
+            }
+            if (essentials.isNotEmpty()) {
+                Text(
+                    essentials.joinToString(" · "),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            if (expanded) {
+                val details = buildList {
+                    if (e.status == OutcomeStatus.OBSERVED) add(stringResource(R.string.hist_d_observed))
+                    if (e.consentDetected) add(stringResource(R.string.hist_d_banner))
+                    if (e.controlsRecognized > 0) add(stringResource(R.string.hist_d_controls, e.controlsRecognized))
+                    if (e.actionAttempts > 0) add(stringResource(R.string.hist_d_attempts, e.actionAttempts))
+                    if (e.actionExecutions > 0) add(stringResource(R.string.hist_d_exec, e.actionExecutions))
+                    if (e.blockedActions > 0) add(stringResource(R.string.hist_d_blocked, e.blockedActions))
+                    if (e.captureTruncated) add(stringResource(R.string.hist_d_truncated))
+                    add(stringResource(R.string.hist_d_confidence, stringResource(e.confidence.labelRes())))
+                }.joinToString(" · ")
+                Text(details, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
             if (e.interfaceChanged) {
                 Text(
                     stringResource(R.string.hist_new_ui),
@@ -235,7 +258,11 @@ fun HistoryRow(e: LogEntry, modifier: Modifier = Modifier, horizontalPadding: Dp
                     color = MaterialTheme.colorScheme.tertiary,
                 )
             }
-            Text(formatDateTime(e.time), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(
+                formatDateTime(e.time) + " · " + stringResource(if (expanded) R.string.hist_less else R.string.hist_more),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
         }
         Icon(
             painterResource(statusIcon(e.status)),
