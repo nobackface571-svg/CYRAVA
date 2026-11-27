@@ -267,8 +267,8 @@
     <string name="hist_clear_text">Toutes les entrées seront supprimées de ce téléphone. Les statistiques et la compatibilité repartiront de zéro.</string>
     <string name="hist_d_observed">observation enregistrée</string>
     <string name="hist_d_banner">bannière détectée</string>
-    <string name="hist_d_controls">%1$d contrôles reconnus</string>
-    <string name="hist_d_attempts">%1$d actions tentées</string>
+    <string name="hist_d_controls">%1$d éléments reconnus dans la fenêtre</string>
+    <string name="hist_d_attempts">%1$d gestes tentés (clics, défilements…)</string>
     <string name="hist_d_exec">%1$d actions acceptées par Android</string>
     <string name="hist_d_blocked">%1$d actions bloquées</string>
     <string name="hist_d_verified">état vérifié</string>
@@ -581,4 +581,20 @@
     <string name="reason_legacy_entry">Ancienne entrée : l\'état final des préférences n\'était pas enregistré.</string>
     <string name="platform_generic_tcf">TCF générique</string>
     <string name="platform_unknown">inconnue</string>
+    <!-- Conseils, carte d'historique simplifiée et batterie (27/11) -->
+    <string name="advice_no_refusal">💡 Ce site ne propose pas de refus. CYRAVA n\'acceptera jamais à votre place : fermez la fenêtre, ou quittez le site si vous ne voulez pas accepter.</string>
+    <string name="advice_paywall">💡 Ce site demande d\'accepter ou de payer. À vous de choisir : CYRAVA ne fait ni l\'un ni l\'autre.</string>
+    <string name="advice_observation">💡 Mode Observation : rien n\'est fait. Choisissez le profil Prudent ou Strict pour que CYRAVA agisse.</string>
+    <string name="advice_prudent">💡 Profil Prudent : vérifiez cette fenêtre dans l\'onglet Compatibilité, puis approuvez-la.</string>
+    <string name="advice_closed">💡 La fenêtre s\'est fermée avant la fin (par vous ou par l\'appli). Si elle revient, CYRAVA réessaiera.</string>
+    <string name="advice_finish_by_hand">💡 Terminez le refus vous-même dans la fenêtre : CYRAVA n\'a pas pu tout vérifier et n\'a pas voulu valider à l\'aveugle.</string>
+    <string name="advice_partial">💡 Une partie des choix n\'a pas pu être refusée : ouvrez les réglages de cookies du site ou de l\'appli pour finir à la main.</string>
+    <string name="advice_not_supported">💡 Cette fenêtre n\'est pas encore bien reconnue. Refusez à la main cette fois ; vous pouvez aider en partageant un diagnostic (onglet Diagnostic) ou en ouvrant une Issue sur GitHub.</string>
+    <string name="hist_more">détails ▾</string>
+    <string name="hist_less">moins ▴</string>
+    <string name="set_battery">Batterie</string>
+    <string name="set_battery_since">Travail de CYRAVA depuis le %1$s (démarrage du service) :</string>
+    <string name="set_battery_idle">• %1$d lectures d\'écran sans fenêtre de cookies : %2$s s de calcul</string>
+    <string name="set_battery_windows">• %1$d passages sur une fenêtre de cookies : %2$s s</string>
+    <string name="set_battery_note">Ce sont des durées mesurées, pas un pourcentage de batterie. La consommation réelle se lit dans les réglages Android : Batterie › Utilisation de la batterie › CYRAVA. Seules les applis cochées sont lues : moins il y en a, moins CYRAVA travaille.</string>
 </resources>

@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+- **History in the app's language (27/11)**: the engine's explanations (e.g. "only an accept/save button is offered") and "generic TCF" are now shown in English when the app is in English. The saved history and the JSON/CSV exports stay in French.
+- **Simpler history cards (27/11)**: result, advice and "state verified" first; the technical counters (items recognised, gestures tried…) appear when you tap the card.
+- **What to do after a failure (27/11)**: a short tip under each failed or partial result (no reject option, paywall, finish by hand, share a diagnostic…).
+- **Battery (27/11)**: Settings › Battery shows how long CYRAVA worked since the service started (screen reads with no cookie window, cookie windows handled). Durations only, not a battery percentage; nothing is saved.
 - **Important fix — pages that talk about cookies (27/11)**: with no cookie pop-up on screen, CYRAVA mistook pages *about* cookies (the LinuxFr post, the XDA thread and the GitHub README presenting CYRAVA) for consent pop-ups, and tapped a menu link, scrolled and tapped "More options". In a browser, when the matched area covers almost the whole page, CYRAVA now only starts if it sees a real reject or accept button, or a known platform's identifier (a menu link, a form checkbox, a lone "Save" button or a sentence fragment is no longer enough). After a rejection, the article behind is no longer taken for the pop-up. Checked by automated tests, including the three pages rebuilt from the phone diagnostics (without publishing their content); not yet tried on a phone.
 
 ## 1.1.0 beta 3
@@ -49,6 +53,13 @@ All releases are published in the repository's **Releases** tab, with the APK.
 Toutes les versions sont publiées dans l'onglet **Releases** du dépôt, avec l'APK.
 
 ## À venir (non publié)
+
+### Historique dans la langue de l'appli, conseils et batterie (27/11)
+- **Motifs traduits** : en anglais, les explications du moteur (« seul un bouton de validation est proposé… ») et « TCF générique » s'affichent désormais en anglais. L'historique enregistré et les exports JSON/CSV restent en français.
+- **Cartes d'historique simplifiées** : résultat, conseil et « état vérifié » d'abord ; les compteurs techniques (éléments reconnus, gestes tentés…) apparaissent en touchant la carte.
+- **Que faire après un échec** : un court conseil sous chaque résultat raté ou partiel (pas de refus proposé, mur payant, terminer à la main, partager un diagnostic…).
+- **Batterie** : Réglages › Batterie indique le temps de travail de CYRAVA depuis le démarrage du service (lectures d'écran sans fenêtre de cookies, fenêtres traitées). Ce sont des durées, pas un pourcentage de batterie ; rien n'est enregistré.
+- Vérifié par les tests automatiques du moteur ; compilation de l'appli à faire sur CodeMagic ; pas encore essayé sur téléphone.
 
 ### Correction importante : les pages qui parlent de cookies (27/11)
 - **Problème** (essais du 27/11 dans Chrome, profil Strict) : aucune fenêtre de cookies n'était affichée, mais CYRAVA a pris des **pages qui parlent de cookies** pour des fenêtres de consentement : le journal LinuxFr et le fil XDA présentant CYRAVA, et le README GitHub. Sur LinuxFr, il a cliqué sur le lien « Modifier mes préférences » du menu et repéré la case « licence CC BY-SA » du formulaire comme un interrupteur à décocher ; sur XDA, il a fait défiler la page et cliqué « More options » pendant 14 s. Le même problème pouvait se produire sur toute page qui parle de cookies (politique de confidentialité, article sur le RGPD…).

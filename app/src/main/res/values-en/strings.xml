@@ -262,8 +262,8 @@
     <string name="hist_clear_text">All entries will be deleted from this phone. Statistics and compatibility will start from zero.</string>
     <string name="hist_d_observed">observation saved</string>
     <string name="hist_d_banner">banner detected</string>
-    <string name="hist_d_controls">%1$d controls recognised</string>
-    <string name="hist_d_attempts">%1$d actions tried</string>
+    <string name="hist_d_controls">%1$d items recognised in the window</string>
+    <string name="hist_d_attempts">%1$d gestures tried (taps, scrolls…)</string>
     <string name="hist_d_exec">%1$d actions accepted by Android</string>
     <string name="hist_d_blocked">%1$d actions blocked</string>
     <string name="hist_d_verified">state verified</string>
@@ -576,4 +576,20 @@
     <string name="reason_legacy_entry">Old entry: the final state of the preferences was not recorded.</string>
     <string name="platform_generic_tcf">generic TCF</string>
     <string name="platform_unknown">unknown</string>
+    <!-- Conseils, carte d'historique simplifiée et batterie (27/11) -->
+    <string name="advice_no_refusal">💡 This site offers no way to reject. CYRAVA will never accept for you: close the window, or leave the site if you don\'t want to accept.</string>
+    <string name="advice_paywall">💡 This site asks you to accept or pay. It\'s your choice: CYRAVA does neither.</string>
+    <string name="advice_observation">💡 Observation mode: nothing is done. Choose the Careful or Strict profile for CYRAVA to act.</string>
+    <string name="advice_prudent">💡 Careful profile: check this window in the Compatibility tab, then approve it.</string>
+    <string name="advice_closed">💡 The window closed before the end (by you or by the app). If it comes back, CYRAVA will try again.</string>
+    <string name="advice_finish_by_hand">💡 Finish the rejection yourself in the window: CYRAVA could not check everything and would not save blindly.</string>
+    <string name="advice_partial">💡 Some choices could not be rejected: open the site\'s or app\'s cookie settings to finish by hand.</string>
+    <string name="advice_not_supported">💡 This window is not well recognised yet. Reject by hand this time; you can help by sharing a diagnostic (Diagnostic tab) or opening an Issue on GitHub.</string>
+    <string name="hist_more">details ▾</string>
+    <string name="hist_less">less ▴</string>
+    <string name="set_battery">Battery</string>
+    <string name="set_battery_since">CYRAVA\'s work since %1$s (service start):</string>
+    <string name="set_battery_idle">• %1$d screen reads with no cookie window: %2$s s of processing</string>
+    <string name="set_battery_windows">• %1$d runs on a cookie window: %2$s s</string>
+    <string name="set_battery_note">These are measured durations, not a battery percentage. Real usage is shown in Android settings: Battery › Battery usage › CYRAVA. Only ticked apps are read: the fewer there are, the less CYRAVA works.</string>
 </resources>

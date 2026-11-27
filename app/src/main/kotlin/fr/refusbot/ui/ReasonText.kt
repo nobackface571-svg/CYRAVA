@@ -105,3 +105,36 @@ private fun reasonRes(id: String): Int? = when (id) {
     "legacy_entry" -> R.string.reason_legacy_entry
     else -> null
 }
+
+/**
+ * Conseil affiché sous un résultat qui n'est pas un refus réussi (27/11) : que faire maintenant.
+ * Rien pour un refus vérifié ou « non vérifiable » (le site a reçu le refus), ni pour un motif inconnu.
+ */
+@StringRes
+fun adviceRes(e: fr.refusbot.data.LogEntry): Int? {
+    if (e.status == fr.refusbot.core.OutcomeStatus.OPTIONS_SUCCESS ||
+        e.status == fr.refusbot.core.OutcomeStatus.UNVERIFIED ||
+        e.status == fr.refusbot.core.OutcomeStatus.DIRECT_SUCCESS
+    ) return null
+    if (e.status == fr.refusbot.core.OutcomeStatus.HANDED_OVER) return R.string.advice_finish_by_hand
+    val key = ReasonCatalog.parse(e.reason) ?: return when (e.status) {
+        fr.refusbot.core.OutcomeStatus.PARTIAL -> R.string.advice_partial
+        else -> null
+    }
+    return when (key.id) {
+        "accept_only", "only_confirm" -> R.string.advice_no_refusal
+        "paywall" -> R.string.advice_paywall
+        "observation", "observation_truncated" -> R.string.advice_observation
+        "prudent", "prudent_truncated", "new_interface_prudent" -> R.string.advice_prudent
+        "closed_no_confirm", "window_left", "left_truncated" -> R.string.advice_closed
+        "user_pause", "emergency_stop", "rules_changed", "service_interrupted", "service_stopped" -> null
+        "long_list_hold", "doubtful_hold", "unexplored_hold", "confirm_greyed" -> R.string.advice_finish_by_hand
+        else -> when (e.status) {
+            fr.refusbot.core.OutcomeStatus.PARTIAL -> R.string.advice_partial
+            fr.refusbot.core.OutcomeStatus.IMPOSSIBLE,
+            fr.refusbot.core.OutcomeStatus.INCOMPLETE_CAPTURE,
+            -> R.string.advice_not_supported
+            else -> null
+        }
+    }
+}
