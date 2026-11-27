@@ -2,6 +2,8 @@
 
 # CYRAVA
 
+[![Télécharger la dernière version](https://img.shields.io/github/v/release/nobackface571-svg/CYRAVA?include_prereleases&label=T%C3%A9l%C3%A9charger%20la%20derni%C3%A8re%20version&style=for-the-badge&color=1f6feb)](https://github.com/nobackface571-svg/CYRAVA/releases)
+
 **CYRAVA refuse automatiquement les fenêtres de consentement cookies / traceurs (RGPD, IAB TCF)** dans les applis, jeux et navigateurs Android que vous choisissez : il clique sur « Tout refuser », ou ouvre les options, **désactive tous les interrupteurs (consentement ET intérêt légitime)** et valide. **Il ne clique jamais sur « Accepter ».**
 
 - Reconnaît 38 plateformes de consentement (Google UMP, Didomi, OneTrust, Sourcepoint, InMobi Choice, Usercentrics, Sirdata, Axeptio, Cookiebot, TrustArc, Consentmanager, iubenda, CookieYes, Commanders Act…) et les fenêtres « TCF » génériques, en 7 langues (français, anglais, allemand, espagnol, italien, portugais, néerlandais).
