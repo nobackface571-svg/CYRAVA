@@ -46,6 +46,12 @@ Toutes les versions sont publiées dans l'onglet **Releases** du dépôt, avec l
 
 ## À venir (non publié)
 
+Rien pour l'instant.
+
+## 1.1.0 bêta 3 (27/11/2026)
+
+Étiquette `v1.1.0-beta.3`. Les bêtas 1 et 2 (21/11) n'ont pas eu de section à part : leurs changements (20–21/11) figurent aussi plus bas dans cette section.
+
 - **27/11 — corrections après les essais du 27/11 sur téléphone** (fenêtres reconstituées dans `Essais27NovTest`, simulées ; diagnostics non rejoués dans cette session) :
   - **Préférences (BFM)** : le « Tout refuser » du site, qui fermait la fenêtre sans rien laisser vérifier, passe désormais APRÈS les choix un par un (interrupteurs, « Bloquer », « Refuser » de chaque ligne), puis « Enregistrer ». Il ne sert plus qu'en dernier recours. « Tout désactiver » reste utilisé d'abord.
   - **Firefox (RTBF)** : « Enregistrer » ou « Tout refuser » restés sous la barre de Firefox, dans une fenêtre fixe, sont actionnés par leur nœud (jamais d'appui aux coordonnées) après deux essais sans effet (« faire apparaître » et défilement) pour les amener à l'écran. Avant : 24 s de défilements pour rien.
