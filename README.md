@@ -31,9 +31,17 @@ If you ever see CYRAVA tap an accept button, it is a serious bug: please report 
 
 > **What has been tested, honestly.** On every build started on CodeMagic, the decision-engine tests, code analysis (lint) and the build are run, and the absence of the Internet permission is checked. The full test on a **simulated phone** (Android emulator, `.github/workflows/e2e.yml`) is no longer run: GitHub Actions is no longer used. **CYRAVA has also been tried on a real phone** (Samsung Galaxy S23 FE, Android 16), in the Strict profile, in Chrome, Firefox, Opera and a game, on 22/11/2026: 20 pop-ups around 2 pm, 17 around 3 pm, then 14 around 4:45 pm. Results and durations are copied into [docs/essais-reels.md](docs/essais-reels.md) (in French), successes and failures alike. See the [limitations](#12-precautions-and-known-limitations).
 
-## Latest updates (26/11/2026)
+## Latest updates (27/11/2026)
 
 What changed, and why (details in [CHANGELOG.md](CHANGELOG.md)):
+
+**27/11 (version 1.1.0 beta 4)** — checked by the engine tests, not yet tried on the phone:
+
+- **Pages that talk about cookies are no longer taken for cookie pop-ups**: in a browser, CYRAVA only starts on a whole page if it sees a real reject or accept button, or a known platform's identifier (before, it tapped menu links on pages *about* cookies).
+- **History in the app's language**: with the app in English, the engine's explanations (e.g. "only an accept/save button is offered") and "generic TCF" are now shown in English. The saved history and the JSON/CSV exports stay in French.
+- **Simpler history cards**: result, advice and "state verified" first; tap a card to see the technical counters (items recognised in the window, gestures tried…).
+- **What to do after a failure**: a short 💡 tip under each failed or partial result (no reject option, paywall, finish by hand, share a diagnostic…).
+- **Battery**: Settings › Battery shows how long CYRAVA has worked since the service started.
 
 **From the evening of 23/11 to 26/11** — checked by the engine tests, not yet tried on the phone:
 
@@ -217,6 +225,8 @@ In **every** profile, CYRAVA never taps an accept button.
 | **Action interrupted** | Pause, emergency stop, or you left the app during processing. |
 | **Observed (no action)** | Observation or Careful profile: the pop-up was only analysed. |
 
+Under a failed or partial result, a 💡 line says what to do next. Tap a card to see its technical details: *items recognised in the window* (every button, link, tab and switch found, not only the boxes to untick), *gestures tried* (taps and scrolls) and *switches turned off* (the boxes actually unticked).
+
 ### How CYRAVA decides
 
 1. A pop-up is recognised if it contains **at least 2 clues** (cookies, consent, partners, legitimate interest, platform-specific identifiers…) **and at least 1 known button**.
@@ -261,7 +271,7 @@ Simulated pop-up scenarios to check the decision engine on the phone, without to
 
 **Do I need to keep CYRAVA open?** No. Once the service is on, it works in the background, even after a restart.
 
-**Does it drain the battery?** Very little: Android only wakes CYRAVA up when a ticked app changes screen.
+**Does it drain the battery?** Android only wakes CYRAVA up when a ticked app changes screen, so the fewer apps you tick, the less it works. **Settings › Battery** shows how long CYRAVA has worked since the service started (screen reads with no cookie pop-up, pop-ups handled). These are durations, not a battery percentage: the real usage is in Android's settings (Battery › Battery usage › CYRAVA).
 
 **Nothing happens in an app.** Check, in this order:
 1. the app is ticked and not set to "Observe only";

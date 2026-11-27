@@ -2,7 +2,9 @@
 
 # Changelog (English)
 
-## Unreleased
+## 1.1.0 beta 4
+
+*Tag `v1.1.0-beta.4`, 27/11/2026.*
 
 - **History in the app's language (27/11)**: the engine's explanations (e.g. "only an accept/save button is offered") and "generic TCF" are now shown in English when the app is in English. The saved history and the JSON/CSV exports stay in French.
 - **Simpler history cards (27/11)**: result, advice and "state verified" first; the technical counters (items recognised, gestures tried…) appear when you tap the card.
@@ -52,7 +54,7 @@ All releases are published in the repository's **Releases** tab, with the APK.
 
 Toutes les versions sont publiées dans l'onglet **Releases** du dépôt, avec l'APK.
 
-## À venir (non publié)
+## 1.1.0 bêta 4 (27/11/2026)
 
 ### Historique dans la langue de l'appli, conseils et batterie (27/11)
 - **Motifs traduits** : en anglais, les explications du moteur (« seul un bouton de validation est proposé… ») et « TCF générique » s'affichent désormais en anglais. L'historique enregistré et les exports JSON/CSV restent en français.
