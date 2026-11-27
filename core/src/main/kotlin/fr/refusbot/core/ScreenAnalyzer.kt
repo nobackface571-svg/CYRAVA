@@ -161,6 +161,15 @@ class ScreenAnalysis(
      * réservé au diagnostic, jamais copié dans l'historique.
      */
     val toggleLabelsBySignature: Map<String, String> = emptyMap(),
+    /**
+     * Navigateur : le panneau retenu couvre presque toute la page affichée. Ce n'est donc pas une fenêtre
+     * à part, mais la page elle-même, qui PARLE de cookies (article, fil de forum, README, formulaire).
+     * Faux positifs du 27/11 : journal LinuxFr, fil XDA et page GitHub présentant CYRAVA (voir
+     * [canStartSession]).
+     */
+    val pageWide: Boolean = false,
+    /** Page entière : un vrai bouton de refus ou d'acceptation y est visible (une validation seule ne suffit pas). */
+    val pageWideChoice: Boolean = false,
 ) {
     /** Un libellé de commande visible, y compris ACCEPT (reconnu mais jamais actionné). */
     val hasKnownButton: Boolean get() = buttons.any {
@@ -179,6 +188,10 @@ class ScreenAnalysis(
      */
     val canStartSession: Boolean
         get() = isConsent && (
+            // Page entière (27/11) : le lien « Modifier mes préférences » d'un menu, une case du formulaire
+            // (licence CC BY-SA) ou les boutons « gras / souligné » d'un éditeur ne prouvent rien. Seuls
+            // l'identifiant d'une plateforme connue ou un vrai bouton de choix peuvent ouvrir une session.
+            if (pageWide) hints.any { it.startsWith("id:") } || pageWideChoice else
             buttons.any {
                 it.kind in SESSION_START_KINDS && it.labelNode.isVisibleToUser && it.labelNode.isEnabled && !it.labelNode.bounds.isEmpty
             } || toggleStates.isNotEmpty() || hints.any { it.startsWith("id:") }
@@ -196,6 +209,14 @@ class ScreenAnalysis(
 
     fun buttons(kind: ButtonKind): List<ButtonCandidate> = buttons.filter { it.kind == kind }
 }
+
+/**
+ * Page entière dans un navigateur (voir [ScreenAnalysis.pageWide]) : seuls un refus ou une acceptation
+ * prouvent une fenêtre de consentement ; une validation seule peut être celle d'un formulaire du site.
+ */
+private val PAGE_START_KINDS = setOf(
+    ButtonKind.REFUSE, ButtonKind.GLOBAL_REJECT, ButtonKind.ACCEPT, ButtonKind.RADIO_REFUSE,
+)
 
 /** Boutons qui prouvent un vrai choix de consentement (pas une simple navigation). */
 private val SESSION_START_KINDS = setOf(
@@ -988,6 +1009,34 @@ class ScreenAnalyzer(private val rules: Rules, private val guard: SafetyGuard = 
                 !b.labelNode.bounds.isEmpty && guard.checkNode(b.labelNode) is SafetyGuard.Verdict.Allowed
         }?.labelNode
 
+        // --- Page entière (faux positifs du 27/11) -------------------------------------------
+        // Dans un navigateur, une vraie fenêtre de cookies est un bloc à part (bandeau, boîte au milieu).
+        // Si le plus petit panneau qui réunit les indices et les contrôles couvre presque toute la page
+        // affichée, c'est la page elle-même qui parle de cookies : un article, un fil de forum, une
+        // documentation (journal LinuxFr, fil XDA et README GitHub de CYRAVA, 27/11). Le seuil de 80 %
+        // est celui déjà utilisé pour la fenêtre entière ; il est mesuré ici sur la zone de la page
+        // (WebView) et non sur tout l'écran, qui contient aussi la barre d'adresse du navigateur.
+        val pageWide = webContentOnly && viewport != null && scopedRoot != null && run {
+            val p = scopedRoot.bounds
+            val w = minOf(p.right, viewport.right) - maxOf(p.left, viewport.left)
+            val h = minOf(p.bottom, viewport.bottom) - maxOf(p.top, viewport.top)
+            w > 0 && h > 0 && w.toLong() * h * 100L >= viewport.area * PAGE_WIDE_PERCENT
+        }
+        // Un vrai bouton : cliquable lui-même ou porté par un élément cliquable proche (3 niveaux) dont
+        // le texte reste court. Un fragment de phrase (« … and accept. », « tap OK ») n'en est pas un.
+        fun realControl(n: UiNode): Boolean {
+            val carrier = if (n.isClickable && n.isEnabled) n
+            else n.ancestors().take(3).firstOrNull { it.isClickable && it.isEnabled } ?: return false
+            val words = carrier.walk().sumOf { o -> allCanonTexts[o].orEmpty().sumOf { TextNormalizer.wordCount(it) } }
+            return words <= maxLabelWords
+        }
+        // Une simple validation (« Enregistrer », « Save ») ne suffit pas : une page de réglages de compte
+        // qui parle de cookies en a une, et CYRAVA y aurait décoché des cases (relecture sécurité du 27/11).
+        val pageWideChoice = pageWide && buttons.any {
+            it.kind in PAGE_START_KINDS && it.labelNode.isVisibleToUser && it.labelNode.isEnabled &&
+                !it.labelNode.bounds.isEmpty && realControl(it.labelNode)
+        }
+
         val light = (buttons.map { "${it.kind}:${it.label}" }.sorted() + hints.sorted()).hashCode()
 
         // --- Plateforme et empreinte structurelle -------------------------------------------
@@ -1044,6 +1093,8 @@ class ScreenAnalyzer(private val rules: Rules, private val guard: SafetyGuard = 
             contentSignature = allText.hashCode(),
             categoryTabs = categoryTabs,
             toggleLabelsBySignature = labelsBySignature,
+            pageWide = pageWide,
+            pageWideChoice = pageWideChoice,
         )
     }
 
@@ -1272,6 +1323,8 @@ class ScreenAnalyzer(private val rules: Rules, private val guard: SafetyGuard = 
         /** Élargissement du panneau jusqu'au bouton de validation : 3 niveaux, 6 dans le conteneur d'une plateforme connue. */
         const val PANEL_EXTEND_LEVELS = 3
         const val PANEL_EXTEND_MAX = 6
+        /** Part de la page affichée (en %) au-delà de laquelle le panneau est la page elle-même. */
+        const val PAGE_WIDE_PERCENT = 80L
         val WEB_TOGGLE_ROLES = setOf("switch", "checkbox")
         val SKIP_LINK_PREFIXES = listOf("aller a ", "aller au ", "go to ", "skip to ", "jump to ")
 

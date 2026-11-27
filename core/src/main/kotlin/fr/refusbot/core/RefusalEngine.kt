@@ -561,7 +561,21 @@ class RefusalEngine(
         // n'affiche pas toujours les repères de sa plateforme, mais parle de partenaires ou d'intérêt légitime.
         val samePlatform = s.platform == PLATFORM_UNKNOWN || s.platform == PLATFORM_GENERIC_TCF ||
             a.platform == s.platform || a.platform == PLATFORM_GENERIC_TCF
-        val consentLike = a.isConsent || (a.hints.isNotEmpty() &&
+        // Faux positifs du 27/11 (journal LinuxFr, fil XDA présentant CYRAVA) : dans un navigateur, un panneau
+        // qui couvre toute la page, sans vrai bouton de choix ni identifiant de plateforme, est la page
+        // elle-même qui PARLE de cookies (voir ScreenAnalysis.pageWide), pas une fenêtre.
+        // 1. Après un refus ou une validation, une telle page n'est plus « la fenêtre » : elle s'est fermée.
+        //    (Sans cela, une fois le vrai bandeau refusé, CYRAVA continuait sur l'article : lien du menu,
+        //    case du formulaire, boutons de l'éditeur…)
+        // 2. Sur une plateforme inconnue, des interrupteurs trouvés dans la page entière ne prolongent pas la
+        //    session (fil XDA, 17 h 48 : les boutons « gras / souligné » de l'éditeur de réponse, 14 s de
+        //    défilements et de clics alors que l'analyse disait « pas une fenêtre de consentement »).
+        val afterClosing = s.closingClicks > 0 || (s.lastOp as? PendingOp.Button)?.closing == true
+        val pageNotWindow = BrowserPolicy.isBrowser(screen.packageName) && a.pageWide && !a.pageWideChoice &&
+            a.hints.none { it.startsWith("id:") }
+        val realWindow = a.isConsent && !(pageNotWindow && afterClosing)
+        val pageOnly = pageNotWindow && (afterClosing || (!a.isConsent && s.platform == PLATFORM_UNKNOWN))
+        val consentLike = realWindow || (!pageOnly && a.hints.isNotEmpty() &&
             (a.buttons(ButtonKind.RADIO_REFUSE).isNotEmpty() || (a.toggleStates.isNotEmpty() && samePlatform)))
         if (consentLike) lastConsentRoot = screen.root
 
@@ -599,14 +613,14 @@ class RefusalEngine(
                 s.closingClicks++
                 // Après un refus/une validation, on n'agit plus que sur une VRAIE fenêtre de
                 // consentement : jamais sur l'interface de l'appli qui réapparaît derrière.
-                if (!a.isConsent) s.closingPending = true
+                if (!realWindow) s.closingPending = true
             }
         } else if (last is PendingOp.Scroll) {
             s.scrolls++
         }
         s.lastOp = null
         s.waits = 0
-        if (s.closingPending && a.isConsent) s.closingPending = false
+        if (s.closingPending && realWindow) s.closingPending = false
 
         // Pied de fenêtre sous l'écran (RTBF dans Firefox, 27/11) : un bouton dont la position n'a pas bougé
         // après un défilement ou « faire apparaître » est dans une fenêtre fixe. Aucun défilement ne

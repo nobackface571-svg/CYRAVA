@@ -2,6 +2,10 @@
 
 # Changelog (English)
 
+## Unreleased
+
+- **Important fix — pages that talk about cookies (27/11)**: with no cookie pop-up on screen, CYRAVA mistook pages *about* cookies (the LinuxFr post, the XDA thread and the GitHub README presenting CYRAVA) for consent pop-ups, and tapped a menu link, scrolled and tapped "More options". In a browser, when the matched area covers almost the whole page, CYRAVA now only starts if it sees a real reject or accept button, or a known platform's identifier (a menu link, a form checkbox, a lone "Save" button or a sentence fragment is no longer enough). After a rejection, the article behind is no longer taken for the pop-up. Checked by automated tests, including the three pages rebuilt from the phone diagnostics (without publishing their content); not yet tried on a phone.
+
 ## 1.1.0 beta 3
 
 *Tag `v1.1.0-beta.3`, 27/11/2026. English summary of the changes since beta 2; the full detailed log, in French, follows below (sections dated 22/11 to 27/11). Earlier versions are only documented in French.*
@@ -46,7 +50,11 @@ Toutes les versions sont publiées dans l'onglet **Releases** du dépôt, avec l
 
 ## À venir (non publié)
 
-Rien pour l'instant.
+### Correction importante : les pages qui parlent de cookies (27/11)
+- **Problème** (essais du 27/11 dans Chrome, profil Strict) : aucune fenêtre de cookies n'était affichée, mais CYRAVA a pris des **pages qui parlent de cookies** pour des fenêtres de consentement : le journal LinuxFr et le fil XDA présentant CYRAVA, et le README GitHub. Sur LinuxFr, il a cliqué sur le lien « Modifier mes préférences » du menu et repéré la case « licence CC BY-SA » du formulaire comme un interrupteur à décocher ; sur XDA, il a fait défiler la page et cliqué « More options » pendant 14 s. Le même problème pouvait se produire sur toute page qui parle de cookies (politique de confidentialité, article sur le RGPD…).
+- **Correction** : dans un navigateur, une vraie fenêtre de cookies est un bloc à part. Quand la zone retenue couvre presque toute la page, c'est la page elle-même : CYRAVA n'y démarre plus que s'il voit un vrai bouton de refus ou d'acceptation, ou l'identifiant d'une plateforme connue. Un lien de menu, une case de formulaire, un bouton « Enregistrer » seul, un bouton d'éditeur ou un bout de phrase (« … and accept. ») ne suffisent plus.
+- **Et pendant une session** : après un refus, l'article qui réapparaît derrière n'est plus pris pour la fenêtre (CYRAVA continuait à cliquer dessus) ; et sur une plateforme inconnue, des « interrupteurs » trouvés dans la page entière ne prolongent plus la session.
+- Vérifié par des tests automatiques, dont les trois pages reconstituées d'après les diagnostics du téléphone (sans en publier le contenu) : aucune action. Pas encore essayé sur téléphone.
 
 ## 1.1.0 bêta 3 (27/11/2026)
 
