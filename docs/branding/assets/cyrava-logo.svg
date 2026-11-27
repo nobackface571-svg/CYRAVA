@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">CYRAVA</title>
+  <desc id="desc">Bouclier cyber bleu nuit et cyan avec cadenas au centre.</desc>
+  <defs>
+    <linearGradient id="shield" x1="96" y1="60" x2="414" y2="450" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F4FDFF"/>
+      <stop offset=".42" stop-color="#00E5F2"/>
+      <stop offset="1" stop-color="#087DBD"/>
+    </linearGradient>
+    <linearGradient id="lock" x1="190" y1="176" x2="322" y2="352" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8CFFFF"/>
+      <stop offset="1" stop-color="#00BFD8"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="9" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#031326"/>
+  <path d="M256 48 418 112v125c0 107-66 181-162 227C160 418 94 344 94 237V112L256 48Z" fill="#071E36" stroke="url(#shield)" stroke-width="13" stroke-linejoin="round" filter="url(#glow)"/>
+  <path d="M256 92 377 139v96c0 79-45 137-121 176-76-39-121-97-121-176v-96l121-47Z" fill="none" stroke="#00D9E8" stroke-opacity=".65" stroke-width="5"/>
+  <path d="M198 228v-23a58 58 0 0 1 116 0v23" fill="none" stroke="url(#lock)" stroke-width="17" stroke-linecap="round"/>
+  <rect x="174" y="218" width="164" height="137" rx="27" fill="url(#lock)" stroke="#D7FFFF" stroke-width="5" filter="url(#glow)"/>
+  <circle cx="256" cy="273" r="18" fill="#03213A"/>
+  <path d="m248 285-9 35h34l-9-35" fill="#03213A"/>
+  <path d="M126 374c38 28 81 47 130 66 49-19 92-38 130-66" fill="none" stroke="#00D9E8" stroke-opacity=".55" stroke-width="5" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,62 @@
+name: "🚨 CYRAVA a cliqué sur une acceptation"
+description: Bug grave — CYRAVA ne doit JAMAIS cliquer sur « Accepter », « Autoriser », un achat ou un abonnement.
+title: "[ACCEPTATION] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Merci ! C'est le bug le plus grave possible pour CYRAVA : il sera traité en priorité.
+        Mettez CYRAVA en pause (tuile rapide ou bouton de l'accueil) en attendant la correction.
+  - type: input
+    id: app
+    attributes:
+      label: Appli ou site concerné
+      description: Nom de l'appli, ou adresse du site et navigateur (Chrome, Firefox…).
+      placeholder: "ex. boursorama.com dans Firefox"
+    validations:
+      required: true
+  - type: input
+    id: bouton
+    attributes:
+      label: Texte exact du bouton cliqué par CYRAVA
+      placeholder: "ex. Accepter et fermer"
+    validations:
+      required: true
+  - type: input
+    id: telephone
+    attributes:
+      label: Téléphone et version d'Android
+      placeholder: "ex. Samsung Galaxy S23 FE, Android 16"
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version de CYRAVA
+      description: Réglages › À propos, ou nom du fichier APK installé.
+  - type: dropdown
+    id: profil
+    attributes:
+      label: Profil utilisé
+      options:
+        - Prudent
+        - Strict
+        - Observation
+        - Je ne sais pas
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Ce qui s'est passé
+      description: Ce que vous avez vu, dans l'ordre. Une capture d'écran aide beaucoup.
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostic
+    attributes:
+      label: Fichier de diagnostic (fortement conseillé)
+      description: |
+        Réglages › Centre de diagnostic › Partager, puis joignez le fichier ici.
+        Si GitHub refuse le fichier `.json`, ajoutez `.txt` à la fin de son nom.
+        ⚠️ Ce fichier contient le texte affiché à l'écran : relisez-le avant de le joindre.

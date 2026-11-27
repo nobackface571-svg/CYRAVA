@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  EXPÉRIENCE (APK de test uniquement, jamais l'APK final) : écouter tous les types d'événements.
+  Hypothèse : Chrome/WebView choisit un mode d'accessibilité réduit (sans état des cases) quand les
+  services actifs n'écoutent que les changements de fenêtre, comme un gestionnaire de mots de passe.
+  Le test sur émulateur (section 4) compare l'état des cases publié avec et sans ce réglage.
+
+  Le filtre packageNames contient d'abord un paquet inexistant : aucun événement n'est reçu tant que
+  la liste des applis surveillées n'a pas été chargée. Le service la remplace ensuite dynamiquement
+  (serviceInfo.packageNames) à chaque changement de sélection.
+-->
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accessibilityEventTypes="typeAllMask"
+    android:accessibilityFeedbackType="feedbackGeneric"
+    android:accessibilityFlags="flagRetrieveInteractiveWindows|flagReportViewIds|flagIncludeNotImportantViews"
+    android:canPerformGestures="true"
+    android:canRetrieveWindowContent="true"
+    android:description="@string/accessibility_service_description"
+    android:notificationTimeout="100"
+    android:packageNames="fr.cyrava.aucune.appli"
+    android:settingsActivity="fr.refusbot.MainActivity" />

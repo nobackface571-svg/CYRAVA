@@ -1,0 +1,172 @@
+name: 🚀 Application — publication officielle
+
+# Seul workflow qui reçoit la clé de signature et le droit de créer une Release.
+# Conditions explicites, toutes obligatoires :
+#   1. lancement MANUEL (jamais sur un simple envoi de code) ;
+#   2. par le propriétaire du dépôt ;
+#   3. avec un numéro de version x.y.z ;
+#   4. les quatre secrets de signature présents, et une clé différente de la clé de test du dépôt.
+# L'environnement « publication » permet d'ajouter une approbation dans Settings › Environments.
+on:
+  workflow_dispatch:
+    inputs:
+      authorize_paid_usage:
+        description: "Autoriser les dépenses supplémentaires GitHub Actions pour cette exécution (accord explicite requis)"
+        required: true
+        default: false
+        type: boolean
+      version:
+        description: "Version à publier (ex. 1.1.0)"
+        required: true
+
+concurrency:
+  group: publication
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  publier:
+    name: Vérifier, signer et publier
+    if: ${{ inputs.authorize_paid_usage == true && github.actor == github.repository_owner && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    environment: publication
+    permissions:
+      contents: write # créer l'étiquette et la Release
+    env:
+      VERSION_CODE: ${{ github.run_number }}
+      INPUT_VERSION: ${{ inputs.version }}
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Numéro de version
+        run: |
+          if ! [[ "$INPUT_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Version invalide « $INPUT_VERSION » : utilisez le format 1.2.3"
+            exit 1
+          fi
+          echo "VERSION_NAME=$INPUT_VERSION" >> "$GITHUB_ENV"
+          echo "RELEASE_TAG=v$INPUT_VERSION" >> "$GITHUB_ENV"
+
+      - name: Clé de signature personnelle (obligatoire, complète, différente de la clé de test)
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          missing=""
+          [ -n "$KEYSTORE_BASE64" ] || missing="$missing KEYSTORE_BASE64"
+          [ -n "$KEYSTORE_PASSWORD" ] || missing="$missing KEYSTORE_PASSWORD"
+          [ -n "$KEY_ALIAS" ] || missing="$missing KEY_ALIAS"
+          [ -n "$KEY_PASSWORD" ] || missing="$missing KEY_PASSWORD"
+          if [ -n "$missing" ]; then
+            echo "::error::Publication impossible : secret(s) manquant(s) :$missing. Voir le README, section « Signature »."
+            exit 1
+          fi
+          echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.jks"
+          # Cohérence : le mot de passe ouvre le fichier et l'alias existe.
+          if ! keytool -list -keystore "$RUNNER_TEMP/release.jks" -storepass "$KEYSTORE_PASSWORD" -alias "$KEY_ALIAS" > /dev/null 2>&1; then
+            echo "::error::Clé illisible : mot de passe ou alias incorrect."
+            exit 1
+          fi
+          fp() { keytool -list -v -keystore "$1" -storepass "$2" -alias "$3" 2>/dev/null | grep -m1 "SHA256:" | tr -d ' '; }
+          RELEASE_FP="$(fp "$RUNNER_TEMP/release.jks" "$KEYSTORE_PASSWORD" "$KEY_ALIAS")"
+          DEBUG_FP=""
+          if [ -f "$HOME/.android/debug.keystore" ]; then DEBUG_FP="$(fp "$HOME/.android/debug.keystore" android androiddebugkey)"; fi
+          if [ -z "$RELEASE_FP" ] || { [ -n "$DEBUG_FP" ] && [ "$RELEASE_FP" = "$DEBUG_FP" ]; }; then
+            echo "::error::La clé fournie est une clé de test (ou son empreinte est illisible)."
+            exit 1
+          fi
+          echo "Empreinte de la clé de publication différente de la clé de test : OK"
+          # Empreinte publique utilisée uniquement pour vérifier le certificat de l'APK final.
+          RELEASE_FP_NORMALIZED="$(printf '%s' "$RELEASE_FP" | sed 's/^SHA256://' | tr -d ':' | tr '[:upper:]' '[:lower:]')"
+          if [ -z "$RELEASE_FP_NORMALIZED" ]; then
+            echo "::error::Impossible de normaliser l'empreinte du certificat de publication."
+            exit 1
+          fi
+          echo "RELEASE_FP=$RELEASE_FP_NORMALIZED" >> "$GITHUB_ENV"
+          echo "RELEASE_KEYSTORE_PATH=$RUNNER_TEMP/release.jks" >> "$GITHUB_ENV"
+
+      - name: JDK 17
+        uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # v6.2.0
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: SDK Android 17 (API 37) et build-tools
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install "platforms;android-37.0" "build-tools;37.0.0" > /dev/null
+
+      - name: Gradle (sans cache partagé avec les branches)
+        uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
+        with:
+          cache-disabled: true
+
+      - name: Tests unitaires, lint et APK signé
+        env:
+          REFUSBOT_PUBLICATION: "true"
+          RELEASE_KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          RELEASE_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          RELEASE_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: ./gradlew --warning-mode all test :app:lintRelease :app:assembleRelease
+
+      - name: Vérifier l'APK (permissions, signature)
+        run: |
+          mkdir -p dist
+          APK="dist/RefusBot-${VERSION_NAME}.apk"
+          cp app/build/outputs/apk/release/app-release.apk "$APK"
+          BT="$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)"
+          "$BT/aapt2" dump permissions "$APK" | tee "$RUNNER_TEMP/permissions.txt"
+          if grep -q "android.permission.INTERNET" "$RUNNER_TEMP/permissions.txt"; then
+            echo "::error::La permission INTERNET est présente dans l'APK !"
+            exit 1
+          fi
+          "$BT/apksigner" verify --print-certs "$APK" | tee "$RUNNER_TEMP/certs.txt"
+          APK_FP="$(sed -n 's/.*certificate SHA-256 digest: //p' "$RUNNER_TEMP/certs.txt" | head -1 | tr -d ':' | tr '[:upper:]' '[:lower:]')"
+          if [ -z "$APK_FP" ] || [ -z "$RELEASE_FP" ] || [ "$APK_FP" != "$RELEASE_FP" ]; then
+            echo "::error::Le certificat de l'APK final ne correspond pas exactement à la clé de publication attendue."
+            exit 1
+          fi
+          if [ "$APK_FP" = "577a8564adcffa0bff9054b1fac161419de7eadc48bc13c3542635620c6f06a1" ]; then
+            echo "::error::L'APK est signé avec la clé de test du dépôt : publication refusée."
+            exit 1
+          fi
+          APK_SHA256="$(sha256sum "$APK" | cut -d' ' -f1)"
+          echo "APK_SHA256=$APK_SHA256" >> "$GITHUB_ENV"
+          echo "APK_PATH=$APK" >> "$GITHUB_ENV"
+
+      - name: Créer la Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          {
+            echo "## RefusBot Ultra ${VERSION_NAME}"
+            echo ""
+            echo "- Fichier : **$(basename "$APK_PATH")**"
+            echo "- Empreinte SHA-256 : \`${APK_SHA256}\`"
+            echo "- Code de version : ${VERSION_CODE} — commit ${GITHUB_SHA::7}"
+            echo "- Signature : clé personnelle (différente de la clé de test du dépôt)."
+            echo ""
+            echo "## Installer sur le téléphone"
+            echo "1. Dans **Assets** ci-dessous, touchez **$(basename "$APK_PATH")** pour le télécharger."
+            echo "2. Ouvrez le fichier, autorisez l'installation depuis cette source, puis touchez **Installer**."
+            echo "3. Ouvrez RefusBot Ultra et suivez l'onglet Accueil."
+            echo ""
+            echo "Si une version signée avec la clé de test est déjà installée (1.0.0 ou APK de test), désinstallez-la d'abord : Android refuse une mise à jour signée par une autre clé."
+            echo ""
+            echo "Nouveautés : CHANGELOG.md. Guide pas à pas : README."
+          } > "$RUNNER_TEMP/notes.md"
+          if gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            echo "::error::La version $RELEASE_TAG existe déjà : choisissez un autre numéro."
+            exit 1
+          fi
+          gh release create "$RELEASE_TAG" "$APK_PATH" --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" --title "RefusBot Ultra ${RELEASE_TAG}" --notes-file "$RUNNER_TEMP/notes.md"
+          echo "Release : https://github.com/${GITHUB_REPOSITORY}/releases/tag/${RELEASE_TAG}" | tee -a "$GITHUB_STEP_SUMMARY"

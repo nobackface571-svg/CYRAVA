@@ -1,0 +1,135 @@
+workflows:
+  refusbot_android_ci:
+    name: CYRAVA - tests et APK de verification
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+
+    # Aucun declencheur automatique (22/11) : le proprietaire lance chaque compilation a la main
+    # depuis Codemagic (bouton « Start new build », branche main). Un envoi sur GitHub ne lance donc
+    # rien et ne consomme aucune minute. Aucun workflow GitHub Actions n'est utilise non plus.
+
+    # Cle de TEST (pas votre cle personnelle) : une cle nommee « cyrava_test » dans Codemagic
+    # (Teams > Code signing identities > Android keystores). Elle n'est jamais rangee dans le depot.
+    environment:
+      java: 17
+      android_signing:
+        - cyrava_test
+
+    scripts:
+      - name: Configurer le chemin du SDK Android et le numero de version
+        script: |
+          set -euo pipefail
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
+          # Numero affiche dans l'appli : celui de gradle.properties (cyrava.version) + « -ci.N ».
+          BASE_VERSION="$(sed -n 's/^cyrava\.version=//p' gradle.properties | tr -d '[:space:]')"
+          test -n "$BASE_VERSION"
+          # Un APK installe par-dessus un autre exige un numero de version croissant.
+          {
+            echo "VERSION_NAME=${BASE_VERSION}-ci.${BUILD_NUMBER}"
+            echo "VERSION_CODE=$BUILD_NUMBER"
+            echo "TEST_KEYSTORE_PATH=$CM_KEYSTORE_PATH"
+            echo "TEST_KEYSTORE_PASSWORD=$CM_KEYSTORE_PASSWORD"
+            echo "TEST_KEY_ALIAS=$CM_KEY_ALIAS"
+            echo "TEST_KEY_PASSWORD=$CM_KEY_PASSWORD"
+          } >> "$CM_ENV"
+
+      - name: Verifier les garde-fous de securite des workflows
+        script: |
+          set -euo pipefail
+          bash scripts/verifier-workflows.sh
+          bash scripts/test-verifier-workflows.sh
+
+      - name: Verifier la protection de signature Android
+        script: |
+          set -euo pipefail
+          bash scripts/verifier-signature.sh
+
+      - name: Executer les tests, lint (debug et release) et compiler les APK
+        script: |
+          set -euo pipefail
+          ./gradlew --no-daemon --warning-mode all test :app:lintDebug :app:lintRelease :app:assembleDebug :app:assembleRelease :demo:assembleDebug --stacktrace
+
+      - name: Verifier qu'aucun APK de l'application principale n'a la permission INTERNET
+        script: |
+          set -euo pipefail
+          AAPT2="$(ls -d "$ANDROID_SDK_ROOT"/build-tools/*/aapt2 | sort -V | tail -1)"
+          for apk in app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/release/app-release.apk; do
+            test -s "$apk"
+            "$AAPT2" dump permissions "$apk" > /tmp/permissions.txt
+            cat /tmp/permissions.txt
+            if grep -q "android.permission.INTERNET" /tmp/permissions.txt; then
+              echo "ERREUR : la permission INTERNET est presente dans $apk"
+              exit 1
+            fi
+          done
+
+    artifacts:
+      - app/build/outputs/apk/debug/*.apk
+      - app/build/outputs/apk/release/*.apk
+      - demo/build/outputs/apk/debug/*.apk
+      - app/build/reports/lint-results-debug.html
+      - app/build/reports/lint-results-debug.txt
+      - app/build/reports/lint-results-release.html
+      - app/build/reports/lint-results-release.txt
+      - core/build/reports/tests/test/**/*.html
+
+  # Signature avec la cle PERSONNELLE du proprietaire. Aucun declencheur automatique : a lancer a la main
+  # depuis Codemagic. Prerequis : une cle nommee « refusbot_dev » dans Codemagic (Teams > Code signing
+  # identities > Android keystores). Aucun secret n'est ecrit dans ce fichier.
+  refusbot_signe_perso:
+    name: CYRAVA - APK signe avec ma cle (manuel)
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+
+    environment:
+      java: 17
+      android_signing:
+        - refusbot_dev
+      vars:
+        REFUSBOT_PUBLICATION: "true"
+
+    scripts:
+      - name: Preparer la cle et le numero de version
+        script: |
+          set -euo pipefail
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
+          # Numero affiche dans l'appli : exactement celui de gradle.properties (cyrava.version),
+          # par exemple 1.1.0-beta.3. Avant le 22/11 il etait fige a « 1.1.0-perso ».
+          VERSION="$(sed -n 's/^cyrava\.version=//p' gradle.properties | tr -d '[:space:]')"
+          test -n "$VERSION"
+          echo "Version compilee : $VERSION"
+          {
+            echo "VERSION_NAME=$VERSION"
+            echo "VERSION_CODE=$BUILD_NUMBER"
+            echo "RELEASE_KEYSTORE_PATH=$CM_KEYSTORE_PATH"
+            echo "RELEASE_KEYSTORE_PASSWORD=$CM_KEYSTORE_PASSWORD"
+            echo "RELEASE_KEY_ALIAS=$CM_KEY_ALIAS"
+            echo "RELEASE_KEY_PASSWORD=$CM_KEY_PASSWORD"
+          } >> "$CM_ENV"
+
+      - name: Compiler l'APK final signe avec la cle personnelle
+        script: |
+          set -euo pipefail
+          ./gradlew --no-daemon --warning-mode all :app:assembleRelease --stacktrace
+
+      - name: Verifier la signature (empreinte attendue) et l'absence d'INTERNET
+        script: |
+          set -euo pipefail
+          APK=app/build/outputs/apk/release/app-release.apk
+          test -s "$APK"
+          BT="$(ls -d "$ANDROID_SDK_ROOT"/build-tools/* | sort -V | tail -1)"
+          "$BT/apksigner" verify --print-certs "$APK" | tee /tmp/certs.txt
+          EXPECTED="a606506c4cf96f268f41915df40f826294b2b35919f36b8aa2dc8abf8f90eedc"
+          if ! grep -qi "SHA-256 digest: $EXPECTED" /tmp/certs.txt; then
+            echo "ERREUR : l'APK n'est pas signe avec la cle personnelle attendue."
+            exit 1
+          fi
+          "$BT/aapt2" dump permissions "$APK" > /tmp/permissions.txt
+          if grep -q "android.permission.INTERNET" /tmp/permissions.txt; then
+            echo "ERREUR : la permission INTERNET est presente."
+            exit 1
+          fi
+          echo "OK : APK signe avec la cle personnelle, sans permission INTERNET."
+
+    artifacts:
+      - app/build/outputs/apk/release/*.apk

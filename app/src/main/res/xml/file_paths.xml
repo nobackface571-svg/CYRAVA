@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- Seuls les fichiers que l'utilisateur choisit de partager sont exposés : diagnostics et exports. -->
+    <files-path
+        name="diagnostics"
+        path="diagnostics/" />
+    <cache-path
+        name="exports"
+        path="exports/" />
+</paths>

@@ -1,0 +1,110 @@
+name: 🧪 Essais — émulateur Android
+
+# Test de bout en bout : installe RefusBot et une appli de démonstration sur un émulateur Android,
+# active le service et lance le vrai formulaire du SDK Google UMP (si un message AdMob est publié).
+# Les autres scénarios WebView restent des fixtures CMP génériques. Lancement manuel (onglet Actions › Test sur émulateur › Run workflow), sur les tags
+# de version et sur les branches de travail.
+on:
+  # E2E désactivé en automatique pendant la phase de compilation.
+  # À lancer explicitement depuis Actions après accord.
+  workflow_dispatch:
+    inputs:
+      authorize_paid_usage:
+        description: "Autoriser les dépenses supplémentaires GitHub Actions pour cette exécution (accord explicite requis)"
+        required: true
+        default: false
+        type: boolean
+
+concurrency:
+  group: e2e-${{ github.ref }}
+  # Ne pas annuler une validation Android déjà en cours lors d’un nouveau push.
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  e2e:
+    if: ${{ inputs.authorize_paid_usage == true }}
+    name: Émulateur Android ${{ matrix.android-version }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - android-version: '15'
+            api-level: 35
+          - android-version: '16'
+            api-level: 36
+          - android-version: '17'
+            api-level: 37
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # v6.2.0
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
+
+      - name: Libérer de l'espace disque (l'émulateur a besoin de plusieurs Go)
+        run: |
+          df -h /
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/.ghcup /usr/local/share/boost \
+            /usr/local/lib/android/sdk/ndk /opt/hostedtoolcache/CodeQL /usr/local/share/powershell
+          df -h /
+
+      - name: Compiler RefusBot et l'appli de démonstration
+        env:
+          UMP_DEMO_ADMOB_APP_ID: ${{ vars.UMP_DEMO_ADMOB_APP_ID }}
+          UMP_DEMO_TEST_DEVICE_HASHED_ID: ${{ vars.UMP_DEMO_TEST_DEVICE_HASHED_ID }}
+        run: |
+          # Les runners GitHub peuvent connaître des ratés temporaires sur Maven Central/Google Maven.
+          # Réessayer avec rafraîchissement des métadonnées avant d'abandonner la compilation.
+          for attempt in 1 2 3; do
+            if [ "$attempt" -eq 1 ]; then
+              ./gradlew :app:assembleRelease :app:assembleDebug :demo:assembleDebug && exit 0
+            else
+              echo "Nouvelle tentative Gradle ($attempt/3) avec rafraîchissement des dépendances…"
+              ./gradlew --refresh-dependencies :app:assembleRelease :app:assembleDebug :demo:assembleDebug && exit 0
+            fi
+            if [ "$attempt" -lt 3 ]; then sleep 15; fi
+          done
+          echo "::error::La compilation échoue après 3 tentatives. Voir les erreurs de résolution des dépendances ci-dessus."
+          exit 1
+
+      - name: Activer KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Test de bout en bout
+        timeout-minutes: 25
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2
+        with:
+          # Configuration validée : la WebView s'affiche correctement (API 34 + swiftshader : non).
+          api-level: ${{ matrix.api-level }}
+          channel: stable
+          arch: x86_64
+          target: google_apis
+          # Les runners des dépôts privés n'ont que 2 vCPU : en demander plus fait bloquer le runner.
+          cores: 2
+          ram-size: 3072M
+          disk-size: 4096M
+          emulator-boot-timeout: 600
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: bash .github/scripts/e2e.sh
+
+      - name: Captures et journaux
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: e2e-resultats
+          path: e2e-out/
+          if-no-files-found: ignore

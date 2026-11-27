@@ -1,0 +1,103 @@
+name: 📱 Application — APK de test (compilation)
+
+# Compilation uniquement : aucun test unitaire, lint ou scénario E2E automatique.
+# Les validations de tests restent disponibles dans leurs workflows dédiés, sur lancement manuel.
+on:
+  # Plus aucun lancement automatique (21/11) : le quota GitHub Actions est épuisé.
+  # Compilation et tests : CodeMagic (codemagic.yaml). Lancement manuel seulement.
+  workflow_dispatch:
+    inputs:
+      authorize_paid_usage:
+        description: "Autoriser les dépenses supplémentaires GitHub Actions pour cette exécution (accord explicite requis)"
+        required: true
+        default: false
+        type: boolean
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    if: ${{ inputs.authorize_paid_usage == true }}
+    name: Compilation APK (sans tests)
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    env:
+      VERSION_CODE: ${{ github.run_number }}
+      VERSION_NAME: 1.1.0-dev.${{ github.run_number }}
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: JDK 17
+        uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # v6.2.0
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: SDK Android 17 (API 37) et build-tools
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install "platforms;android-37.0" "build-tools;37.0.0"
+          test -d "$ANDROID_HOME/platforms/android-37.0"
+          test -x "$ANDROID_HOME/build-tools/37.0.0/aapt2"
+          test -x "$ANDROID_HOME/build-tools/37.0.0/apksigner"
+
+      - name: Gradle (cache)
+        uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
+
+      - name: Compiler les variantes Android (sans lancer les tests)
+        run: |
+          ./gradlew --no-daemon --warning-mode all \
+            :app:assembleDebug \
+            :app:assembleRelease \
+            :demo:assembleDebug
+
+      - name: Vérifier la présence des APK compilés
+        run: |
+          set -euo pipefail
+          test -s app/build/outputs/apk/debug/app-debug.apk
+          test -s app/build/outputs/apk/release/app-release.apk
+          test -s demo/build/outputs/apk/debug/demo-debug.apk
+          BT="$ANDROID_HOME/build-tools/37.0.0"
+          "$BT/apksigner" verify app/build/outputs/apk/release/app-release.apk
+          # L'application principale ne doit pas embarquer INTERNET ; la démo UMP, isolée,
+          # en a besoin pour contacter le SDK Google et reste un APK distinct.
+          "$BT/aapt2" dump permissions app/build/outputs/apk/debug/app-debug.apk > "$RUNNER_TEMP/app-debug-permissions.txt"
+          "$BT/aapt2" dump permissions app/build/outputs/apk/release/app-release.apk > "$RUNNER_TEMP/app-release-permissions.txt"
+          if grep -q "android.permission.INTERNET" "$RUNNER_TEMP/app-debug-permissions.txt" "$RUNNER_TEMP/app-release-permissions.txt"; then
+            echo "::error::La permission INTERNET est présente dans un APK de l'application principale."
+            exit 1
+          fi
+          mkdir -p dist
+          cp app/build/outputs/apk/debug/app-debug.apk dist/RefusBot-debug.apk
+          cp app/build/outputs/apk/release/app-release.apk dist/RefusBot-release-test.apk
+          cp demo/build/outputs/apk/debug/demo-debug.apk dist/RefusBot-demo-debug.apk
+          sha256sum dist/*.apk | tee dist/SHA256SUMS.txt
+          {
+            echo "### Compilation terminée"
+            echo "- APK debug, APK release de test et APK de démonstration compilés."
+            echo "- Aucun test unitaire, lint ou E2E n'a été lancé."
+            echo "- Les APK sont des artefacts de compilation, pas une validation fonctionnelle."
+            echo ""
+            echo "| Fichier | Taille | SHA-256 |"
+            echo "|---|---:|---|"
+            for f in dist/*.apk; do
+              echo "| $(basename "$f") | $(du -h "$f" | cut -f1) | $(sha256sum "$f" | cut -d' ' -f1) |"
+            done
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Publier les APK compilés
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: RefusBot-APK-compilation
+          path: dist/*
+          if-no-files-found: error

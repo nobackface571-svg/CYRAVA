@@ -1,0 +1,71 @@
+name: "🐞 Une fenêtre de cookies n'est pas (bien) refusée"
+description: Fenêtre non reconnue, refus partiel, bouton « Enregistrer » non trouvé, appli qui se bloque…
+title: "[Problème] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Merci de tester CYRAVA ! Plus votre signalement est précis, plus vite la fenêtre sera prise en charge.
+        Si CYRAVA a cliqué sur une **acceptation**, utilisez plutôt le formulaire 🚨 dédié.
+  - type: input
+    id: app
+    attributes:
+      label: Appli ou site concerné
+      description: Nom de l'appli, ou adresse du site et navigateur (Chrome, Firefox…).
+      placeholder: "ex. leparisien.fr dans Chrome"
+    validations:
+      required: true
+  - type: input
+    id: telephone
+    attributes:
+      label: Téléphone et version d'Android
+      placeholder: "ex. Samsung Galaxy S23 FE, Android 16"
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version de CYRAVA
+      description: Réglages › À propos, ou nom du fichier APK installé.
+  - type: dropdown
+    id: profil
+    attributes:
+      label: Profil utilisé
+      options:
+        - Prudent
+        - Strict
+        - Observation
+        - Je ne sais pas
+    validations:
+      required: true
+  - type: input
+    id: resultat
+    attributes:
+      label: Résultat affiché dans l'Historique (et son motif)
+      description: Onglet Historique › touchez la ligne concernée.
+      placeholder: "ex. Refus partiel — bouton de validation introuvable"
+  - type: textarea
+    id: details
+    attributes:
+      label: Ce qui s'est passé
+      description: Ce que CYRAVA a fait (ou pas), et ce que vous attendiez. Une capture d'écran aide beaucoup.
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostic
+    attributes:
+      label: Fichier de diagnostic (fortement conseillé)
+      description: |
+        Ouvrez l'appli sur la fenêtre de cookies, puis tuile « Capturer l'écran » (ou Réglages › Centre de diagnostic › Capturer dans 5 secondes) › Partager, et joignez le fichier ici.
+        Si GitHub refuse le fichier `.json`, ajoutez `.txt` à la fin de son nom.
+        ## ⚠️ ATTENTION : ce fichier sera PUBLIC
+        Tout le monde pourra le lire, pour toujours. Il contient **tout le texte affiché à l'écran** au moment de la capture (article lu, nom de compte, messages…) et le modèle de votre téléphone.
+        **Relisez-le avant de le joindre**, et capturez de préférence un écran où rien de personnel n'est affiché.
+  - type: checkboxes
+    id: verifs
+    attributes:
+      label: Vérifications
+      options:
+        - label: L'appli (ou le navigateur) est cochée dans l'onglet Applications de CYRAVA.
+        - label: L'accueil de CYRAVA affiche « Protection active ».
+        - label: Ce n'est pas Samsung Internet (non pris en charge).

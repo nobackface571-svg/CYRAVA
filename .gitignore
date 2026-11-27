@@ -1,0 +1,34 @@
+.gradle/
+build/
+/local.properties
+.idea/
+*.iml
+.DS_Store
+.kotlin/
+captures/
+__pycache__/
+
+# ===== Secrets : ne jamais committer (ils restent dans CodeMagic) =====
+# Clés de signature : AUCUNE clé n'est rangée dans le dépôt, pas même la clé de test.
+*.jks
+*.keystore
+*.p12
+*.pk8
+*.pem
+*.b64
+keystore/
+keystore.properties
+signing.properties
+local.properties
+.env
+.env.*
+google-services.json
+
+# ===== Fichiers produits par la compilation =====
+.cxx/
+.externalNativeBuild/
+*.apk
+*.aab
+*.ap_
+*.dex
+*.log

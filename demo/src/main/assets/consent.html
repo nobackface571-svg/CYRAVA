@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scénarios CMP génériques</title>
+<style>
+  body { font-family: sans-serif; margin: 0; padding: 12px 12px 120px; }
+  .footer { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; padding: 8px; border-top: 1px solid #ccc; }
+  button { margin: 4px; padding: 10px; }
+  .row { border-bottom: 1px solid #eee; padding: 8px 0; }
+  label { display: block; margin: 4px 0; }
+</style>
+</head>
+<body>
+<!-- Scénario « bandeau » : CMP générique avec refus direct. Ce n'est PAS Google UMP. -->
+<div id="bandeau" hidden>
+  <p>Nous utilisons des cookies et des traceurs. Nos partenaires et nous traitons vos données pour personnaliser les publicités.</p>
+  <button onclick="acceptAll()">Tout accepter</button>
+  <button onclick="done('refus-direct')">Tout refuser</button>
+</div>
+
+<!-- Scénario « accepte » : aucun refus possible, RefusBot ne doit RIEN cliquer. -->
+<div id="accepte" hidden>
+  <p>Nous et nos partenaires utilisons des cookies et traitons vos données personnelles.</p>
+  <button onclick="acceptAll()">Tout accepter</button>
+  <button onclick="acceptAll()">OK</button>
+  <p id="attente">EN ATTENTE aucun clic</p>
+</div>
+
+<!-- Scénario « inspection » : cases de diagnostic sans bouton connu. -->
+<div id="inspection" hidden>
+  <h2>Inspection des cases</h2>
+  <div id="inspectionlist"></div>
+  <div class="row"><strong>ARIA switch vrai</strong>
+    <button role="switch" aria-checked="true" aria-label="Intérêt légitime (switch ARIA vrai)">ON</button>
+  </div>
+  <div class="row"><strong>ARIA switch faux</strong>
+    <button role="switch" aria-checked="false" aria-label="Intérêt légitime (switch ARIA faux)">OFF</button>
+  </div>
+  <div class="row"><strong>ARIA checkbox vrai</strong>
+    <div role="checkbox" aria-checked="true" tabindex="0" aria-label="Intérêt légitime (checkbox ARIA vrai)">☑</div>
+  </div>
+  <div class="row"><strong>ARIA checkbox faux</strong>
+    <div role="checkbox" aria-checked="false" tabindex="0" aria-label="Intérêt légitime (checkbox ARIA faux)">☐</div>
+  </div>
+  <div class="row"><strong>ARIA pressed vrai</strong>
+    <button aria-pressed="true" aria-label="Préférence (aria-pressed vrai)">ON</button>
+  </div>
+  <div class="row"><strong>ARIA pressed faux</strong>
+    <button aria-pressed="false" aria-label="Préférence (aria-pressed faux)">OFF</button>
+  </div>
+  <div class="row"><strong>HTML checkbox décochée</strong>
+    <label><input type="checkbox" class="native-off"> État désactivé</label>
+  </div>
+  <p id="domstate">DOM_ETAT en attente</p>
+</div>
+
+<p id="resultat" hidden></p>
+
+<script>
+  var accepted = false;
+  function addRows(container, prefix, count, hasLi) {
+    var el = document.getElementById(container);
+    for (var i = 1; i <= count; i++) {
+      var row = document.createElement('div');
+      row.className = 'row';
+      var li = hasLi(i);
+      row.innerHTML = '<strong>' + prefix + ' ' + i + '</strong>' +
+        '<label><input type="checkbox" class="cs"> Consentement</label>' +
+        (li ? '<label><input type="checkbox" class="li" checked> Intérêt légitime</label>' : '');
+      el.appendChild(row);
+    }
+  }
+  function count(sel) {
+    return document.querySelectorAll('#inspectionlist ' + sel + ':checked').length;
+  }
+  function total(sel) {
+    return document.querySelectorAll('#inspectionlist ' + sel).length;
+  }
+  function done(how) {
+    ['bandeau', 'accepte', 'inspection'].forEach(function (x) { document.getElementById(x).hidden = true; });
+    var r = document.getElementById('resultat');
+    r.hidden = false;
+    r.textContent = 'RESULTAT mode=' + how + ' accepte=' + (accepted ? 1 : 0);
+  }
+  function acceptAll() { accepted = true; done('accepte'); }
+
+  var scenario = (location.hash || '#bandeau').substring(1);
+  if (!['bandeau', 'accepte', 'inspection'].includes(scenario)) scenario = 'bandeau';
+  if (scenario === 'inspection') {
+    addRows('inspectionlist', 'Ligne', 3, function () { return true; });
+  }
+  document.getElementById(scenario).hidden = false;
+  if (scenario === 'inspection') {
+    var inspectionResult = document.getElementById('resultat');
+    inspectionResult.hidden = false;
+    document.getElementById('domstate').textContent = 'DOM_ETAT native_checked=' +
+      document.querySelectorAll('#inspectionlist input.li:checked').length + '/3 native_unchecked=' +
+      document.querySelectorAll('#inspectionlist input.native-off:checked').length +
+      '/1 aria_switch_true=' + document.querySelector('[aria-label="Intérêt légitime (switch ARIA vrai)"]').getAttribute('aria-checked') +
+      ' aria_switch_false=' + document.querySelector('[aria-label="Intérêt légitime (switch ARIA faux)"]').getAttribute('aria-checked') +
+      ' aria_checkbox_true=' + document.querySelector('[aria-label="Intérêt légitime (checkbox ARIA vrai)"]').getAttribute('aria-checked') +
+      ' aria_checkbox_false=' + document.querySelector('[aria-label="Intérêt légitime (checkbox ARIA faux)"]').getAttribute('aria-checked') +
+      ' aria_pressed_true=' + document.querySelector('[aria-label="Préférence (aria-pressed vrai)"]').getAttribute('aria-pressed') +
+      ' aria_pressed_false=' + document.querySelector('[aria-label="Préférence (aria-pressed faux)"]').getAttribute('aria-pressed');
+    inspectionResult.textContent = 'INSPECTION li_on=' + count('input.li') + ' li_total=' + total('input.li');
+  }
+</script>
+</body>
+</html>

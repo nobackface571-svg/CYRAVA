@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Donner son avis ou poser une question
+    url: https://github.com/nobackface571-svg/CYRAVA/discussions
+    about: "Avis, idées, questions sur l'installation : c'est ici, dans les Discussions."
+  - name: 🔒 Signaler une faille de sécurité (en privé)
+    url: https://github.com/nobackface571-svg/CYRAVA/security/advisories/new
+    about: Ne publiez jamais une faille dans un ticket public.

@@ -1,0 +1,1653 @@
+{
+  "catalogVersion": "1.1.0+engine-link-2026-11-20",
+  "schemaVersion": "1.1.0",
+  "generatedAt": "2026-11-18",
+  "purpose": "Métadonnées de recherche et de reconnaissance uniquement. N'autorise jamais une action.",
+  "policy": {
+    "unknownState": "ABSTAIN",
+    "providerIdentificationAloneCanAuthorizeAction": false,
+    "requireIndependentEvidenceForHighConfidence": true,
+    "minimumIndependentEvidenceForHighConfidence": 2,
+    "neverInferToggleStateFromColor": true,
+    "apiSymbolsAreNotAndroidAccessibilityMarkers": true,
+    "allUnverifiedMarkersDisabled": true,
+    "androidMarkerRequiresDeviceObservation": true,
+    "webDomEvidenceMustNotBeTreatedAsAndroidViewId": true,
+    "engineProfilesSource": "Les profils moteur (rules.json > platforms) servent uniquement à nommer la plateforme. Les nouveaux repères viennent des sélecteurs d'identifiants HTML de DuckDuckGo Autoconsent (https://github.com/duckduckgo/autoconsent, licence MPL-2.0). Les marqueurs de ce catalogue restent désactivés : le moteur lit rules.json, pas ce fichier."
+  },
+  "providers": [
+    {
+      "id": "google-ump",
+      "name": "Google UMP Android SDK",
+      "aliases": [
+        "Google User Messaging Platform",
+        "Google UMP SDK"
+      ],
+      "family": "google-ump-android",
+      "status": "existing-profile",
+      "confidence": "project-profile",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://developers.google.com/admob/android/privacy"
+      ],
+      "notes": "SDK natif Android utilisé notamment avec AdMob. Séparé de Funding Choices Web ; aucune signature Android de l'interface de consentement n'est validée dans ce catalogue.",
+      "validationStatus": "inherited-from-main-not-verified-on-android",
+      "productType": "native-consent-sdk",
+      "deploymentScope": "android-app",
+      "discoveryEvidence": "official-google-android-sdk-documentation",
+      "engineProfile": "Google UMP (Funding Choices)"
+    },
+    {
+      "id": "didomi",
+      "name": "Didomi",
+      "aliases": [
+        "Didomi CMP"
+      ],
+      "family": "didomi",
+      "status": "existing-profile",
+      "confidence": "project-profile",
+      "markers": [
+        [
+          "didomi",
+          "dom-id-or-view-id",
+          "legacy-profile-unverified",
+          false
+        ]
+      ],
+      "apiSymbols": [
+        "window.Didomi",
+        "window.didomiOnReady",
+        "didomi-host"
+      ],
+      "phraseHints": [],
+      "docs": [
+        "https://developers.didomi.io/cmp/web-sdk/getting-started",
+        "https://developers.didomi.io/cmp/web-sdk/reference/api"
+      ],
+      "notes": "Profil repris de rules.json de main ; cela ne prouve pas la compatibilité réelle.",
+      "validationStatus": "inherited-from-main-not-verified-on-android",
+      "productType": "full-cmp",
+      "deploymentScope": "web-and-app",
+      "discoveryEvidence": "inherited-from-main-profile",
+      "engineProfile": "Didomi"
+    },
+    {
+      "id": "onetrust",
+      "name": "OneTrust",
+      "aliases": [
+        "OneTrust Cookie Consent",
+        "OneTrust Preference Center"
+      ],
+      "family": "onetrust",
+      "status": "existing-profile",
+      "confidence": "project-profile",
+      "markers": [
+        [
+          "onetrust",
+          "dom-id-or-view-id",
+          "legacy-profile-unverified",
+          false
+        ],
+        [
+          "ot-sdk",
+          "dom-id-or-view-id",
+          "legacy-profile-unverified",
+          false
+        ],
+        [
+          "otpc",
+          "dom-id-or-view-id",
+          "legacy-profile-unverified",
+          false
+        ],
+        [
+          "ot-pc-",
+          "dom-id-or-view-id",
+          "legacy-profile-unverified",
+          false
+        ]
+      ],
+      "apiSymbols": [
+        "otSDKStub.js",
+        "Domain.json",
+        "BannerSDK.js",
+        "onetrust-banner-sdk"
+      ],
+      "phraseHints": [
+        "Privacy Preference Center",
+        "Centre de préférences de la confidentialité"
+      ],
+      "docs": [
+        "https://developer.onetrust.com/onetrust/docs/performance-availability-cookie-script",
+        "https://developer.onetrust.com/onetrust/docs/onetrust-sdk-reference"
+      ],
+      "notes": "Profil repris de rules.json de main ; cela ne prouve pas la compatibilité réelle.",
+      "validationStatus": "inherited-from-main-not-verified-on-android",
+      "productType": "full-cmp",
+      "deploymentScope": "web-and-app",
+      "discoveryEvidence": "inherited-from-main-profile",
+      "engineProfile": "OneTrust"
+    },
+    {
+      "id": "sourcepoint",
+      "name": "Sourcepoint",
+      "aliases": [
+        "Sourcepoint Privacy Manager"
+      ],
+      "family": "sourcepoint",
+      "status": "existing-profile",
+      "confidence": "project-profile",
+      "markers": [
+        [
+          "sp_message",
+          "dom-id-or-view-id",
+          "legacy-profile-unverified",
+          false
+        ],
+        [
+          "sp-message",
+          "dom-id-or-view-id",
+          "legacy-profile-unverified",
+          false
+        ],
+        [
+          "sourcepoint",
+          "dom-id-or-view-id",
+          "legacy-profile-unverified",
+          false
+        ]
+      ],
+      "apiSymbols": [
+        "__tcfapi"
+      ],
+      "phraseHints": [],
+      "docs": [
+        "https://developers.sourcepoint.com/"
+      ],
+      "notes": "Profil repris de rules.json de main ; cela ne prouve pas la compatibilité réelle.",
+      "validationStatus": "inherited-from-main-not-verified-on-android",
+      "productType": "full-cmp",
+      "deploymentScope": "web-and-app",
+      "discoveryEvidence": "inherited-from-main-profile",
+      "engineProfile": "Sourcepoint"
+    },
+    {
+      "id": "inmobi-choice",
+      "name": "InMobi Choice",
+      "aliases": [
+        "Quantcast Choice",
+        "Quantcast CMP",
+        "InMobi CMP"
+      ],
+      "family": "inmobi-choice",
+      "status": "existing-profile",
+      "confidence": "project-profile",
+      "markers": [
+        [
+          "qc-cmp",
+          "dom-id-or-view-id",
+          "legacy-profile-unverified",
+          false
+        ],
+        [
+          "quantcast",
+          "dom-id-or-view-id",
+          "legacy-profile-unverified",
+          false
+        ],
+        [
+          "inmobi",
+          "dom-id-or-view-id",
+          "legacy-profile-unverified",
+          false
+        ]
+      ],
+      "apiSymbols": [
+        "__tcfapi"
+      ],
+      "phraseHints": [
+        "We value your privacy",
+        "Nous accordons de l'importance à votre vie privée"
+      ],
+      "docs": [
+        "https://www.inmobi.com/",
+        "https://support.inmobi.com/"
+      ],
+      "notes": "Profil repris de rules.json de main ; cela ne prouve pas la compatibilité réelle.",
+      "validationStatus": "inherited-from-main-not-verified-on-android",
+      "productType": "full-cmp",
+      "deploymentScope": "web-and-app",
+      "discoveryEvidence": "inherited-from-main-profile",
+      "engineProfile": "InMobi Choice (ex-Quantcast)"
+    },
+    {
+      "id": "usercentrics",
+      "name": "Usercentrics",
+      "aliases": [
+        "Usercentrics CMP"
+      ],
+      "family": "usercentrics",
+      "status": "existing-profile",
+      "confidence": "project-profile",
+      "markers": [
+        [
+          "usercentrics",
+          "dom-id-or-view-id",
+          "legacy-profile-unverified",
+          false
+        ]
+      ],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://docs.usercentrics.com/cmp_browser_sdk/"
+      ],
+      "notes": "Profil repris de rules.json de main ; cela ne prouve pas la compatibilité réelle.",
+      "validationStatus": "inherited-from-main-not-verified-on-android",
+      "productType": "full-cmp",
+      "deploymentScope": "web-and-app",
+      "discoveryEvidence": "inherited-from-main-profile",
+      "engineProfile": "Usercentrics"
+    },
+    {
+      "id": "sirdata",
+      "name": "Sirdata",
+      "aliases": [
+        "Sirdata CMP"
+      ],
+      "family": "sirdata",
+      "status": "existing-profile",
+      "confidence": "project-profile",
+      "markers": [
+        [
+          "sd-cmp",
+          "dom-id-or-view-id",
+          "legacy-profile-unverified",
+          false
+        ],
+        [
+          "sirdata",
+          "dom-id-or-view-id",
+          "legacy-profile-unverified",
+          false
+        ]
+      ],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://www.sirdata.com/"
+      ],
+      "notes": "Profil repris de rules.json de main ; cela ne prouve pas la compatibilité réelle.",
+      "validationStatus": "inherited-from-main-not-verified-on-android",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "inherited-from-main-profile",
+      "engineProfile": "Sirdata"
+    },
+    {
+      "id": "axeptio",
+      "name": "Axeptio",
+      "aliases": [
+        "Axeptio CMP"
+      ],
+      "family": "axeptio",
+      "status": "existing-profile",
+      "confidence": "project-profile",
+      "markers": [
+        [
+          "axeptio",
+          "dom-id-or-view-id",
+          "legacy-profile-unverified",
+          false
+        ]
+      ],
+      "apiSymbols": [
+        "window.axeptioSDK",
+        "_axcb"
+      ],
+      "phraseHints": [],
+      "docs": [
+        "https://docs.axeptio.eu/"
+      ],
+      "notes": "Profil repris de rules.json de main ; cela ne prouve pas la compatibilité réelle.",
+      "validationStatus": "inherited-from-main-not-verified-on-android",
+      "productType": "full-cmp",
+      "deploymentScope": "web-and-app",
+      "discoveryEvidence": "inherited-from-main-profile",
+      "engineProfile": "Axeptio"
+    },
+    {
+      "id": "cookiebot",
+      "name": "Cookiebot",
+      "aliases": [
+        "Cookiebot CMP",
+        "Usercentrics Cookiebot"
+      ],
+      "family": "cookiebot",
+      "status": "existing-profile",
+      "confidence": "project-profile",
+      "markers": [
+        [
+          "cookiebot",
+          "dom-id-or-view-id",
+          "legacy-profile-unverified",
+          false
+        ],
+        [
+          "cybotcookiebot",
+          "dom-id-or-view-id",
+          "legacy-profile-unverified",
+          false
+        ]
+      ],
+      "apiSymbols": [
+        "CookiebotOnConsentReady",
+        "CookiebotOnLoad"
+      ],
+      "phraseHints": [],
+      "docs": [
+        "https://www.cookiebot.com/en/developer/"
+      ],
+      "notes": "Profil repris de rules.json de main ; cela ne prouve pas la compatibilité réelle.",
+      "validationStatus": "inherited-from-main-not-verified-on-android",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "inherited-from-main-profile",
+      "engineProfile": "Cookiebot"
+    },
+    {
+      "id": "trustarc",
+      "name": "TrustArc",
+      "aliases": [
+        "TRUSTe",
+        "TrustArc Cookie Consent"
+      ],
+      "family": "trustarc",
+      "status": "existing-profile",
+      "confidence": "project-profile",
+      "markers": [
+        [
+          "trustarc",
+          "dom-id-or-view-id",
+          "legacy-profile-unverified",
+          false
+        ],
+        [
+          "truste",
+          "dom-id-or-view-id",
+          "legacy-profile-unverified",
+          false
+        ]
+      ],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://trustarchelp.zendesk.com/hc/en-us/sections/36115648969363-API-Guides"
+      ],
+      "notes": "Profil repris de rules.json de main ; cela ne prouve pas la compatibilité réelle.",
+      "validationStatus": "inherited-from-main-not-verified-on-android",
+      "productType": "full-cmp",
+      "deploymentScope": "web-and-app",
+      "discoveryEvidence": "inherited-from-main-profile",
+      "engineProfile": "TrustArc"
+    },
+    {
+      "id": "consentmanager",
+      "name": "consentmanager",
+      "aliases": [
+        "Consentmanager CMP"
+      ],
+      "family": "consentmanager",
+      "status": "existing-profile",
+      "confidence": "project-profile",
+      "markers": [
+        [
+          "cmpbox",
+          "dom-id-or-view-id",
+          "legacy-profile-unverified",
+          false
+        ],
+        [
+          "consentmanager",
+          "dom-id-or-view-id",
+          "legacy-profile-unverified",
+          false
+        ]
+      ],
+      "apiSymbols": [
+        "__tcfapi"
+      ],
+      "phraseHints": [],
+      "docs": [
+        "https://www.consentmanager.net/"
+      ],
+      "notes": "Profil repris de rules.json de main ; cela ne prouve pas la compatibilité réelle.",
+      "validationStatus": "inherited-from-main-not-verified-on-android",
+      "productType": "full-cmp",
+      "deploymentScope": "web-and-app",
+      "discoveryEvidence": "inherited-from-main-profile",
+      "engineProfile": "Consentmanager"
+    },
+    {
+      "id": "iubenda",
+      "name": "iubenda",
+      "aliases": [
+        "iubenda Cookie Solution"
+      ],
+      "family": "iubenda",
+      "status": "existing-profile",
+      "confidence": "project-profile",
+      "markers": [
+        [
+          "iubenda",
+          "dom-id-or-view-id",
+          "legacy-profile-unverified",
+          false
+        ]
+      ],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://www.iubenda.com/en/help"
+      ],
+      "notes": "Profil repris de rules.json de main ; cela ne prouve pas la compatibilité réelle.",
+      "validationStatus": "inherited-from-main-not-verified-on-android",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "inherited-from-main-profile",
+      "engineProfile": "iubenda"
+    },
+    {
+      "id": "cookieyes",
+      "name": "CookieYes",
+      "aliases": [
+        "CookieYes CMP"
+      ],
+      "family": "cookieyes",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "markers": [
+        [
+          "cookieyes",
+          "dom-id-or-view-id",
+          "candidate-unverified",
+          false
+        ],
+        [
+          "cookie-law-info",
+          "dom-id-or-view-id",
+          "candidate-unverified",
+          false
+        ]
+      ],
+      "apiSymbols": [
+        "getCkyConsent()",
+        "cookieyes_banner_loaded"
+      ],
+      "phraseHints": [],
+      "docs": [
+        "https://developers.cookieyes.com/docs",
+        "https://www.cookieyes.com/documentation/retrieving-consent-data-using-api-getckyconsent/"
+      ],
+      "notes": "Candidat de recherche : marqueurs non validés et désactivés (matchable=false). Les API JS ne sont pas des viewIds Android.",
+      "validationStatus": "engine-profile-from-autoconsent-selectors-not-verified-on-android",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "research-candidate",
+      "engineProfile": "CookieYes"
+    },
+    {
+      "id": "cookie-control",
+      "name": "CIVIC Cookie Control",
+      "aliases": [
+        "Cookie Control"
+      ],
+      "family": "cookie-control",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "markers": [
+        [
+          "cookiecontrol",
+          "dom-id-or-view-id",
+          "candidate-unverified",
+          false
+        ]
+      ],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://cookiecontrol.com/docs/v9/",
+        "https://cookiecontrol.com/docs/v9/getting-started/"
+      ],
+      "notes": "Candidat de recherche : marqueurs non validés et désactivés (matchable=false). Les API JS ne sont pas des viewIds Android.",
+      "validationStatus": "engine-profile-from-autoconsent-selectors-not-verified-on-android",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "research-candidate",
+      "engineProfile": "CIVIC Cookie Control"
+    },
+    {
+      "id": "complianz",
+      "name": "Complianz",
+      "aliases": [
+        "Complianz GDPR/CCPA Cookie Consent"
+      ],
+      "family": "complianz",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "markers": [
+        [
+          "cmplz-cookiebanner",
+          "dom-id-or-view-id",
+          "candidate-unverified",
+          false
+        ],
+        [
+          "cmplz-manage-consent",
+          "dom-id-or-view-id",
+          "candidate-unverified",
+          false
+        ]
+      ],
+      "apiSymbols": [
+        "cmplz_status_saved_once",
+        "cmplz_event_*"
+      ],
+      "phraseHints": [],
+      "docs": [
+        "https://complianz.io/help/wordpress/configuration/developers-guide-for-third-party-integrations/",
+        "https://complianz.io/help/wordpress/configuration/cookies-from-complianz-what-are-they-for-and-how-can-you-use-them/"
+      ],
+      "notes": "Candidat de recherche : marqueurs non validés et désactivés (matchable=false). Les API JS ne sont pas des viewIds Android.",
+      "validationStatus": "engine-profile-from-autoconsent-selectors-not-verified-on-android",
+      "productType": "wordpress-plugin-cmp",
+      "deploymentScope": "web-wordpress",
+      "discoveryEvidence": "research-candidate",
+      "engineProfile": "Complianz"
+    },
+    {
+      "id": "osano",
+      "name": "Osano CMP",
+      "aliases": [
+        "Osano Consent Management Platform"
+      ],
+      "family": "osano",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "markers": [
+        [
+          "osano-cm",
+          "dom-id-or-view-id",
+          "candidate-unverified",
+          false
+        ]
+      ],
+      "apiSymbols": [
+        "window.Osano",
+        "osano.js",
+        "onConsentChanged",
+        "onConsentSaved"
+      ],
+      "phraseHints": [],
+      "docs": [
+        "https://developers.osano.com/cmp/javascript-api/developer-documentation-consent-javascript-api",
+        "https://developers.osano.com/cmp/"
+      ],
+      "notes": "Candidat de recherche : marqueurs non validés et désactivés (matchable=false). Les API JS ne sont pas des viewIds Android.",
+      "validationStatus": "engine-profile-from-autoconsent-selectors-not-verified-on-android",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "research-candidate",
+      "engineProfile": "Osano"
+    },
+    {
+      "id": "ketch",
+      "name": "Ketch",
+      "aliases": [
+        "Ketch Consent"
+      ],
+      "family": "ketch",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "markers": [
+        [
+          "ketch",
+          "dom-id-or-view-id",
+          "candidate-unverified",
+          false
+        ]
+      ],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://docs.ketch.com/"
+      ],
+      "notes": "Candidat de recherche : marqueurs non validés et désactivés (matchable=false). Les API JS ne sont pas des viewIds Android.",
+      "validationStatus": "engine-profile-from-autoconsent-selectors-not-verified-on-android",
+      "productType": "full-cmp",
+      "deploymentScope": "web-and-app",
+      "discoveryEvidence": "research-candidate",
+      "engineProfile": "Ketch"
+    },
+    {
+      "id": "cookiescript",
+      "name": "CookieScript",
+      "aliases": [
+        "CookieScript CMP"
+      ],
+      "family": "cookiescript",
+      "status": "candidate-dataset",
+      "confidence": "candidate-only",
+      "markers": [
+        [
+          "cookiescript",
+          "dom-id-or-view-id",
+          "candidate-unverified",
+          false
+        ]
+      ],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://cookie-script.com/documentation"
+      ],
+      "notes": "Candidat de recherche : marqueurs non validés et désactivés (matchable=false). Les API JS ne sont pas des viewIds Android.",
+      "validationStatus": "engine-profile-from-autoconsent-selectors-not-verified-on-android",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "research-candidate",
+      "engineProfile": "CookieScript"
+    },
+    {
+      "id": "termly",
+      "name": "Termly",
+      "aliases": [
+        "Termly Consent Manager"
+      ],
+      "family": "termly",
+      "status": "candidate-research",
+      "confidence": "candidate-only",
+      "markers": [
+        [
+          "termly",
+          "dom-id-or-view-id",
+          "candidate-unverified",
+          false
+        ]
+      ],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://termly.io/"
+      ],
+      "notes": "Candidat de recherche : marqueurs non validés et désactivés (matchable=false). Les API JS ne sont pas des viewIds Android.",
+      "validationStatus": "engine-profile-from-autoconsent-selectors-not-verified-on-android",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "research-candidate",
+      "engineProfile": "Termly"
+    },
+    {
+      "id": "cookiefirst",
+      "name": "CookieFirst",
+      "aliases": [
+        "CookieFirst CMP"
+      ],
+      "family": "cookiefirst",
+      "status": "candidate-research",
+      "confidence": "candidate-only",
+      "markers": [
+        [
+          "cookiefirst",
+          "dom-id-or-view-id",
+          "candidate-unverified",
+          false
+        ]
+      ],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://cookiefirst.com/"
+      ],
+      "notes": "Candidat de recherche : marqueurs non validés et désactivés (matchable=false). Les API JS ne sont pas des viewIds Android.",
+      "validationStatus": "engine-profile-from-autoconsent-selectors-not-verified-on-android",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "research-candidate",
+      "engineProfile": "CookieFirst"
+    },
+    {
+      "id": "appconsent-sfbx",
+      "name": "AppConsent by SFBX",
+      "aliases": [],
+      "family": "appconsent-sfbx",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "full-cmp",
+      "deploymentScope": "web-and-app",
+      "discoveryEvidence": "france-market-and-google-certified",
+      "validationStatus": "engine-profile-from-autoconsent-selectors-not-verified-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/analytics/answer/14546213?hl=fr",
+        "https://support.google.com/admanager/answer/13554116?hl=fr",
+        "https://www.mind.eu.com/media/article/cmp-des-editeurs-medias-un-marche-en-voie-de-consolidation/"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": "AppConsent (SFBX)"
+    },
+    {
+      "id": "commanders-act",
+      "name": "Commanders Act CMP",
+      "aliases": [],
+      "family": "commanders-act",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "full-cmp",
+      "deploymentScope": "web-and-app",
+      "discoveryEvidence": "google-cmp-partner-and-french-company",
+      "validationStatus": "engine-profile-from-autoconsent-selectors-not-verified-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/analytics/answer/14546213?hl=fr",
+        "https://support.google.com/admanager/answer/13554116?hl=fr",
+        "https://iabeurope.eu/tcf-supporting-resources/"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": "Commanders Act (TrustCommander)"
+    },
+    {
+      "id": "fastcmp",
+      "name": "FastCMP",
+      "aliases": [],
+      "family": "fastcmp",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "iab-tcf-french-company",
+      "validationStatus": "engine-profile-from-autoconsent-selectors-not-verified-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/admanager/answer/13554116?hl=fr",
+        "https://iabeurope.eu/tcf-supporting-resources/"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": "FastCMP"
+    },
+    {
+      "id": "kixell",
+      "name": "KIXELL CMP",
+      "aliases": [],
+      "family": "kixell",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "iab-tcf-french-company",
+      "validationStatus": "engine-profile-from-autoconsent-selectors-not-verified-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://iabeurope.eu/tcf-supporting-resources/"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": "Kixell"
+    },
+    {
+      "id": "singlespot",
+      "name": "Singlespot",
+      "aliases": [],
+      "family": "singlespot",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "app-consent-platform",
+      "deploymentScope": "android-ios-app",
+      "discoveryEvidence": "iab-tcf-french-company",
+      "validationStatus": "not-observed-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://iabeurope.eu/tcf-supporting-resources/",
+        "https://support.google.com/admanager/answer/13554116?hl=fr"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": null
+    },
+    {
+      "id": "acceptrics",
+      "name": "Acceptrics",
+      "aliases": [],
+      "family": "acceptrics",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "google-cmp-partner",
+      "validationStatus": "not-observed-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/analytics/answer/14546213?hl=fr"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": null
+    },
+    {
+      "id": "clickio-consent",
+      "name": "Clickio Consent",
+      "aliases": [],
+      "family": "clickio-consent",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "full-cmp",
+      "deploymentScope": "web-and-app",
+      "discoveryEvidence": "google-cmp-partner-and-certified",
+      "validationStatus": "engine-profile-from-autoconsent-selectors-not-verified-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/analytics/answer/14546213?hl=fr",
+        "https://support.google.com/admanager/answer/13554116?hl=fr"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": "Clickio"
+    },
+    {
+      "id": "cookie-information",
+      "name": "Cookie Information",
+      "aliases": [],
+      "family": "cookie-information",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "google-cmp-partner",
+      "validationStatus": "engine-profile-from-autoconsent-selectors-not-verified-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/analytics/answer/14546213?hl=fr",
+        "https://support.google.com/admanager/answer/13554116?hl=fr"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": "Cookie Information"
+    },
+    {
+      "id": "cookiehub",
+      "name": "CookieHub",
+      "aliases": [],
+      "family": "cookiehub",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "google-cmp-partner-and-clarity-supported",
+      "validationStatus": "engine-profile-from-autoconsent-selectors-not-verified-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/analytics/answer/14546213?hl=fr",
+        "https://support.google.com/admanager/answer/13554116?hl=fr",
+        "https://learn.microsoft.com/fr-fr/clarity/setup-and-installation/cookie-cmps"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": "CookieHub"
+    },
+    {
+      "id": "concord",
+      "name": "Concord",
+      "aliases": [],
+      "family": "concord",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "google-cmp-partner",
+      "validationStatus": "not-observed-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/analytics/answer/14546213?hl=fr"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": null
+    },
+    {
+      "id": "consent-studio",
+      "name": "Consent Studio",
+      "aliases": [],
+      "family": "consent-studio",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "google-cmp-partner",
+      "validationStatus": "not-observed-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/analytics/answer/14546213?hl=fr"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": null
+    },
+    {
+      "id": "cytrio",
+      "name": "CYTRIO",
+      "aliases": [],
+      "family": "cytrio",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "privacy-platform-with-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "google-cmp-partner",
+      "validationStatus": "not-observed-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/analytics/answer/14546213?hl=fr"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": null
+    },
+    {
+      "id": "illow",
+      "name": "Illow",
+      "aliases": [],
+      "family": "illow",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "google-cmp-partner",
+      "validationStatus": "not-observed-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/analytics/answer/14546213?hl=fr"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": null
+    },
+    {
+      "id": "lawwwing",
+      "name": "Lawwwing",
+      "aliases": [],
+      "family": "lawwwing",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "google-cmp-partner",
+      "validationStatus": "engine-profile-from-autoconsent-selectors-not-verified-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/analytics/answer/14546213?hl=fr"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": "Lawwwing"
+    },
+    {
+      "id": "mandatly",
+      "name": "Mandatly",
+      "aliases": [],
+      "family": "mandatly",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "google-cmp-partner",
+      "validationStatus": "not-observed-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/analytics/answer/14546213?hl=fr"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": null
+    },
+    {
+      "id": "my-agile-privacy",
+      "name": "My Agile Privacy",
+      "aliases": [],
+      "family": "my-agile-privacy",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "full-cmp-or-wordpress-plugin",
+      "deploymentScope": "web",
+      "discoveryEvidence": "google-cmp-partner-and-clarity-supported",
+      "validationStatus": "not-observed-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/analytics/answer/14546213?hl=fr",
+        "https://learn.microsoft.com/fr-fr/clarity/setup-and-installation/cookie-cmps"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": null
+    },
+    {
+      "id": "secure-privacy",
+      "name": "Secure Privacy",
+      "aliases": [],
+      "family": "secure-privacy",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "google-cmp-partner-and-certified",
+      "validationStatus": "not-observed-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/analytics/answer/14546213?hl=fr",
+        "https://support.google.com/admanager/answer/13554116?hl=fr"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": null
+    },
+    {
+      "id": "truendo",
+      "name": "TRUENDO",
+      "aliases": [],
+      "family": "truendo",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "google-cmp-partner-and-certified",
+      "validationStatus": "engine-profile-from-autoconsent-selectors-not-verified-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/analytics/answer/14546213?hl=fr",
+        "https://support.google.com/admanager/answer/13554116?hl=fr"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": "TRUENDO"
+    },
+    {
+      "id": "uniconsent",
+      "name": "UniConsent",
+      "aliases": [],
+      "family": "uniconsent",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "full-cmp",
+      "deploymentScope": "web-and-app",
+      "discoveryEvidence": "google-cmp-partner-and-clarity-supported",
+      "validationStatus": "engine-profile-from-autoconsent-selectors-not-verified-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/analytics/answer/14546213?hl=fr",
+        "https://support.google.com/admanager/answer/13554116?hl=fr",
+        "https://learn.microsoft.com/fr-fr/clarity/setup-and-installation/cookie-cmps"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": "UniConsent"
+    },
+    {
+      "id": "webtoffee",
+      "name": "WebToffee GDPR Cookie Consent",
+      "aliases": [],
+      "family": "webtoffee",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "wordpress-plugin-cmp",
+      "deploymentScope": "web-wordpress",
+      "discoveryEvidence": "google-cmp-partner-and-clarity-supported",
+      "validationStatus": "engine-profile-from-autoconsent-selectors-not-verified-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/analytics/answer/14546213?hl=fr",
+        "https://learn.microsoft.com/fr-fr/clarity/setup-and-installation/cookie-cmps"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": "WebToffee (CookieLawInfo)"
+    },
+    {
+      "id": "ccm19",
+      "name": "CCM19",
+      "aliases": [],
+      "family": "ccm19",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "google-certified",
+      "validationStatus": "engine-profile-from-autoconsent-selectors-not-verified-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/admanager/answer/13554116?hl=fr"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": "CCM19"
+    },
+    {
+      "id": "borlabs-cookie",
+      "name": "Borlabs Cookie",
+      "aliases": [],
+      "family": "borlabs-cookie",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "wordpress-plugin-cmp",
+      "deploymentScope": "web-wordpress",
+      "discoveryEvidence": "google-certified",
+      "validationStatus": "engine-profile-from-autoconsent-selectors-not-verified-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/admanager/answer/13554116?hl=fr"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": "Borlabs Cookie"
+    },
+    {
+      "id": "avacy",
+      "name": "AVACY CMP",
+      "aliases": [],
+      "family": "avacy",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "full-cmp",
+      "deploymentScope": "web-and-app",
+      "discoveryEvidence": "google-certified",
+      "validationStatus": "not-observed-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/admanager/answer/13554116?hl=fr"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": null
+    },
+    {
+      "id": "cookieman",
+      "name": "CookieMan",
+      "aliases": [],
+      "family": "cookieman",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "google-certified",
+      "validationStatus": "engine-profile-from-autoconsent-selectors-not-verified-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/admanager/answer/13554116?hl=fr"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": "Cookieman"
+    },
+    {
+      "id": "datareporter",
+      "name": "DataReporter CMP",
+      "aliases": [],
+      "family": "datareporter",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "google-certified",
+      "validationStatus": "not-observed-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/admanager/answer/13554116?hl=fr"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": null
+    },
+    {
+      "id": "enzuzo",
+      "name": "Enzuzo",
+      "aliases": [],
+      "family": "enzuzo",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "privacy-platform-with-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "google-certified",
+      "validationStatus": "engine-profile-from-autoconsent-selectors-not-verified-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/admanager/answer/13554116?hl=fr"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": "Enzuzo"
+    },
+    {
+      "id": "ethyca",
+      "name": "Ethyca",
+      "aliases": [],
+      "family": "ethyca",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "privacy-platform-with-cmp",
+      "deploymentScope": "web-and-app",
+      "discoveryEvidence": "google-certified",
+      "validationStatus": "not-observed-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/admanager/answer/13554116?hl=fr"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": null
+    },
+    {
+      "id": "ezoic",
+      "name": "Ezoic CMP",
+      "aliases": [],
+      "family": "ezoic",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "publisher-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "google-certified",
+      "validationStatus": "engine-profile-from-autoconsent-selectors-not-verified-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/admanager/answer/13554116?hl=fr"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": "Ezoic"
+    },
+    {
+      "id": "flexy-consent",
+      "name": "Flexy Consent",
+      "aliases": [],
+      "family": "flexy-consent",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "google-certified",
+      "validationStatus": "not-observed-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/admanager/answer/13554116?hl=fr"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": null
+    },
+    {
+      "id": "privacy-pillar",
+      "name": "PrivacyPillar",
+      "aliases": [],
+      "family": "privacy-pillar",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "google-certified",
+      "validationStatus": "not-observed-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/admanager/answer/13554116?hl=fr"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": null
+    },
+    {
+      "id": "pubtech",
+      "name": "Pubtech CMP",
+      "aliases": [],
+      "family": "pubtech",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "publisher-cmp",
+      "deploymentScope": "web-and-app",
+      "discoveryEvidence": "google-certified",
+      "validationStatus": "engine-profile-from-autoconsent-selectors-not-verified-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/admanager/answer/13554116?hl=fr"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": "Pubtech"
+    },
+    {
+      "id": "setupad",
+      "name": "Setupad CMP",
+      "aliases": [],
+      "family": "setupad",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "publisher-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "google-certified",
+      "validationStatus": "not-observed-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/admanager/answer/13554116?hl=fr"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": null
+    },
+    {
+      "id": "snigel-adconsent",
+      "name": "Snigel Adconsent",
+      "aliases": [],
+      "family": "snigel-adconsent",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "publisher-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "google-certified",
+      "validationStatus": "not-observed-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/admanager/answer/13554116?hl=fr"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": null
+    },
+    {
+      "id": "transcend",
+      "name": "Transcend CMP",
+      "aliases": [],
+      "family": "transcend",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "privacy-platform-with-cmp",
+      "deploymentScope": "web-and-app",
+      "discoveryEvidence": "google-certified",
+      "validationStatus": "engine-profile-from-autoconsent-selectors-not-verified-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://support.google.com/admanager/answer/13554116?hl=fr"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": "Transcend"
+    },
+    {
+      "id": "consentbit",
+      "name": "ConsentBit",
+      "aliases": [],
+      "family": "consentbit",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "clarity-supported-and-google-certified",
+      "validationStatus": "not-observed-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://learn.microsoft.com/fr-fr/clarity/setup-and-installation/cookie-cmps",
+        "https://support.google.com/admanager/answer/13554116?hl=fr"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": null
+    },
+    {
+      "id": "cookiezen",
+      "name": "CookieZen",
+      "aliases": [],
+      "family": "cookiezen",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "clarity-supported",
+      "validationStatus": "not-observed-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://learn.microsoft.com/fr-fr/clarity/setup-and-installation/cookie-cmps"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": null
+    },
+    {
+      "id": "fitconsent",
+      "name": "FitConsent",
+      "aliases": [],
+      "family": "fitconsent",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "clarity-supported",
+      "validationStatus": "not-observed-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://learn.microsoft.com/fr-fr/clarity/setup-and-installation/cookie-cmps"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": null
+    },
+    {
+      "id": "pandectes",
+      "name": "Pandectes",
+      "aliases": [],
+      "family": "pandectes",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "ecommerce-platform-cmp",
+      "deploymentScope": "web-shopify",
+      "discoveryEvidence": "clarity-supported",
+      "validationStatus": "not-observed-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://learn.microsoft.com/fr-fr/clarity/setup-and-installation/cookie-cmps"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": null
+    },
+    {
+      "id": "seers-ai",
+      "name": "Seers AI",
+      "aliases": [],
+      "family": "seers-ai",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "full-cmp",
+      "deploymentScope": "web",
+      "discoveryEvidence": "clarity-supported",
+      "validationStatus": "not-observed-on-android",
+      "markers": [],
+      "apiSymbols": [],
+      "phraseHints": [],
+      "docs": [
+        "https://learn.microsoft.com/fr-fr/clarity/setup-and-installation/cookie-cmps"
+      ],
+      "notes": "Candidat ajouté à partir d'un répertoire officiel de CMP, d'une intégration documentée ou d'une étude du marché français. Aucune signature Android n'est validée ; aucun marqueur n'est activé.",
+      "engineProfile": null
+    },
+    {
+      "id": "google-funding-choices",
+      "name": "Google Funding Choices",
+      "aliases": [
+        "Funding Choices",
+        "Google publisher consent messages"
+      ],
+      "family": "google-funding-choices",
+      "status": "candidate-documentation",
+      "confidence": "documented-or-research",
+      "productType": "publisher-web-consent-platform",
+      "deploymentScope": "web-publisher",
+      "discoveryEvidence": "google-publisher-consent-documentation",
+      "validationStatus": "engine-profile-from-autoconsent-selectors-not-verified-on-android",
+      "markers": [
+        [
+          "fc-consent",
+          "dom-id-or-view-id",
+          "candidate-unverified",
+          false
+        ],
+        [
+          "fc-dialog",
+          "dom-id-or-view-id",
+          "candidate-unverified",
+          false
+        ],
+        [
+          "fc-cta",
+          "dom-id-or-view-id",
+          "candidate-unverified",
+          false
+        ],
+        [
+          "funding-choices",
+          "dom-id-or-view-id",
+          "candidate-unverified",
+          false
+        ],
+        [
+          "fundingchoices",
+          "dom-id-or-view-id",
+          "candidate-unverified",
+          false
+        ]
+      ],
+      "apiSymbols": [
+        "Funding Choices publisher integration"
+      ],
+      "phraseHints": [],
+      "docs": [
+        "https://developers.google.com/admob/android/privacy",
+        "https://support.google.com/analytics/answer/14546213?hl=fr"
+      ],
+      "notes": "Marqueurs fc-* hérités de l'ancien profil, conservés comme hypothèses DOM Web uniquement et explicitement non matchables ; ils ne sont pas des viewIds Android confirmés.",
+      "engineProfile": "Google UMP (Funding Choices)"
+    }
+  ],
+  "privateImplementations": [
+    {
+      "id": "dailymotion-private",
+      "name": "Dailymotion CMP (private)",
+      "type": "publisher-private-implementation",
+      "market": "France",
+      "source": "https://support.google.com/admanager/answer/13554116?hl=fr",
+      "notes": "Entrée privée de la liste Google/IAB ; pas un produit CMP tiers à intégrer."
+    },
+    {
+      "id": "deezer-private",
+      "name": "Deezer CMP (private)",
+      "type": "publisher-private-implementation",
+      "market": "France",
+      "source": "https://support.google.com/admanager/answer/13554116?hl=fr",
+      "notes": "Entrée privée de la liste Google/IAB ; pas un produit CMP tiers à intégrer."
+    },
+    {
+      "id": "sfr-private",
+      "name": "SFR CMP (private)",
+      "type": "publisher-private-implementation",
+      "market": "France",
+      "source": "https://support.google.com/admanager/answer/13554116?hl=fr",
+      "notes": "Entrée privée de la liste Google/IAB ; portée Web/app selon le registre ; pas un produit CMP tiers à intégrer."
+    },
+    {
+      "id": "paruvendu-private",
+      "name": "ParuVendu CMP (private)",
+      "type": "publisher-private-implementation",
+      "market": "France",
+      "source": "https://support.google.com/admanager/answer/13554116?hl=fr",
+      "notes": "Entrée privée de la liste Google/IAB ; pas un produit CMP tiers à intégrer."
+    },
+    {
+      "id": "monde-private",
+      "name": "Société Éditrice du Monde CMP (private)",
+      "type": "publisher-private-implementation",
+      "market": "France",
+      "source": "https://support.google.com/admanager/answer/13554116?hl=fr",
+      "notes": "Entrée privée de la liste Google/IAB et observée dans l'étude médias ; implémentation d'éditeur, pas un produit CMP tiers."
+    }
+  ],
+  "ecosystemComponents": [
+    {
+      "id": "wp-consent-api",
+      "name": "WordPress WP Consent API",
+      "type": "cms-consent-bridge",
+      "notNecessarilyStandaloneCmp": true,
+      "notAStandaloneCmp": true,
+      "source": "https://learn.microsoft.com/fr-fr/clarity/setup-and-installation/cookie-cmps",
+      "notes": "API/bridge WordPress qui relaie les états de consentement ; ne pas compter comme CMP autonome."
+    },
+    {
+      "id": "finsweet-cookie-consent",
+      "name": "Finsweet Cookie Consent",
+      "type": "website-component-or-library",
+      "notNecessarilyStandaloneCmp": true,
+      "source": "https://finsweet.com/",
+      "notes": "Composant de consentement de site Web ; ne pas compter comme CMP entreprise sans preuve des fonctions de gestion complète."
+    },
+    {
+      "id": "hubspot-cookie-banner",
+      "name": "HubSpot Cookie Policy Banner",
+      "type": "cms-native-or-platform-banner",
+      "notNecessarilyStandaloneCmp": true,
+      "source": "https://developers.hubspot.com/",
+      "notes": "Fonctionnalité de plateforme/CMS ; ne pas compter automatiquement comme fournisseur CMP indépendant."
+    },
+    {
+      "id": "cookie-notice",
+      "name": "Cookie Notice for GDPR",
+      "type": "wordpress-plugin",
+      "notNecessarilyStandaloneCmp": true,
+      "source": "https://wordpress.org/plugins/cookie-notice/",
+      "notes": "Plugin WordPress ; capacités à qualifier selon version, distinct d'une CMP entreprise."
+    }
+  ]
+}

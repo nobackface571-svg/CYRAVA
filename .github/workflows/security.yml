@@ -1,0 +1,39 @@
+name: 🔒 Essais — vérifications de sécurité des workflows
+
+# Contrôles statiques uniquement. Lancement manuel après la phase de modifications,
+# séparément de la compilation Android et des tests fonctionnels.
+on:
+  workflow_dispatch:
+    inputs:
+      authorize_paid_usage:
+        description: "Autoriser les dépenses supplémentaires GitHub Actions pour cette exécution (accord explicite requis)"
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-workflows
+  cancel-in-progress: false
+
+jobs:
+  workflow-security:
+    if: ${{ inputs.authorize_paid_usage == true }}
+    name: Vérifier les permissions, secrets et signatures des workflows
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - name: Récupérer le code sans conserver le jeton GitHub
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+
+      - name: Vérifier les workflows
+        run: bash scripts/verifier-workflows.sh
+
+      - name: Vérifier les cas de contournement connus
+        run: bash scripts/test-verifier-workflows.sh

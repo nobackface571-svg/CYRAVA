@@ -1,0 +1,130 @@
+name: 🔐 Application — APK signé avec ma clé (développement)
+
+# Workflow manuel uniquement : la clé de développement n'est jamais exposée aux builds ordinaires.
+# Exécution réservée au propriétaire, sur main uniquement, dans l'environnement protégé.
+on:
+  workflow_dispatch:
+    inputs:
+      authorize_paid_usage:
+        description: "Autoriser les dépenses supplémentaires GitHub Actions pour cette exécution (accord explicite requis)"
+        required: true
+        default: false
+        type: boolean
+
+concurrency:
+  group: signature-developpement
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  signer:
+    name: Vérifier et signer un APK de développement
+    if: ${{ inputs.authorize_paid_usage == true && github.actor == github.repository_owner && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    environment: development
+    permissions:
+      contents: read
+    env:
+      VERSION_CODE: ${{ github.run_number }}
+      VERSION_NAME: 1.1.0-dev.signature.${{ github.run_number }}
+    steps:
+      - name: Récupérer le code sans conserver le jeton GitHub
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Vérifier et préparer le keystore PKCS#12
+        env:
+          DEV_KEYSTORE_BASE64: ${{ secrets.DEV_KEYSTORE_BASE64 }}
+          DEV_KEYSTORE_PASSWORD: ${{ secrets.DEV_KEYSTORE_PASSWORD }}
+          DEV_KEY_ALIAS: ${{ secrets.DEV_KEY_ALIAS }}
+          DEV_KEY_PASSWORD: ${{ secrets.DEV_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          missing=""
+          [ -n "$DEV_KEYSTORE_BASE64" ] || missing="$missing DEV_KEYSTORE_BASE64"
+          [ -n "$DEV_KEYSTORE_PASSWORD" ] || missing="$missing DEV_KEYSTORE_PASSWORD"
+          [ -n "$DEV_KEY_ALIAS" ] || missing="$missing DEV_KEY_ALIAS"
+          [ -n "$DEV_KEY_PASSWORD" ] || missing="$missing DEV_KEY_PASSWORD"
+          if [ -n "$missing" ]; then
+            echo "::error::Secret(s) de signature manquant(s) :$missing"
+            exit 1
+          fi
+          KEYSTORE="$RUNNER_TEMP/refusbot-dev.p12"
+          printf '%s' "$DEV_KEYSTORE_BASE64" | base64 --decode > "$KEYSTORE"
+          chmod 600 "$KEYSTORE"
+          if ! keytool -list -storetype PKCS12 -keystore "$KEYSTORE" \
+              -storepass "$DEV_KEYSTORE_PASSWORD" -alias "$DEV_KEY_ALIAS" > /dev/null 2>&1; then
+            echo "::error::Keystore illisible : vérifiez le mot de passe, le format et l'alias."
+            exit 1
+          fi
+          # Seul le chemin non sensible est conservé entre les étapes.
+          echo "RELEASE_KEYSTORE_PATH=$KEYSTORE" >> "$GITHUB_ENV"
+
+      - name: JDK 17
+        uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # v6.2.0
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: SDK Android 17 (API 37) et build-tools
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install "platforms;android-37.0" "build-tools;37.0.0" > /dev/null
+
+      - name: Gradle (cache désactivé pour la signature)
+        uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
+        with:
+          cache-disabled: true
+
+      - name: Tests, lint et APK signé de développement
+        env:
+          REFUSBOT_PUBLICATION: "true"
+          RELEASE_KEYSTORE_PATH: ${{ runner.temp }}/refusbot-dev.p12
+          RELEASE_KEYSTORE_PASSWORD: ${{ secrets.DEV_KEYSTORE_PASSWORD }}
+          RELEASE_KEY_ALIAS: ${{ secrets.DEV_KEY_ALIAS }}
+          RELEASE_KEY_PASSWORD: ${{ secrets.DEV_KEY_PASSWORD }}
+        run: ./gradlew --warning-mode all test :app:lintRelease :app:assembleRelease
+
+      - name: Vérifier les permissions et la signature
+        env:
+          RELEASE_KEYSTORE_PATH: ${{ runner.temp }}/refusbot-dev.p12
+          RELEASE_KEYSTORE_PASSWORD: ${{ secrets.DEV_KEYSTORE_PASSWORD }}
+          RELEASE_KEY_ALIAS: ${{ secrets.DEV_KEY_ALIAS }}
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          APK="dist/RefusBot-${VERSION_NAME}.apk"
+          cp app/build/outputs/apk/release/app-release.apk "$APK"
+          BT="$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)"
+          "$BT/aapt2" dump permissions "$APK" | tee "$RUNNER_TEMP/permissions.txt"
+          if grep -q "android.permission.INTERNET" "$RUNNER_TEMP/permissions.txt"; then
+            echo "::error::La permission INTERNET est présente dans l'APK."
+            exit 1
+          fi
+          "$BT/apksigner" verify --print-certs "$APK" | tee "$RUNNER_TEMP/apk-certificate.txt"
+          APK_FP="$(sed -n 's/.*certificate SHA-256 digest: //p' "$RUNNER_TEMP/apk-certificate.txt" | head -1 | tr -d ':' | tr '[:upper:]' '[:lower:]')"
+          KEY_FP="$(keytool -list -v -storetype PKCS12 -keystore "$RELEASE_KEYSTORE_PATH" -storepass "$RELEASE_KEYSTORE_PASSWORD" -alias "$RELEASE_KEY_ALIAS" 2>/dev/null | sed -n 's/^[[:space:]]*SHA256: //p' | head -1 | tr -d ':' | tr '[:upper:]' '[:lower:]')"
+          if [ -z "$APK_FP" ] || [ -z "$KEY_FP" ] || [ "$APK_FP" != "$KEY_FP" ]; then
+            echo "::error::L'empreinte du certificat de l'APK ne correspond pas au keystore attendu."
+            exit 1
+          fi
+          APK_SHA256="$(sha256sum "$APK" | cut -d' ' -f1)"
+          {
+            echo "### RefusBot ${VERSION_NAME} — APK signé de développement"
+            echo "- Signature vérifiée : certificat correspondant au keystore de développement."
+            echo "- SHA-256 APK : $APK_SHA256"
+            echo "- Aucune permission INTERNET."
+            echo "- Cette compilation n'est pas une publication."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Déposer l'APK comme artefact privé de workflow
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: RefusBot-APK-developpement
+          path: dist/*.apk
+          archive: false
+          if-no-files-found: error

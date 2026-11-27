@@ -1,0 +1,71 @@
+name: 🧪 Essais — tests et lint
+
+# Validation automatique des PR vers main ; la compilation APK reste dans build.yml.
+on:
+  # Plus aucun lancement automatique (21/11) : le quota GitHub Actions est épuisé.
+  # Compilation et tests : CodeMagic (codemagic.yaml). Lancement manuel seulement.
+  workflow_dispatch:
+    inputs:
+      authorize_paid_usage:
+        description: "Autoriser les dépenses supplémentaires GitHub Actions pour cette exécution (accord explicite requis)"
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validation-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validation:
+    if: ${{ inputs.authorize_paid_usage == true }}
+    name: Tests unitaires, lint et garde-fous
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    env:
+      VERSION_CODE: ${{ github.run_number }}
+      VERSION_NAME: 1.1.0-dev.${{ github.run_number }}
+    steps:
+      - name: Récupérer le code sans conserver le jeton GitHub
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+
+      - name: JDK 17
+        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: SDK Android 17 (API 37) et build-tools
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install "platforms;android-37.0" "build-tools;37.0.0" > /dev/null
+          test -d "$ANDROID_HOME/platforms/android-37.0"
+          test -x "$ANDROID_HOME/build-tools/37.0.0/aapt2"
+
+      - name: Gradle (cache)
+        uses: gradle/actions/setup-gradle@0723195856401067f7a2779048b490ace7a47d7c # v5
+
+      - name: Vérifier les garde-fous des workflows et de la signature
+        run: |
+          bash scripts/verifier-workflows.sh
+          bash scripts/test-verifier-workflows.sh
+          bash scripts/verifier-signature.sh
+
+      - name: Tests unitaires
+        if: ${{ !cancelled() }}
+        run: ./gradlew --no-daemon --warning-mode all test
+
+      - name: Lint Release
+        if: ${{ !cancelled() }}
+        run: ./gradlew --no-daemon --warning-mode all :app:lintRelease
+
+      - name: Rapport lint
+        if: always()
+        run: cat app/build/reports/lint-results-release.txt 2>/dev/null || echo "Rapport lint absent."
