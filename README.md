@@ -1,334 +1,338 @@
+🇬🇧 **English** | 🇫🇷 [Français](README.fr.md)
+
 # CYRAVA
 
-**CYRAVA refuse automatiquement les fenêtres de consentement cookies / traceurs (RGPD, IAB TCF)** dans les applis, jeux et navigateurs Android que vous choisissez : il clique sur « Tout refuser », ou ouvre les options, **désactive tous les interrupteurs (consentement ET intérêt légitime)** et valide. **Il ne clique jamais sur « Accepter ».**
+**CYRAVA automatically rejects cookie / tracker consent pop-ups (GDPR, IAB TCF)** in the Android apps, games and browsers you choose: it taps "Reject all", or opens the options, **turns off every switch (consent AND legitimate interest)** and confirms. **It never taps "Accept".**
 
-- Reconnaît 38 plateformes de consentement (Google UMP, Didomi, OneTrust, Sourcepoint, InMobi Choice, Usercentrics, Sirdata, Axeptio, Cookiebot, TrustArc, Consentmanager, iubenda, CookieYes, Commanders Act…) et les fenêtres « TCF » génériques, en 7 langues (français, anglais, allemand, espagnol, italien, portugais, néerlandais).
-- Interface en **français ou en anglais** (Réglages › Langue). Les motifs détaillés du moteur et les fichiers exportés restent en français.
-- Aucune permission Internet : rien ne sort du téléphone, sauf un fichier que vous partagez vous-même.
-- Ne lit que les applis que vous cochez.
-- Dit ce qu'il a réellement constaté : un refus n'est dit « vérifié » que si les interrupteurs ont été vus désactivés. Un simple clic sur « Tout refuser » suivi de la fermeture de la fenêtre est annoncé comme **« refusé avec le bouton du site, non vérifiable »** : CYRAVA ne peut pas voir ce que l'appli a enregistré.
-- Tout se fait depuis le téléphone : installation, réglages, mises à jour. Aucun ordinateur n'est nécessaire.
-- Logiciel libre sous licence **GPL-3.0** : le code est public et vérifiable par tous (voir [Licence](#licence)).
+- Recognises 38 consent platforms (Google UMP, Didomi, OneTrust, Sourcepoint, InMobi Choice, Usercentrics, Sirdata, Axeptio, Cookiebot, TrustArc, Consentmanager, iubenda, CookieYes, Commanders Act…) and generic "TCF" pop-ups, in 7 languages (French, English, German, Spanish, Italian, Portuguese, Dutch).
+- App interface in **English or French** (Settings › Language). The engine's detailed explanations and exported files stay in French.
+- No Internet permission: nothing leaves the phone, except a file you share yourself.
+- Only reads the apps you tick.
+- Reports only what it actually observed: a rejection is called "verified" only if the switches were seen turned off. A simple tap on "Reject all" followed by the pop-up closing is reported as **"rejected with the site's button, unverifiable"**: CYRAVA cannot see what the app saved.
+- Everything is done from the phone: installation, settings, updates. No computer needed.
+- Free software under the **GPL-3.0** licence: the code is public and anyone can check it (see [License](#license)).
+- **Developed with the help of Claude**, Anthropic's AI assistant (code, tests and documentation), under the direction of its author, who also tests it.
 
-## La garantie : CYRAVA ne clique jamais sur « Tout accepter »
+## The guarantee: CYRAVA never taps "Accept all"
 
-C'est la règle n° 1 du projet, et elle ne dépend d'aucun réglage :
+This is the project's rule no. 1, and it does not depend on any setting:
 
-- **Dans tous les profils** (Prudent, Strict, Observation), CYRAVA ne clique jamais sur une acceptation, un achat ou un abonnement.
-- **Chaque clic passe par un garde-fou** ([`SafetyGuard.kt`](core/src/main/kotlin/fr/refusbot/core/SafetyGuard.kt)), vérifié deux fois : au moment de la décision, puis juste avant l'action. Tout bouton ou interrupteur dont le texte contient *accepter, accept, agree, autoriser, allow, consentir, s'abonner, acheter…* est bloqué, sauf s'il correspond **exactement** à une formule de refus connue (« Continuer sans accepter », « Je n'accepte pas »…).
-- **En cas de doute, CYRAVA ne fait rien** : la fenêtre reste ouverte et vous décidez.
-- **Un fichier de règles importé ne peut pas contourner le garde-fou** : il est refusé s'il contient le moindre mot d'acceptation ([`RulesValidator.kt`](core/src/main/kotlin/fr/refusbot/core/RulesValidator.kt)).
-- **Des tests automatiques le vérifient à chaque modification du code** (`SafetyGuardTest`, `SafetyRegressionTest`, `ButtonIdsSafetyTest`…, dans [`core/src/test`](core/src/test/kotlin/fr/refusbot/core)).
+- **In every profile** (Careful, Strict, Observation), CYRAVA never taps an accept, purchase or subscription button.
+- **Every tap goes through a safety guard** ([`SafetyGuard.kt`](core/src/main/kotlin/fr/refusbot/core/SafetyGuard.kt)), checked twice: when the decision is made, then right before the action. Any button or switch whose text contains *accepter, accept, agree, autoriser, allow, consentir, s'abonner, acheter…* is blocked, unless it **exactly** matches a known rejection phrase ("Continue without accepting", "I do not accept"…).
+- **When in doubt, CYRAVA does nothing**: the pop-up stays open and you decide.
+- **An imported rules file cannot bypass the safety guard**: it is rejected if it contains the slightest accept word ([`RulesValidator.kt`](core/src/main/kotlin/fr/refusbot/core/RulesValidator.kt)).
+- **Automated tests check this on every code change** (`SafetyGuardTest`, `SafetyRegressionTest`, `ButtonIdsSafetyTest`…, in [`core/src/test`](core/src/test/kotlin/fr/refusbot/core)).
 
-Une seule exception, volontaire et fixée dans le code : « Autoriser la sélection », uniquement quand **tous** les interrupteurs ont été vus refusés (le bouton enregistre alors votre refus).
+A single exception, deliberate and fixed in the code: "Allow selection" ("Autoriser la sélection"), only when **every** switch has been seen rejected (the button then saves your rejection).
 
-Si vous voyez CYRAVA cliquer sur une acceptation, c'est un bug grave : signalez-le dans l'onglet **Issues** avec le fichier de diagnostic (section 8).
+If you ever see CYRAVA tap an accept button, it is a serious bug: please report it in the **Issues** tab with the diagnostic file (section 8).
 
-> **Ce qui a été testé, honnêtement.** À chaque compilation lancée sur CodeMagic, il lance les tests du moteur de décision, l'analyse de code (lint) et la compilation, et vérifie l'absence de permission Internet. Le test complet sur un **téléphone simulé** (émulateur Android, `.github/workflows/e2e.yml`) n'est plus lancé : GitHub Actions n'est plus utilisé. **CYRAVA a aussi été essayé sur un vrai téléphone** (Samsung Galaxy S23 FE, Android 16), en profil Strict, dans Chrome, Firefox, Opera et un jeu, le 22/11/2026 : 20 fenêtres vers 14 h, 17 vers 15 h, puis 14 vers 16 h 45, résultats et durées recopiés dans [docs/essais-reels.md](docs/essais-reels.md), réussites comme échecs. Voir les [limites](#12-précautions-et-limites-connues).
+> **What has been tested, honestly.** On every build started on CodeMagic, the decision-engine tests, code analysis (lint) and the build are run, and the absence of the Internet permission is checked. The full test on a **simulated phone** (Android emulator, `.github/workflows/e2e.yml`) is no longer run: GitHub Actions is no longer used. **CYRAVA has also been tried on a real phone** (Samsung Galaxy S23 FE, Android 16), in the Strict profile, in Chrome, Firefox, Opera and a game, on 22/11/2026: 20 pop-ups around 2 pm, 17 around 3 pm, then 14 around 4:45 pm. Results and durations are copied into [docs/essais-reels.md](docs/essais-reels.md) (in French), successes and failures alike. See the [limitations](#12-precautions-and-known-limitations).
 
-## Dernières mises à jour (26/11/2026)
+## Latest updates (26/11/2026)
 
-Ce qui a changé, et pourquoi (détail dans [CHANGELOG.md](CHANGELOG.md)) :
+What changed, and why (details in [CHANGELOG.md](CHANGELOG.md)):
 
-**Du 23/11 au soir au 26/11** — vérifiés par les tests du moteur, pas encore essayés sur le téléphone :
+**From the evening of 23/11 to 26/11** — checked by the engine tests, not yet tried on the phone:
 
-- **Vérification indépendante du consentement** : avant de dire un refus « vérifié », CYRAVA réévalue lui-même toutes les preuves. Un interrupteur d'état inconnu n'est jamais compté désactivé ; une capture ou une exploration incomplète ne peut plus donner « vérifié ». Le diagnostic nomme maintenant chaque contrôle non vérifié.
-- **Repli sur le refus direct** : quand l'ouverture des réglages fait perdre la fenêtre sur une appli inconnue, le « Tout refuser » du site redevient possible ; « préférences d'abord » s'applique aussi hors navigateur.
-- **Confidentialité** : les exports de diagnostic capturés ont été retirés du dépôt ; les tests qui en dépendaient aussi.
-- **Changement de langue sans écran noir** ni redémarrage de l'appli.
+- **Independent consent verification**: before calling a rejection "verified", CYRAVA re-evaluates all the evidence itself. A switch in an unknown state is never counted as turned off; an incomplete capture or exploration can no longer give "verified". The diagnostic now names each control that was not verified.
+- **Fallback to direct rejection**: when opening the settings makes the pop-up disappear in an unknown app, the site's "Reject all" can be used again; "preferences first" also applies outside browsers.
+- **Privacy**: captured diagnostic exports have been removed from the repository, along with the tests that depended on them.
+- **Language switch without a black screen** or app restart.
 
-**Fin d'après-midi du 22/11, après un troisième essai sur le téléphone (16 h 42 – 16 h 50)** — pas encore essayé sur le téléphone :
+**Late afternoon of 22/11, after a third try on the phone (4:42 – 4:50 pm)** — not yet tried on the phone:
 
-- **Didomi dans Opera** : le bas de la fenêtre (« Refuser tout », « Enregistrer ») était caché sous la barre du bas d'Opera, et « Enregistrer » restait grisé tant que chaque finalité n'avait pas de choix : plus rien ne bougeait pendant 12 s. Ces deux boutons sont maintenant actionnés directement (comme le ferait un lecteur d'écran, jamais par un appui à l'aveugle), avec les mêmes vérifications qu'un bouton visible. Si « Enregistrer » reste grisé, le « Tout refuser » du site termine (résultat « non vérifiable »).
-- **« La fenêtre s'est fermée sans validation »** (Didomi dans Firefox, Sourcepoint dans Opera) : après un défilement, le titre de la fenêtre sortait de l'écran et CYRAVA croyait la fenêtre fermée ; et une page de réglages lente à s'afficher était prise pour une fermeture au bout de 0,75 s. CYRAVA reconnaît maintenant la fenêtre à l'identifiant de sa plateforme et attend environ 2 s.
-- **Galaxy Defense** (17 h 20) : la liste des fournisseurs refuse de défiler, mais toutes ses lignes sont lisibles d'un coup. CYRAVA décoche maintenant les 81 « intérêt légitime » restés activés, vérifie, puis valide, au lieu de s'arrêter sur « défilement impossible ».
-- **Consentmanager dans Firefox** (réglages rangés en sous-pages, rien de lisible) : avec « Refus complet », CYRAVA revient au premier écran et clique son « Tout refuser » au lieu d'échouer ; sur les sites suivants de cette plateforme, il clique directement « Tout refuser » (jusqu'au redémarrage du téléphone). Les sous-pages elles-mêmes ne sont pas encore parcourues une à une.
+- **Didomi in Opera**: the bottom of the pop-up ("Reject all", "Save") was hidden under Opera's bottom bar, and "Save" stayed greyed out until each purpose had a choice: nothing moved for 12 s. These two buttons are now triggered directly (as a screen reader would, never by a blind tap), with the same checks as a visible button. If "Save" stays greyed out, the site's "Reject all" finishes the job (result "unverifiable").
+- **"The window closed without confirmation"** (Didomi in Firefox, Sourcepoint in Opera): after scrolling, the pop-up title went off screen and CYRAVA thought the pop-up was closed; and a settings page slow to appear was taken for a closure after 0.75 s. CYRAVA now recognises the pop-up by its platform's identifier and waits about 2 s.
+- **Galaxy Defense** (5:20 pm): the vendor list refuses to scroll, but all its rows can be read at once. CYRAVA now turns off the 81 "legitimate interest" switches left on, checks, then confirms, instead of stopping on "scrolling impossible".
+- **Consentmanager in Firefox** (settings split into sub-pages, nothing readable): with "Full rejection", CYRAVA goes back to the first screen and taps its "Reject all" instead of failing; on the next sites using this platform, it taps "Reject all" directly (until the phone restarts). The sub-pages themselves are not yet explored one by one.
 
-**Le soir du 22/11, après un second essai sur le téléphone (15 h 05 – 15 h 16), puis un audit indépendant** :
+**Evening of 22/11, after a second try on the phone (3:05 – 3:16 pm), then an independent audit**:
 
-- **Jamais d'enregistrement sans avoir tout vu**, quel que soit le réglage : si une partie de la liste ou une catégorie n'a pas été vue, CYRAVA utilise le « Tout refuser » du site, ou ne clique sur rien. Avant, le réglage « Ne pas valider dans le doute » désactivé, il pouvait enregistrer des choix jamais vus (peut-être acceptés).
+- **Never saves without having seen everything**, whatever the setting: if part of the list or a category was not seen, CYRAVA uses the site's "Reject all", or taps nothing. Before, with the "Don't confirm when in doubt" setting turned off, it could save choices it had never seen (possibly accepted).
 
-- **OneTrust « en onglets »** (Opera, Chrome) : les réglages sont rangés par catégorie et chaque interrupteur n'apparaît qu'en touchant sa catégorie. CYRAVA ne voyait aucun réglage (« aucun contrôle de préférence accessible reconnu »). Il ouvre maintenant chaque catégorie, la décoche, puis confirme la sélection ; si une catégorie n'a pas pu être ouverte, la validation vous est laissée.
-- **Didomi en boutons « Refuser / Accepter »** : dans Firefox, les choix « Refuser » n'étaient pas reconnus (« un choix radio coché n'est pas un refus reconnu »). Dans Chrome, quand tout était déjà sur « Refuser », le bouton « Enregistrer » restait sous l'écran (« défilement impossible ») : il est maintenant amené à l'écran, puis cliqué.
-- **AppConsent** : bouton de validation mieux trouvé (plus de formules reconnues, bouton sous l'écran amené à l'écran). Aucun diagnostic de cette fenêtre n'était disponible : à confirmer par un nouvel essai.
-- **Lecture de l'écran plus rapide** : pendant une longue liste, CYRAVA ne relit plus que la fenêtre de cookies, pas toute la page derrière (jusqu'à 1 900 éléments relus à chaque étape dans Opera). Par prudence, il relit tout l'écran après chaque clic qui n'est pas un décochage ou un défilement, au moins une fois toutes les 5 lectures, et toujours avant de fermer la fenêtre (validation ou refus). Nouvelle durée mesurée : « lectureFenetre ».
+- **OneTrust "with tabs"** (Opera, Chrome): settings are grouped by category and each switch only appears when its category is tapped. CYRAVA saw no settings ("no accessible preference control recognised"). It now opens each category, turns it off, then confirms the selection; if a category could not be opened, confirmation is left to you.
+- **Didomi with "Reject / Accept" buttons**: in Firefox, the "Reject" choices were not recognised ("a checked radio choice is not a recognised rejection"). In Chrome, when everything was already on "Reject", the "Save" button stayed below the screen ("scrolling impossible"): it is now brought on screen, then tapped.
+- **AppConsent**: confirmation button found more reliably (more phrases recognised, button below the screen brought on screen). No diagnostic of this pop-up was available: to be confirmed by a new try.
+- **Faster screen reading**: during a long list, CYRAVA only re-reads the cookie pop-up, not the whole page behind it (up to 1,900 elements re-read at each step in Opera). As a precaution, it re-reads the whole screen after every tap that is not a switch-off or a scroll, at least once every 5 reads, and always before closing the pop-up (confirmation or rejection). New measured duration: "lectureFenetre".
 
-**Plus tôt le 22/11** :
+**Earlier on 22/11**:
 
-- **Les très longues listes sont parcourues jusqu'en bas** (défilement continu, écran après écran) : avant, CYRAVA s'arrêtait après 50 défilements, vers la 400e ligne, et le refus restait partiel. Il s'arrête maintenant quand plus rien de nouveau n'apparaît, et le résultat n'est jamais « vérifié » s'il n'a pas tout vu.
-- **Listes de plus de 200 éléments dans Chrome** : chaque défilement était déclaré « bloqué », donc jamais de validation. Corrigé.
-- **Plus rapide** : les essais sur téléphone ont montré que la lecture et l'analyse de l'écran prenaient l'essentiel du temps (jusqu'à 78 s pour 367 cases). L'analyse est **6 fois plus rapide** (même résultat, vérifié sur les 12 diagnostics des essais), l'attente avant de commencer est plafonnée à 1,5 s (jusqu'à 6 s avant) et la mesure de chaque défilement est allégée.
-- **Boutons « Enregistrer » mieux trouvés** : « Enregistrer la configuration des cookies » (Commanders Act) et les boutons placés sous la liste des choix (Didomi dans Opera) n'étaient pas vus : « bouton de validation introuvable ».
-- **Durée de chaque étape mesurée** (lecture de l'écran, analyse, décochage, défilement, attentes) dans l'export de l'historique et les diagnostics, pour savoir où passe le temps.
-- **Numéro de version** affiché correctement dans l'appli, et **CodeMagic** ne compile plus que lorsqu'on le lance à la main.
-
----
-
-
-## Vérification indépendante du consentement (Consent Verification Engine)
-
-Le module `ConsentVerificationEngine` réévalue les preuves d'accessibilité avant de qualifier un refus :
-- un interrupteur d'état inconnu n'est jamais considéré comme désactivé ;
-- un interrupteur facultatif encore actif empêche la vérification ;
-- une capture ou une exploration incomplète empêche la vérification ;
-- un choix radio « Autoriser » sélectionné empêche la vérification ;
-- les interrupteurs « nécessaires / toujours actifs » ne sont exemptés que si l'analyseur les a explicitement classés ainsi.
-
-## Sommaire
-
-1. [Installer l'APK depuis le téléphone](#1-installer-lapk-depuis-le-téléphone)
-2. [Autoriser les « paramètres restreints » (Android 13+)](#2-autoriser-les-paramètres-restreints-android-13)
-3. [Activer le service d'accessibilité](#3-activer-le-service-daccessibilité)
-4. [Empêcher Samsung d'arrêter CYRAVA](#4-empêcher-samsung-darrêter-cyrava)
-5. [Choisir les applis à surveiller](#5-choisir-les-applis-à-surveiller)
-6. [Utilisation au quotidien](#6-utilisation-au-quotidien)
-7. [Les profils Prudent, Strict et Observation](#7-les-trois-profils-et-les-résultats-possibles)
-8. [Centre de diagnostic et laboratoire](#8-centre-de-diagnostic-et-laboratoire)
-9. [Sauvegarde, export et fichiers de règles](#9-sauvegarde-export-et-fichiers-de-règles)
-10. [Questions fréquentes et dépannage](#10-questions-fréquentes-et-dépannage)
-11. [Signature de l'APK et développement](#11-signature-de-lapk-et-développement)
-12. [Précautions et limites connues](#12-précautions-et-limites-connues)
-13. [Licence](#licence)
+- **Very long lists are scrolled to the bottom** (continuous scrolling, screen after screen): before, CYRAVA stopped after 50 scrolls, around the 400th row, and the rejection stayed partial. It now stops when nothing new appears, and the result is never "verified" if it has not seen everything.
+- **Lists of more than 200 items in Chrome**: every scroll was reported as "blocked", so never any confirmation. Fixed.
+- **Faster**: the phone tries showed that reading and analysing the screen took most of the time (up to 78 s for 367 boxes). The analysis is **6 times faster** (same result, checked on the 12 diagnostics from the tries), the wait before starting is capped at 1.5 s (up to 6 s before), and the measurement of each scroll is lighter.
+- **"Save" buttons found more reliably**: "Enregistrer la configuration des cookies" (Commanders Act) and buttons placed below the list of choices (Didomi in Opera) were not seen: "confirmation button not found".
+- **Duration of each step measured** (screen reading, analysis, switching off, scrolling, waits) in the history export and diagnostics, to find out where the time goes.
+- **Version number** shown correctly in the app, and **CodeMagic** now only builds when started by hand.
 
 ---
 
-## 1. Installer l'APK depuis le téléphone
 
-> **Testeurs** : la [fiche testeurs](docs/FICHE-TESTEURS.md) résume toutes les étapes d'installation et d'essai en quelques minutes de lecture.
+## Independent consent verification (Consent Verification Engine)
 
-**Avant d'installer : désactiver Google Play Protect.** CYRAVA n'est pas sur le Play Store et utilise l'accessibilité : Play Protect risque fort de bloquer l'installation. Dans l'appli **Play Store** : **photo de profil › Play Protect › ⚙️ (roue dentée)**, désactivez **« Analyser les applis avec Play Protect »**. Une fois CYRAVA installé et activé, vous pouvez le réactiver au même endroit ; s'il affiche un avertissement sur CYRAVA, choisissez de conserver l'appli.
+The `ConsentVerificationEngine` module re-evaluates the accessibility evidence before classifying a rejection:
+- a switch in an unknown state is never considered turned off;
+- an optional switch still on prevents verification;
+- an incomplete capture or exploration prevents verification;
+- a selected "Allow" radio choice prevents verification;
+- "necessary / always active" switches are only exempted if the analyser explicitly classified them as such.
 
-**Testeurs : version officielle** : ouvrez l'onglet **Releases** de ce dépôt GitHub depuis le navigateur du téléphone et téléchargez le fichier `.apk` de la dernière version. Chaque Release est signée avec la clé personnelle du mainteneur. N'installez CYRAVA que depuis cette page : un APK trouvé ailleurs peut avoir été modifié.
+## Contents
 
-**Mainteneur : APK de test** : ouvrez la dernière compilation réussie de **CodeMagic** (workflow « tests et APK de vérification »), section **Artifacts**, et téléchargez `app-release.apk`. Il est signé avec la clé de test rangée dans CodeMagic : il se met à jour par-dessus les APK de test précédents, mais pas par-dessus une version officielle (clés différentes).
+1. [Install the APK from your phone](#1-install-the-apk-from-your-phone)
+2. [Allow "restricted settings" (Android 13+)](#2-allow-restricted-settings-android-13)
+3. [Turn on the accessibility service](#3-turn-on-the-accessibility-service)
+4. [Stop Samsung from shutting CYRAVA down](#4-stop-samsung-from-shutting-cyrava-down)
+5. [Choose the apps to monitor](#5-choose-the-apps-to-monitor)
+6. [Everyday use](#6-everyday-use)
+7. [The Careful, Strict and Observation profiles](#7-the-three-profiles-and-possible-results)
+8. [Diagnostic centre and lab](#8-diagnostic-centre-and-lab)
+9. [Backup, export and rules files](#9-backup-export-and-rules-files)
+10. [FAQ and troubleshooting](#10-faq-and-troubleshooting)
+11. [APK signing and development](#11-apk-signing-and-development)
+12. [Precautions and known limitations](#12-precautions-and-known-limitations)
+13. [License](#license)
 
-Installation :
+---
 
-1. Une fois l'APK téléchargé, touchez la notification de téléchargement (ou **Mes fichiers › Téléchargements**) puis le fichier `.apk`.
-2. Si Android affiche *« … n'est pas autorisé à installer des applis inconnues de cette source »* : touchez **Paramètres**, activez **Autoriser depuis cette source**, puis revenez en arrière.
-3. Touchez **Installer**.
-   - Si **Play Protect** affiche quand même un avertissement : **Plus de détails › Installer quand même** (l'appli n'est pas publiée sur le Play Store, c'est normal). S'il bloque, désactivez-le comme indiqué ci-dessus.
-   - Sur Samsung récent, si l'installation est bloquée par le **Blocage automatique** (*Auto Blocker*) : **Paramètres › Sécurité et confidentialité › Blocage automatique**, désactivez-le le temps de l'installation, puis réactivez-le.
+## 1. Install the APK from your phone
 
-> **Mises à jour** : installez la nouvelle version par-dessus l'ancienne. Réglages et historique sont conservés tant que la clé de signature reste la même.
+> **Testers**: the [tester guide](docs/FICHE-TESTEURS.md) sums up every installation and testing step in a few minutes of reading.
 
-## 2. Autoriser les « paramètres restreints » (Android 13+)
+**Before installing: turn off Google Play Protect.** CYRAVA is not on the Play Store and uses accessibility: Play Protect is very likely to block the installation. In the **Play Store** app: **profile picture › Play Protect › ⚙️ (gear)**, turn off **"Scan apps with Play Protect"**. Once CYRAVA is installed and turned on, you can turn it back on in the same place; if it shows a warning about CYRAVA, choose to keep the app.
 
-Pour une appli installée hors Play Store, Android grise le service d'accessibilité tant que vous ne l'avez pas autorisé. L'onglet **Accueil** de CYRAVA affiche ce guide et des boutons raccourcis.
+**Testers: official version**: open the **Releases** tab of this GitHub repository from your phone's browser and download the `.apk` file of the latest version. Each Release is signed with the maintainer's personal key. Only install CYRAVA from this page: an APK found elsewhere may have been modified.
 
-1. Dans CYRAVA, touchez **Ouvrir les réglages d'accessibilité** › **Applis installées** › **CYRAVA – Digital Privacy**. Si l'interrupteur est grisé ou qu'un message **« Paramètre restreint »** apparaît, touchez **OK**.
-2. Revenez dans CYRAVA et touchez **Ouvrir Infos sur l'appli** (ou : **Paramètres › Applications › CYRAVA**).
-3. Touchez **⋮** (en haut à droite) › **Autoriser les paramètres restreints**, puis confirmez avec votre code / empreinte.
+**Maintainer: test APK**: open the latest successful **CodeMagic** build ("tests et APK de vérification" workflow), **Artifacts** section, and download `app-release.apk`. It is signed with the test key stored in CodeMagic: it updates over previous test APKs, but not over an official version (different keys).
 
-> Le menu « Autoriser les paramètres restreints » n'apparaît qu'**après** avoir essayé une première fois d'activer le service (étape 1).
+Installation:
 
-## 3. Activer le service d'accessibilité
+1. Once the APK is downloaded, tap the download notification (or **My Files › Downloads**) then the `.apk` file.
+2. If Android shows *"… is not allowed to install unknown apps from this source"*: tap **Settings**, turn on **Allow from this source**, then go back.
+3. Tap **Install**.
+   - If **Play Protect** still shows a warning: **More details › Install anyway** (the app is not published on the Play Store, this is normal). If it blocks, turn it off as described above.
+   - On recent Samsung phones, if installation is blocked by **Auto Blocker**: **Settings › Security and privacy › Auto Blocker**, turn it off during installation, then turn it back on.
 
-1. **Paramètres › Accessibilité › Applis installées › CYRAVA – Digital Privacy** (ou bouton **Ouvrir les réglages d'accessibilité** dans l'appli).
-2. Activez l'interrupteur et acceptez l'avertissement d'Android (il est générique : CYRAVA ne lit que les applis cochées et n'a pas Internet).
-3. De retour dans CYRAVA, l'accueil n'affiche plus « Protection inactive ».
+> **Updates**: install the new version over the old one. Settings and history are kept as long as the signing key stays the same.
 
-Une fois le service activé, **vous n'avez plus besoin d'ouvrir CYRAVA** : il travaille en arrière-plan.
+## 2. Allow "restricted settings" (Android 13+)
 
-### Après un redémarrage, une mise à jour ou une désactivation
+For an app installed outside the Play Store, Android greys out the accessibility service until you allow it. CYRAVA's **Home** tab shows this guide and shortcut buttons.
 
-- **Redémarrage** : Android relance automatiquement les services d'accessibilité activés ; rien à refaire. Si l'accueil affiche « Service arrêté », voir la section suivante.
-- **Mise à jour** (nouvel APK par-dessus) : le service reste activé, vos réglages et votre historique sont conservés.
-- **Désactiver le service** (Paramètres › Accessibilité) : CYRAVA s'arrête immédiatement et ne lit plus rien. Réactivez-le au même endroit quand vous voulez ; CYRAVA ne le réactive jamais lui-même.
+1. In CYRAVA, tap **Open accessibility settings** › **Installed apps** › **CYRAVA – Digital Privacy**. If the switch is greyed out or a **"Restricted setting"** message appears, tap **OK**.
+2. Go back to CYRAVA and tap **Open app info** (or: **Settings › Apps › CYRAVA**).
+3. Tap **⋮** (top right) › **Allow restricted settings**, then confirm with your PIN / fingerprint.
 
-## 4. Empêcher Samsung d'arrêter CYRAVA
+> The "Allow restricted settings" menu only appears **after** a first attempt to turn on the service (step 1).
 
-One UI arrête volontiers les services en arrière-plan :
+## 3. Turn on the accessibility service
 
-1. Dans CYRAVA (onglet Accueil, carte Batterie), touchez **Ne pas optimiser CYRAVA** et acceptez.
-2. **Paramètres › Batterie › Limites d'utilisation en arrière-plan › Applis jamais en veille › +** › cochez **CYRAVA**.
-3. Facultatif : **Paramètres › Applications › CYRAVA › Batterie › Non restreinte**.
+1. **Settings › Accessibility › Installed apps › CYRAVA – Digital Privacy** (or the **Open accessibility settings** button in the app).
+2. Turn on the switch and accept Android's warning (it is generic: CYRAVA only reads the ticked apps and has no Internet access).
+3. Back in CYRAVA, the Home screen no longer shows "Protection off".
 
-Si l'accueil affiche **« Service arrêté »**, désactivez puis réactivez le service d'accessibilité.
+Once the service is on, **you no longer need to open CYRAVA**: it works in the background.
 
-## 5. Choisir les applis à surveiller
+### After a restart, an update or turning it off
 
-1. Onglet **Applications** : cherchez l'appli, le jeu ou le navigateur, puis activez son interrupteur.
-2. Pour chaque appli cochée, choisissez son mode :
-   - **Refus automatique** : CYRAVA agit, selon le profil choisi dans les Réglages ;
-   - **Observation seule** : CYRAVA analyse la fenêtre et l'inscrit dans l'historique, mais **ne touche à rien**.
-3. Filtres : **Surveillées uniquement** et **Masquer les applis système**. **Tout cocher / Tout décocher** s'applique aux applis affichées.
-4. Ne cochez **que** les applis qui affichent des fenêtres de cookies : CYRAVA ne reçoit **aucun** événement des autres applis.
+- **Restart**: Android automatically restarts enabled accessibility services; nothing to do. If Home shows the service as stopped, see the next section.
+- **Update** (new APK installed over the old one): the service stays on, your settings and history are kept.
+- **Turning off the service** (Settings › Accessibility): CYRAVA stops immediately and reads nothing more. Turn it back on in the same place whenever you like; CYRAVA never turns it back on by itself.
 
-> **Navigateurs** : utilisez **Chrome** ou **Firefox**. **Samsung Internet n'est pas pris en charge** : il ne transmet pas le contenu des pages aux services d'accessibilité. L'onglet Applications le signale et « Tout cocher » ne le coche pas.
+## 4. Stop Samsung from shutting CYRAVA down
 
-> ⚠️ **Jeux avec anti-triche** : certains jeux peuvent détecter les services d'accessibilité et réagir (avertissement, déconnexion, voire sanction). Ne surveillez que le nécessaire et mettez CYRAVA en pause avant de lancer ces jeux.
+One UI readily stops background services:
 
-## 6. Utilisation au quotidien
+1. In CYRAVA (Home tab, Battery card), tap **Don't optimise CYRAVA** and accept.
+2. **Settings › Battery › Background usage limits › Never sleeping apps › +** › tick **CYRAVA**.
+3. Optional: **Settings › Apps › CYRAVA › Battery › Unrestricted**.
 
-L'appli a cinq onglets :
+If Home says the service is switched on but stopped, turn the accessibility service off and on again.
 
-| Onglet | À quoi il sert |
+## 5. Choose the apps to monitor
+
+1. **Apps** tab: find the app, game or browser, then turn on its switch.
+2. For each ticked app, choose its mode:
+   - **Automatic rejection**: CYRAVA acts, according to the profile chosen in Settings;
+   - **Observe only**: CYRAVA analyses the pop-up and logs it in the history, but **touches nothing**.
+3. Filters: **Monitored only** and **Hide system apps**. **Tick all** applies to the apps shown.
+4. **Only** tick apps that show cookie pop-ups: CYRAVA receives **no** events from other apps.
+
+> **Browsers**: use **Chrome** or **Firefox**. **Samsung Internet is not supported**: it does not pass page content to accessibility services. The Apps tab says so and "Tick all" does not tick it.
+
+> ⚠️ **Games with anti-cheat**: some games can detect accessibility services and react (warning, disconnection, even a ban). Only monitor what you need and pause CYRAVA before starting these games.
+
+## 6. Everyday use
+
+The app has five tabs:
+
+| Tab | What it is for |
 |---|---|
-| **Accueil** | État de la protection (active, en pause, à configurer…), bouton **Mettre en pause / Reprendre la protection**, **Arrêt d'urgence**, activité (refus réussis, graphique), derniers événements, état du service, batterie, tuiles. |
-| **Applications** | Choisir les applis surveillées et leur mode, voir le dernier résultat de chacune. |
-| **Historique** | Chaque fenêtre traitée : appli, date, résultat, plateforme reconnue, niveau de confiance, détail des interrupteurs. Filtres, recherche, export (avec la durée de chaque étape, en millisecondes). |
-| **Compatibilité** | Le bilan de chaque appli (compatible, partielle, à vérifier, non prise en charge…), calculé sur ses 5 dernières fenêtres réelles. |
-| **Réglages** | Langue, profil, notifications, thème, centre de diagnostic, laboratoire, règles, sauvegarde, suppression des données, confidentialité. |
+| **Home** | Protection status (on, paused, to set up…), **Pause / Resume protection** button, **Emergency stop**, activity (successful rejections, chart), latest events, service status, battery, tiles. |
+| **Apps** | Choose the monitored apps and their mode, see each one's last result. |
+| **History** | Every pop-up handled: app, date, result, recognised platform, confidence level, switch details. Filters, search, export (with the duration of each step, in milliseconds). |
+| **Compatibility** | Each app's summary (compatible, partial, to check, not supported…), worked out from its last 5 real pop-ups. |
+| **Settings** | Language, profile, notifications, theme, diagnostic centre, lab, rules, backup, data deletion, privacy. |
 
-- **Pause / reprise** : bouton de l'accueil, ou tuile rapide **CYRAVA**. En pause, aucune fenêtre n'est traitée.
-- **Arrêt d'urgence** : stoppe immédiatement l'action en cours et met la protection en pause. Rien n'est effacé.
-- **Notifications** (Réglages › Notifications) : *Toutes*, *Échecs uniquement*, *Interruptions uniquement* ou *Aucune*.
-- **Statistiques** : calculées uniquement à partir de l'historique de votre téléphone. Aucun chiffre n'est estimé ou inventé.
-- **Sites déjà traités** : CYRAVA s'en souvient jusqu'au redémarrage du téléphone.
+- **Pause / resume**: Home button, or the **CYRAVA** quick tile. While paused, no pop-up is handled.
+- **Emergency stop**: immediately stops the current action and pauses protection. Nothing is deleted.
+- **Notifications** (Settings › Notifications): *All*, *Failures only*, *Interruptions only* or *None*.
+- **Statistics**: worked out only from your phone's history. No figure is estimated or made up.
+- **Sites already handled**: CYRAVA remembers them until the phone restarts.
 
-### Les tuiles rapides
+### Quick tiles
 
-1. Ajoutez-les une fois : sur Android 13+, boutons de l'accueil ; sinon déroulez le volet, touchez **✎** et faites glisser **CYRAVA** et **Capturer l'écran** dans la zone active.
-2. **CYRAVA** : un appui = pause / reprise.
-3. **Capturer l'écran** : ouvrez l'appli sur sa fenêtre de cookies, déroulez le volet et touchez la tuile ; la structure de la fenêtre est enregistrée (section 8). Ce n'est pas une image : CYRAVA ne prend jamais de capture d'image.
+1. Add them once: on Android 13+, with the Home buttons; otherwise pull down the quick settings panel, tap **✎** and drag **CYRAVA** and **Capture screen** into the active area.
+2. **CYRAVA**: one tap = pause / resume.
+3. **Capture screen**: open the app on its cookie pop-up, pull down the panel and tap the tile; the structure of the pop-up is saved (section 8). It is not an image: CYRAVA never takes a screenshot.
 
-## 7. Les trois profils et les résultats possibles
+## 7. The three profiles and possible results
 
-### Profils (Réglages › Profil de refus)
+### Profiles (Settings › Rejection profile)
 
-| Profil | Comportement |
+| Profile | Behaviour |
 |---|---|
-| **Prudent** (par défaut pour une nouvelle installation) | N'agit que si la fenêtre est reconnue avec **certitude** (plateforme identifiée ou nombreux indices). Sinon il observe sans agir. Une fenêtre qui ne ressemble à aucune de celles déjà refusées dans l'appli est à valider dans l'onglet Compatibilité. |
-| **Strict** | Refuse toutes les options facultatives reconnues ; ne valide qu'avec un bouton de validation sûr. |
-| **Observation** | N'agit jamais : analyse et inscrit les fenêtres dans l'historique. |
+| **Careful** (default for a new installation) | Only acts if the pop-up is recognised with **certainty** (identified platform or many clues). Otherwise it observes without acting. A pop-up that looks like none of those already rejected in the app must be approved in the Compatibility tab. |
+| **Strict** | Rejects every optional choice it recognises; only confirms with a safe confirmation button. |
+| **Observation** | Never acts: analyses pop-ups and logs them in the history. |
 
-Réglage complémentaire **« Ne pas valider dans le doute »** (**activé par défaut**, à laisser activé) : si des cases n'ont pas pu être lues ou désactivées, CYRAVA n'enregistre pas vos choix et vous laisse terminer à la main. Désactivé, il peut enregistrer un refus incomplet (« Refus partiel »).
+Additional setting **"Don't confirm when in doubt"** (**on by default**, leave it on): if some boxes could not be read or turned off, CYRAVA does not save your choices and lets you finish by hand. When off, it may save an incomplete rejection ("Partial rejection").
 
-Dans tous les cas, **CYRAVA n'enregistre jamais vos choix s'il n'a pas tout vu** (liste pas lue jusqu'en bas, catégorie ou page des partenaires non ouverte) : il utilise alors le « Tout refuser » du site s'il existe, sinon il ne clique sur rien.
+In every case, **CYRAVA never saves your choices if it has not seen everything** (list not read to the bottom, category or partners page not opened): it then uses the site's "Reject all" if there is one, otherwise it taps nothing.
 
-Dans **tous** les profils, CYRAVA ne clique jamais sur une acceptation.
+In **every** profile, CYRAVA never taps an accept button.
 
-### Résultats (onglet Historique)
+### Results (History tab)
 
-| Résultat | Signification |
+| Result | Meaning |
 |---|---|
-| **Refus par les préférences : interrupteurs vérifiés désactivés** | Options ouvertes, interrupteurs désactivés puis relus désactivés, choix validés. Seul résultat appuyé par une observation. |
-| **Refusé avec le bouton du site (non vérifiable)** | Un bouton de refus a été cliqué et la fenêtre s'est fermée. La fermeture ne prouve pas que l'appli a enregistré le refus. |
-| **Refus partiel** | Le refus a été validé, mais tout n'a pas pu être vérifié ou désactivé (une seule case dont l'état n'est pas publié suffit). N'arrive que si « Ne pas valider dans le doute » est désactivé, ou après un « Tout refuser » utilisé faute d'avoir pu tout lire. |
-| **À terminer à la main** | Réglage « Ne pas valider dans le doute » : la fenêtre est laissée ouverte pour que vous finissiez. |
-| **Capture incomplète** | L'écran n'a pas pu être lu entièrement. Aucun refus n'est établi. |
-| **Refus impossible** | Aucun bouton de refus sûr (mur « payer ou accepter », formulation inconnue…). Rien n'a été cliqué. |
-| **Action interrompue** | Pause, arrêt d'urgence, ou vous avez quitté l'appli pendant le traitement. |
-| **Observé (aucune action)** | Profil Observation ou Prudent : la fenêtre a seulement été analysée. |
+| **Rejected in preferences: switches verified off** | Options opened, switches turned off then re-read as off, choices confirmed. The only result backed by an observation. |
+| **Rejected with the site's button (unverifiable)** | A reject button was tapped and the pop-up closed. Closing does not prove that the app saved the rejection. |
+| **Partial rejection** | The rejection was confirmed, but not everything could be checked or turned off (a single box whose state is not published is enough). Only happens if "Don't confirm when in doubt" is off, or after a "Reject all" used because not everything could be read. |
+| **Finish by hand** | "Don't confirm when in doubt" setting: the pop-up is left open for you to finish. |
+| **Incomplete capture** | The screen could not be fully read. No rejection is established. |
+| **Rejection impossible** | No safe reject button ("pay or accept" wall, unknown wording…). Nothing was tapped. |
+| **Action interrupted** | Pause, emergency stop, or you left the app during processing. |
+| **Observed (no action)** | Observation or Careful profile: the pop-up was only analysed. |
 
-### Comment CYRAVA décide
+### How CYRAVA decides
 
-1. Une fenêtre est reconnue si elle contient **au moins 2 indices** (cookies, consentement, partenaires, intérêt légitime, identifiants propres à une plateforme…) **et au moins 1 bouton connu**.
-2. **Refus direct** s'il existe : « Tout refuser », « Continuer sans accepter », « Reject all », « Alle ablehnen »…
-3. Sinon **ouverture des réglages** (« Paramétrer », « Personnaliser », « Gérer mes choix »…). Sur l'écran des finalités, **d'abord le refus global** (« Tout refuser », « Tout désactiver », interrupteur principal), **ensuite seulement** chaque finalité encore acceptée (son « Refuser » ou son interrupteur, avec relecture de l'état). Les longues listes sont parcourues jusqu'en bas. Réglages rangés **en onglets par catégorie** (OneTrust) : chaque catégorie est ouverte à son tour (un onglet n'enregistre rien).
-4. **Partenaires / fournisseurs** : le lien (« Voir nos partenaires », « Vendors »…) est ouvert et seul le **refus global** y est cliqué (« Tous les partenaires › Bloquer », « Tout refuser ») ; aucun partenaire n'est déplié ni réglé un par un. Quand ce refus global est sélectionné, la liste est considérée refusée.
-5. **Validation** (« Enregistrer », « Confirmer mes choix », « Save & Exit »…), **seulement si tous les choix ont été vus**. Si le bouton n'est pas visible, CYRAVA le fait venir à l'écran ou **défile jusqu'en bas** de la fenêtre avant de conclure qu'il manque. Un « Enregistrer » ou un « Tout refuser » coincé sous la barre du navigateur (hauteur nulle, Opera) est actionné directement par l'accessibilité, jamais par un appui à l'aveugle. Un « Enregistrer » grisé par le site n'est jamais touché : le « Tout refuser » du site sert alors de repli.
+1. A pop-up is recognised if it contains **at least 2 clues** (cookies, consent, partners, legitimate interest, platform-specific identifiers…) **and at least 1 known button**.
+2. **Direct rejection** if available: "Reject all", "Continue without accepting", "Tout refuser", "Alle ablehnen"…
+3. Otherwise **opening the settings** ("Manage options", "Customise", "Paramétrer"…). On the purposes screen, **global rejection first** ("Reject all", "Disable all", master switch), **only then** each purpose still accepted (its "Reject" or its switch, with the state re-read). Long lists are scrolled to the bottom. Settings **grouped in tabs by category** (OneTrust): each category is opened in turn (a tab saves nothing).
+4. **Partners / vendors**: the link ("See our partners", "Vendors"…) is opened and only the **global rejection** is tapped there ("All partners › Block", "Reject all"); no partner is expanded or set one by one. When this global rejection is selected, the list is considered rejected.
+5. **Confirmation** ("Save", "Confirm my choices", "Save & Exit"…), **only if every choice has been seen**. If the button is not visible, CYRAVA brings it on screen or **scrolls to the bottom** of the pop-up before concluding it is missing. A "Save" or "Reject all" stuck under the browser bar (zero height, Opera) is triggered directly through accessibility, never by a blind tap. A "Save" greyed out by the site is never touched: the site's "Reject all" is then used as a fallback.
 
-Ce parcours est **le même pour toutes les plateformes** (Didomi, Sourcepoint, Axeptio, OneTrust, Quantcast, Cookiebot, inconnues…) : chaque plateforme n'apporte que ses libellés et ses repères d'écran.
+This path is **the same for every platform** (Didomi, Sourcepoint, Axeptio, OneTrust, Quantcast, Cookiebot, unknown ones…): each platform only brings its own labels and screen landmarks.
 
-**Jamais cliqués**, sur aucune plateforme : les sections dépliables (lignes « + », « - », « › », chevrons, « Catégories de données », « Stockage de l'appareil », « Voir les infos de l'utilisateur », titre « Intérêt légitime »…), « En savoir plus » / « Voir plus » / « Détails » à l'intérieur des réglages, les noms de partenaires, les liens vers la politique de confidentialité ou une page externe, et bien sûr toute acceptation.
+**Never tapped**, on any platform: expandable sections ("+", "-", "›" rows, chevrons, "Data categories", "Device storage", "View user info", "Legitimate interest" heading…), "Learn more" / "See more" / "Details" inside the settings, partner names, links to the privacy policy or an external page, and of course any acceptance.
 
-6. **Garde-fou** sur chaque clic (vérifié à la décision puis juste avant l'action) : tout élément dont le texte contient *accepter, accept, agree, autoriser, allow, consentir, s'abonner, acheter…* est bloqué, sauf s'il correspond **exactement** à une formule de refus connue, ou s'il s'agit d'un refus formulé avec une vraie négation juste avant le verbe (« Je n'accepte pas », « Ne pas autoriser », « Continuer sans accepter »). « pas » seul ne compte pas comme négation. Seule exception validée : « Autoriser la sélection » quand tous les interrupteurs ont été vus refusés. En cas de doute, CYRAVA ne fait rien.
-7. **Murs « accepter ou payer »** : reconnus, rien n'est cliqué (« Refus impossible »).
-8. **Anti-boucle** : un même élément n'est **jamais cliqué deux fois**, avec une seule exception : un interrupteur décoché pendant qu'il était encore sous l'écran (Chrome), puis relu **toujours activé** une fois visible, a droit à un second et dernier essai, qui ne peut que le désactiver. Jamais de troisième clic. Si l'écran ne change pas après un clic, CYRAVA passe à l'étape suivante. Nombre d'actions et durée limités par fenêtre ; après un échec, la même fenêtre n'est pas réessayée tout de suite.
+6. **Safety guard** on every tap (checked at decision time then right before the action): any element whose text contains *accepter, accept, agree, autoriser, allow, consentir, s'abonner, acheter…* is blocked, unless it **exactly** matches a known rejection phrase, or it is a rejection worded with a real negation right before the verb ("I do not accept", "Do not allow", "Continue without accepting"). "pas" ("not" in French) on its own does not count as a negation. Only approved exception: "Allow selection" when every switch has been seen rejected. When in doubt, CYRAVA does nothing.
+7. **"Accept or pay" walls**: recognised, nothing is tapped ("Rejection impossible").
+8. **Anti-loop**: the same element is **never tapped twice**, with a single exception: a switch turned off while it was still below the screen (Chrome), then re-read **still on** once visible, gets a second and last try, which can only turn it off. Never a third tap. If the screen does not change after a tap, CYRAVA moves on to the next step. Number of actions and duration are limited per pop-up; after a failure, the same pop-up is not retried straight away.
 
-## 8. Centre de diagnostic et laboratoire
+## 8. Diagnostic centre and lab
 
-### Centre de diagnostic (Réglages › Centre de diagnostic)
+### Diagnostic centre (Settings › Diagnostic centre)
 
-Si une fenêtre n'est pas reconnue ou pas refusée complètement, enregistrez sa structure pour que de nouvelles règles soient ajoutées :
+If a pop-up is not recognised or not fully rejected, save its structure so new rules can be added:
 
-1. Vérifiez que l'appli est **cochée** (seules les applis surveillées peuvent être capturées).
-2. Capture **automatique** (« Diagnostic automatique » activé) ou **manuelle** : **Capturer dans 5 secondes**, ou tuile **Capturer l'écran**.
-3. Touchez **Partager** sur le fichier voulu. Le fichier s'appelle `diagnostic-<appli>-<date>.json`.
-4. La carte **État du système** résume l'installation sans aucune donnée personnelle.
+1. Make sure the app is **ticked** (only monitored apps can be captured).
+2. **Automatic** capture ("Automatic diagnostics" turned on) or **manual**: **Capture in 5 seconds**, or the **Capture screen** tile.
+3. Tap **Share** on the file you want. The file is named `diagnostic-<app>-<date>.json`. **Share all as one .zip file** sends every diagnostic and the history at once.
+4. The **System status** card sums up the installation without any personal data.
 
-Le fichier **contient le texte affiché par l'appli à ce moment-là**, mais jamais le contenu des champs de saisie et de mot de passe. Il reste sur le téléphone tant que vous ne le partagez pas.
+The file **contains the text shown by the app at that moment**, but never the content of input and password fields. It stays on the phone as long as you do not share it.
 
-### Laboratoire (Réglages › Laboratoire)
+### Lab (Settings › Lab)
 
-Scénarios de fenêtres simulées pour vérifier le moteur de décision sur le téléphone, sans toucher à aucune appli. Le vrai formulaire Google UMP est testé à part par l'appli de démonstration : voir [docs/testing/GOOGLE_UMP_E2E.md](docs/testing/GOOGLE_UMP_E2E.md).
+Simulated pop-up scenarios to check the decision engine on the phone, without touching any app. The real Google UMP form is tested separately by the demo app: see [docs/testing/GOOGLE_UMP_E2E.md](docs/testing/GOOGLE_UMP_E2E.md) (in French).
 
-## 9. Sauvegarde, export et fichiers de règles
+## 9. Backup, export and rules files
 
-- **Sauvegarde des réglages** (Réglages › Sauvegarde) : exporte / restaure profil, notifications, thème et liste des applis surveillées (ni historique ni texte d'écran).
-- **Export de l'historique** (onglet Historique) : **JSON** ou **CSV** (lisible dans un tableur).
-- **Fichiers de règles** (Réglages › Règles de détection) : vous pouvez importer un fichier de règles plus récent. Il est contrôlé avant usage : le garde-fou et la gestion des interrupteurs restent **toujours** ceux de l'appli, aucune formule ajoutée ne peut contenir un mot d'acceptation, et au moindre doute le fichier est refusé. Rien de ce qu'il contient n'est exécuté. Voir [docs/cmp-library/IMPORT_REGLES.md](docs/cmp-library/IMPORT_REGLES.md).
-- **Supprimer toutes les données** (Réglages › Données enregistrées) : efface réglages, historique, diagnostics et règles importées.
+- **Settings backup** (Settings › Settings backup): exports / restores profile, notifications, theme and the list of monitored apps (no history, no screen text).
+- **History export** (History tab): **JSON** or **CSV** (readable in a spreadsheet).
+- **Rules files** (Settings › Detection rules): you can import a newer rules file. It is checked before use: the safety guard and switch handling **always** stay the app's own, no added phrase can contain an accept word, and at the slightest doubt the file is rejected. Nothing it contains is executed. See [docs/cmp-library/IMPORT_REGLES.md](docs/cmp-library/IMPORT_REGLES.md).
+- **Delete all data** (Settings › Stored data): erases settings, history, diagnostics and imported rules.
 
-## 10. Questions fréquentes et dépannage
+## 10. FAQ and troubleshooting
 
-**Dois-je laisser CYRAVA ouvert ?** Non. Une fois le service activé, il fonctionne en arrière-plan, même après un redémarrage.
+**Do I need to keep CYRAVA open?** No. Once the service is on, it works in the background, even after a restart.
 
-**Est-ce que ça use la batterie ?** Très peu : Android ne réveille CYRAVA que lorsqu'une appli cochée change d'écran.
+**Does it drain the battery?** Very little: Android only wakes CYRAVA up when a ticked app changes screen.
 
-**Rien ne se passe dans une appli.** Vérifiez dans l'ordre :
-1. l'appli est cochée et n'est pas en « Observation seule » ;
-2. l'accueil affiche « Protection active » ;
-3. le profil n'est pas « Observation » ; en profil Prudent, la fenêtre doit être reconnue avec certitude ;
-4. le navigateur n'est pas Samsung Internet ;
-5. sinon, faites une capture dans le centre de diagnostic : la formulation de cette fenêtre est sans doute inconnue.
+**Nothing happens in an app.** Check, in this order:
+1. the app is ticked and not set to "Observe only";
+2. Home shows "Protection on";
+3. the profile is not "Observation"; in the Careful profile, the pop-up must be recognised with certainty;
+4. the browser is not Samsung Internet;
+5. otherwise, make a capture in the diagnostic centre: this pop-up's wording is probably unknown.
 
-**En désinstallant, je vois encore `fr.refusbot`.** C'est l'ancienne bêta 1 (identifiant `fr.refusbot`), restée installée à côté de la nouvelle (`fr.cyrava`) : pour Android, ce sont deux applis différentes. Désinstallez celle qui affiche `fr.refusbot`. Les dossiers du code source s'appellent encore `fr.refusbot`, mais cela ne se voit nulle part sur le téléphone.
+**When uninstalling, I still see `fr.refusbot`.** That is the old beta 1 (identifier `fr.refusbot`), still installed next to the new one (`fr.cyrava`): for Android, they are two different apps. Uninstall the one showing `fr.refusbot`. The source code folders are still named `fr.refusbot`, but this is not visible anywhere on the phone.
 
-**« Refus partiel », est-ce grave ?** Le refus a été enregistré mais tout n'a pas pu être vérifié. Le motif est dans l'historique. Pour l'éviter, laissez « Ne pas valider dans le doute » activé : vous finirez alors vous-même les rares fenêtres douteuses.
+**"Partial rejection": is it serious?** The rejection was saved but not everything could be checked. The reason is in the history. To avoid it, leave "Don't confirm when in doubt" on: you will then finish the rare doubtful pop-ups yourself.
 
-**L'onglet Compatibilité indique « À vérifier ».** La dernière fenêtre ne ressemble à aucune de celles déjà refusées. Si elle vous paraît normale, touchez **Valider la nouvelle interface**.
+**The Compatibility tab says "To check".** The last pop-up looks like none of those already rejected. If it looks normal to you, tap **Approve the new layout**.
 
-## 11. Signature de l'APK et développement
+## 11. APK signing and development
 
-### Deux signatures, jamais mélangées
+### Two signatures, never mixed
 
-- **APK de test** (CodeMagic) : signés avec une **clé de test** rangée dans CodeMagic sous le nom `cyrava_test` (Teams › Code signing identities › Android keystores). **Aucune clé n'est rangée dans ce dépôt public.** Sans cette clé (compilation locale, émulateur GitHub), la clé « debug » générée par Android sur la machine est utilisée.
-- **APK signé avec votre clé** : workflow CodeMagic **« CYRAVA - APK signé avec ma clé (manuel) »**, qui vérifie l'empreinte de la clé personnelle et l'absence de permission Internet. Les workflows GitHub (🔐 développement, 🚀 publication officielle) existent encore mais ne sont plus utilisés depuis le 21/11 (plus de crédit GitHub Actions). Les secrets de signature se rangent uniquement dans CodeMagic (ou dans les environnements GitHub prévus), jamais dans le code ni dans un message.
+- **Test APKs** (CodeMagic): signed with a **test key** stored in CodeMagic under the name `cyrava_test` (Teams › Code signing identities › Android keystores). **No key is stored in this public repository.** Without this key (local build, GitHub emulator), the "debug" key generated by Android on the machine is used.
+- **APK signed with your key**: CodeMagic workflow **"CYRAVA - APK signé avec ma clé (manuel)"**, which checks the personal key's fingerprint and the absence of the Internet permission. The GitHub workflows (🔐 development, 🚀 official release) still exist but have not been used since 21/11 (no more GitHub Actions credit). Signing secrets are stored only in CodeMagic (or in the intended GitHub environments), never in the code or in a message.
 
-### Publier une nouvelle version pour les testeurs (mainteneur, depuis le téléphone)
+### Publishing a new version for testers (maintainer, from the phone)
 
-1. Vérifier le numéro de version dans [`gradle.properties`](gradle.properties) (`cyrava.version`, par exemple `1.1.0-beta.3`) : c'est le seul endroit à changer, et il doit être nouveau.
-2. Sur CodeMagic, lancer **« CYRAVA - tests et APK de vérification »** sur `main` : tout doit être vert.
-3. Lancer ensuite **« CYRAVA - APK signé avec ma clé (manuel) »** sur `main`, puis télécharger l'APK dans **Artifacts**.
-4. Sur GitHub, créer la Release : <https://github.com/nobackface571-svg/CYRAVA/releases/new>. Étiquette (tag) `v` + le numéro (par exemple `v1.1.0-beta.3`), cible `main`, titre « CYRAVA 1.1.0 bêta 3 », notes reprises du [journal des versions](CHANGELOG.md), APK ajouté en pièce jointe, case **« Set as a pre-release »** cochée pour une bêta, puis **Publish release**.
-5. Déplacer, dans le journal des versions, la partie « À venir (non publié) » sous le titre de la nouvelle version.
+1. Check the version number in [`gradle.properties`](gradle.properties) (`cyrava.version`, for example `1.1.0-beta.3`): it is the only place to change, and it must be new.
+2. On CodeMagic, run **"CYRAVA - tests et APK de vérification"** on `main`: everything must be green.
+3. Then run **"CYRAVA - APK signé avec ma clé (manuel)"** on `main`, and download the APK from **Artifacts**.
+4. On GitHub, create the Release: <https://github.com/nobackface571-svg/CYRAVA/releases/new>. Tag `v` + the number (for example `v1.1.0-beta.3`), target `main`, title "CYRAVA 1.1.0 bêta 3", notes taken from the [changelog](CHANGELOG.md), APK attached, **"Set as a pre-release"** box ticked for a beta, then **Publish release**.
+5. In the changelog, move the "À venir (non publié)" (upcoming, unreleased) part under the heading of the new version.
 
-> ⚠️ Changer de clé impose de **désinstaller une fois** CYRAVA (Android refuse une mise à jour signée par une autre clé). Conservez le keystore original et une sauvegarde hors du téléphone.
+> ⚠️ Changing the key requires **uninstalling** CYRAVA **once** (Android refuses an update signed with another key). Keep the original keystore and a backup off the phone.
 
-### Pour les développeurs
+### For developers
 
 ```
-core/   Kotlin pur (aucune dépendance Android) : normalisation, règles, garde-fou, analyse d'écran,
-        machine à états, validation des règles importées, laboratoire, export diagnostic. Testé sur la JVM.
-app/    Android : service d'accessibilité, Compose / Material 3, DataStore, tuiles, historique.
-        Textes de l'interface : res/values (français) et res/values-en (anglais).
-app/src/main/assets/rules.json        Formules en 7 langues et profils de plateformes.
-app/src/main/assets/cmp-catalog.json  Catalogue des plateformes (contrôlé par scripts/cmp-library/validate_catalog.py).
-demo/   Appli de test : vrai SDK Google UMP + fenêtres CMP génériques dans une WebView.
+core/   Pure Kotlin (no Android dependency): normalisation, rules, safety guard, screen analysis,
+        state machine, imported-rules validation, lab, diagnostic export. Tested on the JVM.
+app/    Android: accessibility service, Compose / Material 3, DataStore, tiles, history.
+        Interface strings: res/values (French) and res/values-en (English).
+app/src/main/assets/rules.json        Phrases in 7 languages and platform profiles.
+app/src/main/assets/cmp-catalog.json  Platform catalogue (checked by scripts/cmp-library/validate_catalog.py).
+demo/   Test app: real Google UMP SDK + generic CMP pop-ups in a WebView.
 ```
 
-- Identifiant de l'appli : `fr.cyrava` (depuis la bêta 2). Les paquets du code Kotlin restent `fr.refusbot` (`namespace` Gradle), ce qui ne change rien pour les utilisateurs.
-- Tests : `./gradlew test` — vérification complète : `./gradlew test :app:lintRelease :app:assembleRelease`.
-- Compilation et tests, lancés à la main : `codemagic.yaml`. Test sur émulateur : `.github/workflows/e2e.yml` et `.github/scripts/e2e.sh`.
-- Voir aussi [ARCHITECTURE.md](ARCHITECTURE.md), [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md) et [CHANGELOG.md](CHANGELOG.md).
+- App identifier: `fr.cyrava` (since beta 2). The Kotlin code packages remain `fr.refusbot` (Gradle `namespace`), which changes nothing for users.
+- Tests: `./gradlew test` — full check: `./gradlew test :app:lintRelease :app:assembleRelease`.
+- Builds and tests, started by hand: `codemagic.yaml`. Emulator test: `.github/workflows/e2e.yml` and `.github/scripts/e2e.sh`.
+- See also [ARCHITECTURE.md](ARCHITECTURE.md) (in French), [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md) and [CHANGELOG.md](CHANGELOG.md).
+- Code comments, commit messages and internal notes are in French.
 
-## 12. Précautions et limites connues
+## 12. Precautions and known limitations
 
-**Précautions**
-- Un service d'accessibilité peut lire l'écran des applis qu'il surveille : ne cochez que les applis nécessaires, et n'installez que l'APK publié dans les **Releases** de ce dépôt.
-- Les fichiers de diagnostic contiennent du texte d'écran : relisez-les et ne les partagez qu'avec qui vous voulez.
-- L'historique ne contient jamais de texte d'écran : seulement la date, l'appli, le résultat, la plateforme reconnue, des compteurs et un motif générique.
-- N'importez un fichier de règles que s'il vient d'une source de confiance.
+**Precautions**
+- An accessibility service can read the screen of the apps it monitors: only tick the apps you need, and only install the APK published in this repository's **Releases**.
+- Diagnostic files contain screen text: read them and only share them with whoever you choose.
+- The history never contains screen text: only the date, app, result, recognised platform, counters and a generic reason.
+- Only import a rules file if it comes from a trusted source.
 
-**Limites**
-- **Tests** : automatiques sur des fenêtres simulées, et essais manuels sur **un seul** vrai téléphone (Samsung Galaxy S23 FE) notés dans [docs/essais-reels.md](docs/essais-reels.md). Chaque site est différent : le comportement se confirme à l'usage, avec l'historique et le centre de diagnostic.
-- **Durée** : un refus simple prend quelques secondes ; avec « Refus complet », une très longue liste de partenaires peut prendre jusqu'à 2 minutes (délai maximum par fenêtre).
-- **Samsung Internet** : non pris en charge (voir section 5).
-- **Cases dans une page web dont l'état n'est pas publié** : CYRAVA ne sait pas si un appui activerait ou désactiverait la case ; par sécurité il **ne les touche pas** et le résultat est **Refus partiel**.
-- **Interfaces dessinées dans un moteur de jeu** (Unity/Unreal sans vues Android ni WebView) : invisibles pour l'accessibilité, donc non traitées.
-- **Formulations ou langues inconnues** : seules les formules des règles sont reconnues. Une fenêtre inconnue n'est jamais cliquée au hasard.
-- **Fenêtres très grandes** : lues en partie seulement ; CYRAVA peut au plus cliquer un « Tout refuser » visible, une fois, et annonce le résultat « non vérifiable ».
-- **Murs « payer ou accepter »** : aucune option de refus gratuite → rien n'est cliqué.
-- **Économie d'énergie** de One UI : peut arrêter le service sans prévenir ; suivez la section 4.
-- **Anti-triche** de certains jeux en ligne : voir la section 5.
+**Limitations**
+- **Tests**: automated on simulated pop-ups, and manual tries on **a single** real phone (Samsung Galaxy S23 FE) recorded in [docs/essais-reels.md](docs/essais-reels.md). Every site is different: behaviour is confirmed through use, with the history and the diagnostic centre.
+- **Duration**: a simple rejection takes a few seconds; with "Full rejection", a very long list of partners can take up to 2 minutes (maximum time per pop-up).
+- **Samsung Internet**: not supported (see section 5).
+- **Boxes in a web page whose state is not published**: CYRAVA does not know whether a tap would turn the box on or off; to be safe it **does not touch them** and the result is **Partial rejection**.
+- **Interfaces drawn in a game engine** (Unity/Unreal without Android views or WebView): invisible to accessibility, so not handled.
+- **Unknown wording or languages**: only the phrases in the rules are recognised. An unknown pop-up is never tapped at random.
+- **Very large pop-ups**: only partly read; CYRAVA can at most tap a visible "Reject all", once, and reports the result as "unverifiable".
+- **"Pay or accept" walls**: no free rejection option → nothing is tapped.
+- One UI **power saving**: may stop the service without warning; follow section 4.
+- **Anti-cheat** in some online games: see section 5.
 
-## Licence
+## License
 
-CYRAVA est un logiciel libre, © 2026 NoBackFace, distribué sous la **GNU General Public License v3.0** (texte complet : [LICENSE](LICENSE)).
+CYRAVA is free software, © 2026 NoBackFace, distributed under the **GNU General Public License v3.0** (full text: [LICENSE](LICENSE)).
 
-En résumé : vous pouvez utiliser, étudier, modifier et redistribuer CYRAVA. Si vous distribuez une version modifiée, vous devez la publier sous la même licence, avec son code source. Le logiciel est fourni sans aucune garantie.
+In short: you may use, study, modify and redistribute CYRAVA. If you distribute a modified version, you must publish it under the same licence, with its source code. The software comes with no warranty.
 
-Le nom « CYRAVA » et son logo désignent ce projet : merci de donner un autre nom à une version modifiée.
+The name "CYRAVA" and its logo identify this project: please give a modified version another name.

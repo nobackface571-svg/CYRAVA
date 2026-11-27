@@ -1,73 +1,75 @@
-# Checklist de validation sur Samsung réel
+🇬🇧 **English** | 🇫🇷 [Français](SAMSUNG_DEVICE_CHECKLIST.fr.md)
 
-Cette checklist est à remplir avec le téléphone physique de l'utilisateur. Les résultats d'émulateur
-ne remplacent pas ces essais. Ne pas activer de tests automatiques sur des applications non choisies.
+# Validation checklist on a real Samsung phone
 
-## Préparation
+This checklist is to be filled in with the user's physical phone. Emulator results do not
+replace these tests. Do not turn on automated tests on apps that were not chosen.
 
-- [ ] Noter modèle Samsung, version Android/One UI, version CYRAVA et version Chrome.
-- [ ] Installer uniquement l'APK de test dont le commit et le SHA-256 sont connus.
-- [ ] Vérifier les permissions et activer le service d'accessibilité volontairement.
-- [ ] Sélectionner explicitement une application/site de test.
-- [ ] Activer le profil Observation au premier passage.
-- [ ] Préparer une page de consentement de test connue et noter son URL.
-- [ ] Pour UMP physique, récupérer le `TEST-DEVICE-HASHED-ID` dans les logs et le fournir via
-  `UMP_DEMO_TEST_DEVICE_HASHED_ID`, jamais dans le dépôt.
+## Preparation
 
-## Vérifications de sécurité
+- [ ] Note the Samsung model, Android/One UI version, CYRAVA version and Chrome version.
+- [ ] Only install the test APK whose commit and SHA-256 are known.
+- [ ] Check the permissions and turn on the accessibility service deliberately.
+- [ ] Explicitly select a test app/site.
+- [ ] Turn on the Observation profile for the first pass.
+- [ ] Prepare a known test consent page and note its URL.
+- [ ] For physical UMP, get the `TEST-DEVICE-HASHED-ID` from the logs and provide it via
+  `UMP_DEMO_TEST_DEVICE_HASHED_ID`, never in the repository.
 
-- [ ] Un bouton « Tout accepter », « Accepter » ou équivalent n'est jamais actionné.
-- [ ] Un libellé contenant une négation ou une phrase explicative n'est pas pris pour un bouton Refuser.
-- [ ] Un contrôle dont l'état est inconnu n'est jamais actionné.
-- [ ] Un état « Off » ambigu n'est pas considéré comme une preuve OFF.
-- [ ] Après action, l'état est relu ; l'acceptation Android seule n'est pas comptée comme réussite.
-- [ ] Une fenêtre qui disparaît après le clic n'est pas comptée comme un refus vérifié.
-- [ ] Les champs de saisie et les sous-arbres sensibles ne sont ni lus ni exportés.
+## Safety checks
 
-## Navigation et fenêtres
+- [ ] An "Accept all", "Accept" or equivalent button is never triggered.
+- [ ] A label containing a negation or an explanatory sentence is not taken for a Reject button.
+- [ ] A control whose state is unknown is never acted on.
+- [ ] An ambiguous "Off" state is not considered proof of OFF.
+- [ ] After an action, the state is re-read; Android accepting the action alone is not counted as a success.
+- [ ] A pop-up that disappears after the tap is not counted as a verified rejection.
+- [ ] Input fields and sensitive subtrees are neither read nor exported.
 
-- [ ] Bannière au premier plan dans Chrome.
-- [ ] Passage de la bannière vers les préférences.
-- [ ] Sections repliées puis ouvertes.
-- [ ] Liste de fournisseurs longue avec défilement.
-- [ ] Retour en haut/bas et événements de défilement.
-- [ ] Fenêtre système, dialogue ou clavier superposé : aucune action hors de la fenêtre cible.
-- [ ] Rotation ou changement de taille de fenêtre si le modèle le permet.
-- [ ] Passage d'une application à une autre : aucun paquet non surveillé n'est inspecté.
+## Navigation and pop-ups
 
-## UMP réel
+- [ ] Banner in the foreground in Chrome.
+- [ ] Going from the banner to the preferences.
+- [ ] Collapsed then expanded sections.
+- [ ] Long vendor list with scrolling.
+- [ ] Back to top/bottom and scroll events.
+- [ ] System window, dialog or keyboard on top: no action outside the target pop-up.
+- [ ] Rotation or window resizing if the model allows it.
+- [ ] Switching from one app to another: no unmonitored package is inspected.
 
-- [ ] Le message RGPD a été publié dans AdMob pour l'ID d'application utilisé.
-- [ ] Le formulaire UMP s'affiche réellement sur le téléphone.
-- [ ] Le diagnostic identifie les contrôles exposés par Android.
-- [ ] Chaque état de préférence reste inconnu si Android ne publie pas une valeur fiable.
-- [ ] Les actions, si elles sont autorisées, sont relues et vérifiées individuellement.
-- [ ] Le formulaire d'options de confidentialité est disponible si le SDK le déclare requis.
-- [ ] Le résultat final ne s'appuie pas uniquement sur `consentStatus`, `canRequestAds` ou la fermeture.
+## Real UMP
 
-## Historique, diagnostics et stabilité
+- [ ] The GDPR message was published in AdMob for the app ID used.
+- [ ] The UMP form really appears on the phone.
+- [ ] The diagnostic identifies the controls exposed by Android.
+- [ ] Each preference state stays unknown if Android does not publish a reliable value.
+- [ ] Actions, if allowed, are re-read and verified one by one.
+- [ ] The privacy options form is available if the SDK declares it required.
+- [ ] The final result does not rely only on `consentStatus`, `canRequestAds` or the pop-up closing.
 
-- [ ] Historique : distinguer vérifié, partiel, non vérifiable, impossible, interrompu et observé.
-- [ ] Les nombres d'actions tentées/acceptées/bloquées correspondent aux journaux.
-- [ ] CSV et JSON correspondent à l'historique visible.
-- [ ] Les diagnostics indiquent si la capture est tronquée.
-- [ ] Aucune donnée saisie ou sensible dans les diagnostics exportés.
-- [ ] Historique conservé après fermeture/redémarrage du processus.
-- [ ] Arrêt d'urgence : aucune action supplémentaire après activation.
-- [ ] Service arrêté par Android : l'utilisateur est averti clairement.
-- [ ] Vérifier consommation batterie/chaleur et absence de boucle d'événements après défilement.
+## History, diagnostics and stability
 
-## Résultat de session
+- [ ] History: distinguish verified, partial, unverifiable, impossible, interrupted and observed.
+- [ ] The numbers of attempted/accepted/blocked actions match the logs.
+- [ ] CSV and JSON match the visible history.
+- [ ] Diagnostics say whether the capture is truncated.
+- [ ] No typed or sensitive data in exported diagnostics.
+- [ ] History kept after the process is closed/restarted.
+- [ ] Emergency stop: no further action after it is triggered.
+- [ ] Service stopped by Android: the user is clearly warned.
+- [ ] Check battery use/heat and that there is no event loop after scrolling.
 
-- Date/heure :
-- Modèle / Android / One UI :
-- Chrome :
-- Version APK / commit :
-- Application et URL testées :
-- Formulaire UMP AdMob utilisé :
-- Captures / diagnostics :
-- Réussites vérifiées :
-- Résultats partiels / inconnus :
-- Échecs reproductibles :
-- Aucun consentement accepté : oui/non
-- Notes :
+## Session result
+
+- Date/time:
+- Model / Android / One UI:
+- Chrome:
+- APK version / commit:
+- App and URL tested:
+- AdMob UMP form used:
+- Screenshots / diagnostics:
+- Verified successes:
+- Partial / unknown results:
+- Reproducible failures:
+- No consent accepted: yes/no
+- Notes:

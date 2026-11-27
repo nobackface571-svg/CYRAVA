@@ -1,49 +1,51 @@
-# Contribuer à CYRAVA
+🇬🇧 **English** | 🇫🇷 [Français](CONTRIBUTING.fr.md)
 
-Merci de lire d'abord [SECURITY.md](SECURITY.md) : les règles de sécurité passent avant le taux de réussite. Une modification qui permettrait, même rarement, de cliquer sur une acceptation n'est pas acceptable.
+# Contributing to CYRAVA
 
-## Règles d'or
+Please read [SECURITY.md](SECURITY.md) first: safety rules come before success rate. A change that could, even rarely, lead to tapping an accept button is not acceptable.
 
-1. **Jamais d'acceptation.** Toute nouvelle formule cliquable doit passer le garde-fou. En cas de doute, ne pas cliquer.
-2. **Aucun réseau.** Pas de permission `INTERNET`, pas de bibliothèque qui en aurait besoin, pas de statistiques d'usage.
-3. **Honnêteté des résultats.** Seule une observation prouve un refus (`OPTIONS_SUCCESS` : interrupteurs relus désactivés). Un clic suivi d'une fermeture donne `UNVERIFIED` ; un doute donne `PARTIAL` ou `IMPOSSIBLE`.
-4. **Pas de texte d'écran** en dehors des fichiers de diagnostic (ni dans l'historique, ni dans les journaux système).
-5. **Chaque décision se teste.** La logique vit dans `core/` et arrive avec ses tests.
+## Golden rules
 
-## Ajouter une formule ou une plateforme
+1. **Never accept.** Every new tappable phrase must pass the safety guard. When in doubt, do not tap.
+2. **No network.** No `INTERNET` permission, no library that would need it, no usage statistics.
+3. **Honest results.** Only an observation proves a rejection (`OPTIONS_SUCCESS`: switches re-read as off). A tap followed by the pop-up closing gives `UNVERIFIED`; any doubt gives `PARTIAL` or `IMPOSSIBLE`.
+4. **No screen text** outside diagnostic files (neither in the history nor in system logs).
+5. **Every decision is tested.** The logic lives in `core/` and comes with its tests.
 
-1. Éditez `app/src/main/assets/rules.json`, dans la bonne liste : `hints` (indices de reconnaissance), `buttons.refuse`, `buttons.options`, `buttons.globalReject`, `buttons.confirm`, `buttons.vendorTabs`, `buttons.back`, `buttons.accept` (jamais cliqué : sert seulement à reconnaître la fenêtre), ou `platforms`.
-2. Les textes sont comparés sans accents ni ponctuation, en minuscules : écrivez-les normalement.
-3. Une formule de refus qui contient un mot d'acceptation (« Continuer sans accepter ») devient une exception au garde-fou : elle doit être une négation explicite, et un test doit la couvrir.
-4. Augmentez `version` dans `rules.json`.
-5. Lancez `./gradlew test` : les tests vérifient que chaque acceptation est bloquée, que chaque refus est autorisé, et que les règles livrées restent importables.
+## Adding a phrase or a platform
 
-Si vous partez d'un fichier de diagnostic, ajoutez de préférence un scénario dans `CmpScenariosTest` qui reproduit la structure de la fenêtre.
+1. Edit `app/src/main/assets/rules.json`, in the right list: `hints` (recognition clues), `buttons.refuse`, `buttons.options`, `buttons.globalReject`, `buttons.confirm`, `buttons.vendorTabs`, `buttons.back`, `buttons.accept` (never tapped: only used to recognise the pop-up), or `platforms`.
+2. Texts are compared without accents or punctuation, in lower case: write them normally.
+3. A rejection phrase that contains an accept word ("Continue without accepting") becomes an exception to the safety guard: it must be an explicit negation, and a test must cover it.
+4. Increase `version` in `rules.json`.
+5. Run `./gradlew test`: the tests check that every acceptance is blocked, that every rejection is allowed, and that the shipped rules remain importable.
 
-## Modifier le moteur
+If you start from a diagnostic file, preferably add a scenario to `CmpScenariosTest` that reproduces the structure of the pop-up.
 
-- Écrivez d'abord le test (dans `core/src/test`), avec un arbre construit à la main.
-- Les noms de tests contenant des classes locales doivent rester en caractères simples (sans « » ni accents).
-- Vérifiez les scénarios du laboratoire (`LabAndValidatorTest`) : ils ne doivent jamais accepter.
+## Changing the engine
 
-## Modifier l'interface
+- Write the test first (in `core/src/test`), with a hand-built tree.
+- Test names containing local classes must stay in plain characters (no « » or accents).
+- Check the lab scenarios (`LabAndValidatorTest`): they must never accept.
 
-- Textes en français, simples, sans jargon.
-- Si un texte visible change, mettez à jour `.github/scripts/e2e.sh`, qui retrouve les éléments par leur texte.
-- Pas de chiffres ni de statuts qui ne viennent pas de données réelles.
+## Changing the interface
 
-## Vérifier avant d'envoyer
+- Texts are simple and jargon-free, in French (`res/values`) and English (`res/values-en`).
+- If a visible text changes, update `.github/scripts/e2e.sh`, which finds elements by their text.
+- No figures or statuses that do not come from real data.
+
+## Check before sending
 
 ```sh
 ./gradlew test :app:lintRelease :app:assembleRelease
 ```
 
-La compilation de l'appli demande le SDK Android (téléchargé depuis `dl.google.com`). Sans lui, `./gradlew :core:test` reste possible, et GitHub fait la vérification complète à chaque envoi (onglet **Actions**).
+Building the app requires the Android SDK (downloaded from `dl.google.com`). Without it, `./gradlew :core:test` is still possible. Full builds and tests are run on CodeMagic, started by hand by the maintainer.
 
-## Messages de commit
+## Commit messages
 
-En français, à l'impératif ou sous forme de titre court avec un préfixe : `core :`, `app :`, `ci :`, `docs :`, `test(e2e) :`. Une phrase de contexte dans le corps si le « pourquoi » n'est pas évident.
+In French, in the imperative or as a short title with a prefix: `core :`, `app :`, `ci :`, `docs :`, `test(e2e) :`. One sentence of context in the body if the "why" is not obvious.
 
-## Publier une version
+## Publishing a version
 
-Onglet **Actions › 🚀 Application — publication officielle › Run workflow**, avec un numéro de version `x.y.z` (propriétaire du dépôt, clé personnelle obligatoire). Mettez à jour `CHANGELOG.md` avant. `bash scripts/verifier-workflows.sh` et `bash scripts/verifier-signature.sh` doivent rester verts.
+Releases are published by the repository owner, with a personal signing key: see the [README, section 11](README.md#11-apk-signing-and-development). Update `CHANGELOG.md` beforehand. `bash scripts/verifier-workflows.sh` and `bash scripts/verifier-signature.sh` must stay green.
