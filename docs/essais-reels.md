@@ -4,7 +4,7 @@ Cette page rassemble **uniquement** des essais faits par une personne sur un vra
 Les essais automatiques (émulateur de GitHub, laboratoire de l'appli, tests JUnit) n'y figurent pas :
 ils sont visibles dans l'onglet **Actions › 🧪 Essais — émulateur Android**.
 
-Méthode à suivre : [`protocole-test-telephone.md`](protocole-test-telephone.md).
+Méthode à suivre : [`protocole-test-telephone.fr.md`](protocole-test-telephone.fr.md) (🇬🇧 [English](protocole-test-telephone.md)).
 Règle : on recopie ce qui a été constaté, sans interprétation. Si un champ n'est pas connu, écrire « non relevé ».
 
 ## Téléphones utilisés

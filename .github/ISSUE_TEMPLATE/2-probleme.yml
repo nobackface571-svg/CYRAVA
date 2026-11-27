@@ -1,62 +1,71 @@
-name: "🐞 Une fenêtre de cookies n'est pas (bien) refusée"
-description: Fenêtre non reconnue, refus partiel, bouton « Enregistrer » non trouvé, appli qui se bloque…
-title: "[Problème] "
+name: "🐞 A cookie pop-up is not (properly) rejected / Une fenêtre de cookies n'est pas (bien) refusée"
+description: "Pop-up not recognised, partial rejection, “Save” button not found, app stuck… / Fenêtre non reconnue, refus partiel, bouton « Enregistrer » non trouvé, appli qui se bloque…"
+title: "[Problem / Problème] "
 body:
   - type: markdown
     attributes:
       value: |
-        Merci de tester CYRAVA ! Plus votre signalement est précis, plus vite la fenêtre sera prise en charge.
-        Si CYRAVA a cliqué sur une **acceptation**, utilisez plutôt le formulaire 🚨 dédié.
+        🇬🇧 Thank you for testing CYRAVA! The more precise your report, the sooner the pop-up will be supported.
+        If CYRAVA tapped an **accept** button, please use the dedicated 🚨 form instead. You can write in English or French.
+
+        🇫🇷 Merci de tester CYRAVA ! Plus votre signalement est précis, plus vite la fenêtre sera prise en charge.
+        Si CYRAVA a cliqué sur une **acceptation**, utilisez plutôt le formulaire 🚨 dédié. Vous pouvez écrire en anglais ou en français.
   - type: input
     id: app
     attributes:
-      label: Appli ou site concerné
-      description: Nom de l'appli, ou adresse du site et navigateur (Chrome, Firefox…).
-      placeholder: "ex. leparisien.fr dans Chrome"
+      label: "App or site concerned / Appli ou site concerné"
+      description: "App name, or site address and browser (Chrome, Firefox…). / Nom de l'appli, ou adresse du site et navigateur (Chrome, Firefox…)."
+      placeholder: "e.g. / ex. leparisien.fr — Chrome"
     validations:
       required: true
   - type: input
     id: telephone
     attributes:
-      label: Téléphone et version d'Android
-      placeholder: "ex. Samsung Galaxy S23 FE, Android 16"
+      label: "Phone and Android version / Téléphone et version d'Android"
+      placeholder: "e.g. / ex. Samsung Galaxy S23 FE, Android 16"
     validations:
       required: true
   - type: input
     id: version
     attributes:
-      label: Version de CYRAVA
-      description: Réglages › À propos, ou nom du fichier APK installé.
+      label: "CYRAVA version / Version de CYRAVA"
+      description: "Settings › About, or name of the installed APK file. / Réglages › À propos, ou nom du fichier APK installé."
   - type: dropdown
     id: profil
     attributes:
-      label: Profil utilisé
+      label: "Profile used / Profil utilisé"
       options:
-        - Prudent
+        - "Careful / Prudent"
         - Strict
         - Observation
-        - Je ne sais pas
+        - "I don't know / Je ne sais pas"
     validations:
       required: true
   - type: input
     id: resultat
     attributes:
-      label: Résultat affiché dans l'Historique (et son motif)
-      description: Onglet Historique › touchez la ligne concernée.
-      placeholder: "ex. Refus partiel — bouton de validation introuvable"
+      label: "Result shown in History (and its reason) / Résultat affiché dans l'Historique (et son motif)"
+      description: "History tab › tap the row concerned. / Onglet Historique › touchez la ligne concernée."
+      placeholder: "e.g. / ex. Partial rejection — confirmation button not found / Refus partiel — bouton de validation introuvable"
   - type: textarea
     id: details
     attributes:
-      label: Ce qui s'est passé
-      description: Ce que CYRAVA a fait (ou pas), et ce que vous attendiez. Une capture d'écran aide beaucoup.
+      label: "What happened / Ce qui s'est passé"
+      description: "What CYRAVA did (or didn't do), and what you expected. A screenshot helps a lot. / Ce que CYRAVA a fait (ou pas), et ce que vous attendiez. Une capture d'écran aide beaucoup."
     validations:
       required: true
   - type: textarea
     id: diagnostic
     attributes:
-      label: Fichier de diagnostic (fortement conseillé)
+      label: "Diagnostic file (strongly recommended) / Fichier de diagnostic (fortement conseillé)"
       description: |
-        Ouvrez l'appli sur la fenêtre de cookies, puis tuile « Capturer l'écran » (ou Réglages › Centre de diagnostic › Capturer dans 5 secondes) › Partager, et joignez le fichier ici.
+        🇬🇧 Open the app on the cookie pop-up, then the “Capture screen” tile (or Settings › Diagnostic centre › Capture in 5 seconds) › Share, and attach the file here.
+        If GitHub refuses the `.json` file, add `.txt` to the end of its name.
+        ## ⚠️ WARNING: this file will be PUBLIC
+        Anyone will be able to read it, forever. It contains **all the text shown on screen** at the time of the capture (article being read, account name, messages…) and your phone model.
+        **Read it before attaching it**, and preferably capture a screen where nothing personal is shown.
+
+        🇫🇷 Ouvrez l'appli sur la fenêtre de cookies, puis tuile « Capturer l'écran » (ou Réglages › Centre de diagnostic › Capturer dans 5 secondes) › Partager, et joignez le fichier ici.
         Si GitHub refuse le fichier `.json`, ajoutez `.txt` à la fin de son nom.
         ## ⚠️ ATTENTION : ce fichier sera PUBLIC
         Tout le monde pourra le lire, pour toujours. Il contient **tout le texte affiché à l'écran** au moment de la capture (article lu, nom de compte, messages…) et le modèle de votre téléphone.
@@ -64,8 +73,8 @@ body:
   - type: checkboxes
     id: verifs
     attributes:
-      label: Vérifications
+      label: "Checks / Vérifications"
       options:
-        - label: L'appli (ou le navigateur) est cochée dans l'onglet Applications de CYRAVA.
-        - label: L'accueil de CYRAVA affiche « Protection active ».
-        - label: Ce n'est pas Samsung Internet (non pris en charge).
+        - label: "The app (or browser) is ticked in CYRAVA's Apps tab. / L'appli (ou le navigateur) est cochée dans l'onglet Applications de CYRAVA."
+        - label: "CYRAVA's Home shows “Protection on”. / L'accueil de CYRAVA affiche « Protection active »."
+        - label: "It is not Samsung Internet (not supported). / Ce n'est pas Samsung Internet (non pris en charge)."

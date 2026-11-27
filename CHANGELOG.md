@@ -1,3 +1,45 @@
+🇬🇧 [English](#changelog-english) | 🇫🇷 [Français](#journal-des-versions)
+
+# Changelog (English)
+
+## 1.1.0 beta 3
+
+*Tag `v1.1.0-beta.3`, 27/11/2026. English summary of the changes since beta 2; the full detailed log, in French, follows below (sections dated 22/11 to 27/11). Earlier versions are only documented in French.*
+
+All releases are published in the repository's **Releases** tab, with the APK.
+
+**Unchanged rule: CYRAVA never taps an accept, purchase or subscription button, in any profile.** Unless stated otherwise, the fixes below were checked by the engine's automated tests on simulated pop-ups; only the tries recorded in [`docs/essais-reels.md`](docs/essais-reels.md) were made on a real phone.
+
+### Reliability: never "verified" without proof
+- **Independent consent verification** (`ConsentVerificationEngine`): before calling a rejection "verified", CYRAVA re-evaluates all the accessibility evidence. A switch in an unknown state is never counted as off; an incomplete capture or exploration can never give "verified". Its verdict is now mandatory: a session with a truncated capture gives "partial rejection" at best.
+- **Never saves without having seen everything**, whatever the "Don't confirm when in doubt" setting: list not read to the bottom, category or partners page not opened → the site's "Reject all" if there is one (result never "verified"), otherwise no tap.
+- **Diagnostics name each control that was not verified.**
+- The "TCF verification" module was removed (27/11): it was useless in the app, as CYRAVA cannot read other apps' TCF data. The re-check of accessibility evidence stays in place.
+
+### Long lists, faster
+- **Very long lists are scrolled to the bottom** (continuous scrolling, screen after screen), with no more 50-scroll limit; CYRAVA stops when nothing new appears.
+- **Analysis 6 times faster**, wait before starting capped at 1.5 s, lighter scroll measurement, and **faster screen reading** during long lists (only the cookie pop-up is re-read, with a full re-read at regular intervals and always before closing the pop-up).
+- **Lists entirely present in the capture** (e.g. Galaxy Defense, 367 switches): switches still on are turned off without scrolling, then re-read, with two safeguards against lists loaded progressively.
+- **Duration of each step measured** in the history export and diagnostics.
+
+### Consent platforms and browsers
+- **OneTrust "with tabs"**: each category is opened in turn, turned off, then the selection is confirmed.
+- **Didomi**: "Reject / Accept" radio buttons recognised (Firefox); "Save" and "Reject all" hidden under Opera's or Firefox's bottom bar are triggered through accessibility (never a blind tap); a greyed-out "Save" is never touched.
+- **"Save" buttons found more reliably** (Commanders Act, AppConsent, buttons below the list); a confirmation button is no longer mistaken for an options button.
+- **Consentmanager in Firefox**: falls back to the first screen's "Reject all" instead of failing.
+- **Pop-up recognised after scrolling** by its platform identifier, and a slow preferences page is no longer taken for a closed pop-up.
+- **Preferences first**: the site's "Reject all" now comes only after the choices made one by one (BFM case), and can be used again when opening the settings makes the pop-up disappear in an unknown app.
+- **"No | Yes" buttons on the same row** (France Télévisions) recognised: each "No" is tapped, never "Yes"; the result is never "verified" (state not published).
+- **AliExpress**: the "cookie settings" link in the text no longer hides the real buttons next to it.
+
+### App and project
+- **"Share all as one .zip file"** button in the diagnostic centre (all diagnostics + history at once).
+- **Language switch** without a black screen or app restart.
+- **Correct version number** shown in the app (`1.1.0-beta.3`; test APKs show `-ci.<n>`); CodeMagic builds only when started by hand.
+- **Privacy**: captured diagnostic exports were removed from the repository, along with the tests that depended on them.
+
+---
+
 # Journal des versions
 
 Toutes les versions sont publiées dans l'onglet **Releases** du dépôt, avec l'APK.

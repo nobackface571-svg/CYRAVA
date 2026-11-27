@@ -1,70 +1,73 @@
-# Politique de confidentialité de CYRAVA
+🇬🇧 **English** | 🇫🇷 [Français](politique-de-confidentialite.fr.md)
 
-*Dernière mise à jour : 20 novembre 2026*
+# CYRAVA privacy policy
 
-CYRAVA est une application Android qui refuse automatiquement les fenêtres de consentement aux cookies
-(« bannières cookies ») dans les applications et navigateurs choisis par l'utilisateur.
+*Last updated: 20 November 2026*
 
-Éditeur : **[Nom du développeur]** — contact : **[adresse e-mail de contact]**
+> This English text is a translation. The [French version](politique-de-confidentialite.fr.md) is the reference text.
 
-## En résumé
+CYRAVA is an Android app that automatically rejects cookie consent pop-ups
+("cookie banners") in the apps and browsers chosen by the user.
 
-- CYRAVA **ne collecte aucune donnée personnelle** et **n'envoie rien** hors de votre téléphone.
-- L'application **n'a pas la permission Internet** : elle ne peut techniquement rien transmettre.
-- Aucune publicité, aucun outil de mesure d'audience, aucun traceur, aucun compte à créer.
+Publisher: **[Developer name]** — contact: **[contact email address]**
 
-## 1. Utilisation du service d'accessibilité d'Android
+## In short
 
-CYRAVA utilise l'API AccessibilityService d'Android, uniquement pour sa fonction principale :
-reconnaître une fenêtre de consentement aux cookies et appuyer sur ses boutons de refus.
+- CYRAVA **collects no personal data** and **sends nothing** off your phone.
+- The app **does not have the Internet permission**: it technically cannot transmit anything.
+- No ads, no audience measurement tool, no tracker, no account to create.
 
-- **Ce qui est lu** : le contenu affiché à l'écran (textes, boutons, interrupteurs), **uniquement**
-  dans les applications et navigateurs que vous avez cochés dans CYRAVA. Les autres applications ne
-  sont jamais lues. Les champs de saisie et de mot de passe ne sont jamais lus. La barre d'adresse des
-  navigateurs (l'adresse du site visité) n'est jamais enregistrée.
-- **Ce qui est fait** : CYRAVA appuie uniquement sur des boutons de refus ou de réglage des cookies,
-  selon des règles fixes écrites à l'avance. Il ne clique jamais sur un bouton d'acceptation, d'achat
-  ou d'abonnement.
-- **Ce qui n'est jamais fait** : aucune donnée lue n'est transmise, vendue ou partagée.
+## 1. Use of Android's accessibility service
 
-Un écran d'information vous présente ces points et demande votre accord avant l'activation du
-service. Vous pouvez le désactiver à tout moment dans Paramètres › Accessibilité.
+CYRAVA uses Android's AccessibilityService API, only for its main function:
+recognising a cookie consent pop-up and tapping its reject buttons.
 
-## 2. Données enregistrées sur votre téléphone
+- **What is read**: the content shown on screen (texts, buttons, switches), **only**
+  in the apps and browsers you have ticked in CYRAVA. Other apps are never read.
+  Input and password fields are never read. The browsers' address bar (the address
+  of the site visited) is never saved.
+- **What is done**: CYRAVA only taps cookie rejection or settings buttons, following
+  fixed rules written in advance. It never taps an accept, purchase or subscription button.
+- **What is never done**: no data read is transmitted, sold or shared.
 
-Ces données restent **uniquement sur votre téléphone**, dans l'espace privé de l'application :
+An information screen presents these points and asks for your agreement before the
+service is turned on. You can turn it off at any time in Settings › Accessibility.
 
-- **Réglages** : applications choisies, profil, options.
-- **Historique** : pour chaque fenêtre traitée, l'application concernée, la date, le résultat et la
-  plateforme de consentement reconnue. L'historique ne contient pas le texte de l'écran.
-- **Fichiers de diagnostic** (facultatifs) : si vous les activez ou les demandez, ils contiennent la
-  structure et le texte de la fenêtre de cookies capturée, pour aider à corriger l'application.
+## 2. Data stored on your phone
 
-Vous pouvez tout effacer dans Réglages › Données enregistrées, ou en désinstallant l'application.
+This data stays **only on your phone**, in the app's private storage:
 
-## 3. Partage
+- **Settings**: chosen apps, profile, options.
+- **History**: for each pop-up handled, the app concerned, the date, the result and the
+  recognised consent platform. The history does not contain the screen text.
+- **Diagnostic files** (optional): if you turn them on or request them, they contain the
+  structure and text of the captured cookie pop-up, to help fix the app.
 
-CYRAVA ne partage aucune donnée. Seul **vous** pouvez décider de partager un fichier (historique ou
-diagnostic), avec l'application de votre choix (messagerie, e-mail…). Relisez-le avant de l'envoyer :
-un fichier de diagnostic contient le texte de la fenêtre de cookies.
+You can erase everything in Settings › Stored data, or by uninstalling the app.
 
-## 4. Achats
+## 3. Sharing
 
-Si CYRAVA est acheté sur Google Play, le paiement est entièrement géré par Google. L'éditeur ne
-reçoit ni vos coordonnées bancaires ni votre adresse e-mail ; il reçoit seulement des statistiques
-de vente anonymes fournies par Google.
+CYRAVA shares no data. Only **you** can decide to share a file (history or
+diagnostic), with the app of your choice (messaging, email…). Read it before sending it:
+a diagnostic file contains the text of the cookie pop-up.
 
-## 5. Vos droits
+## 4. Purchases
 
-L'éditeur ne détient aucune donnée personnelle vous concernant : il n'y a donc rien à consulter,
-corriger ou supprimer de son côté. Les données locales décrites ci-dessus sont entièrement sous votre
-contrôle. Pour toute question, écrivez à **[adresse e-mail de contact]**. Vous pouvez aussi saisir la
-CNIL (www.cnil.fr).
+If CYRAVA is bought on Google Play, payment is entirely handled by Google. The publisher
+receives neither your bank details nor your email address; it only receives anonymous
+sales statistics provided by Google.
 
-## 6. Enfants
+## 5. Your rights
 
-CYRAVA ne s'adresse pas spécifiquement aux enfants et ne collecte aucune donnée, y compris les leurs.
+The publisher holds no personal data about you: there is therefore nothing to access,
+correct or delete on its side. The local data described above is entirely under your
+control. For any question, write to **[contact email address]**. You can also contact the
+CNIL, the French data protection authority (www.cnil.fr), or your own country's authority.
 
-## 7. Modifications
+## 6. Children
 
-En cas de changement de cette politique, la date de mise à jour ci-dessus sera modifiée.
+CYRAVA is not specifically aimed at children and collects no data, including theirs.
+
+## 7. Changes
+
+If this policy changes, the update date above will be modified.

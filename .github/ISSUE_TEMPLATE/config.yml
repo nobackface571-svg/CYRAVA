@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
-  - name: 💬 Donner son avis ou poser une question
+  - name: "💬 Give feedback or ask a question / Donner son avis ou poser une question"
     url: https://github.com/nobackface571-svg/CYRAVA/discussions
-    about: "Avis, idées, questions sur l'installation : c'est ici, dans les Discussions."
-  - name: 🔒 Signaler une faille de sécurité (en privé)
+    about: "Feedback, ideas, installation questions: here, in Discussions. / Avis, idées, questions sur l'installation : c'est ici, dans les Discussions."
+  - name: "🔒 Report a security vulnerability (privately) / Signaler une faille de sécurité (en privé)"
     url: https://github.com/nobackface571-svg/CYRAVA/security/advisories/new
-    about: Ne publiez jamais une faille dans un ticket public.
+    about: "Never publish a vulnerability in a public issue. / Ne publiez jamais une faille dans un ticket public."

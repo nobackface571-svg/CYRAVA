@@ -1,143 +1,148 @@
-# CYRAVA — Fiche testeurs
+🇬🇧 **English** | 🇫🇷 [Français](FICHE-TESTEURS.fr.md)
 
-Cette fiche résume, étape par étape, comment installer CYRAVA, l'autoriser et l'essayer. Elle tient en quelques minutes de lecture. Pour tous les détails, voir le [README](../README.md).
+# CYRAVA — Tester guide
 
-> **À savoir avant de commencer**
-> - CYRAVA fonctionne sur **Android 8 ou plus récent**. Les étapes « paramètres restreints » ne concernent que **Android 13 et plus**.
-> - CYRAVA **n'a pas accès à Internet** et ne lit **que** les applis que vous cochez.
-> - Les noms des menus peuvent varier légèrement selon la marque du téléphone (Samsung, Xiaomi, Pixel…).
+This guide sums up, step by step, how to install CYRAVA, allow it and try it. It takes a few minutes to read. For all the details, see the [README](../README.md).
 
----
-
-## Étape 0 — Désactiver Google Play Protect (important)
-
-CYRAVA n'est pas sur le Play Store et utilise le service d'accessibilité : **Play Protect risque fort de bloquer l'installation**, ou de la signaler comme dangereuse. Désactivez-le **avant** d'installer :
-
-1. Ouvrez l'appli **Google Play Store**.
-2. Touchez votre **photo de profil** (en haut à droite) › **Play Protect**.
-3. Touchez la **roue dentée ⚙️** (en haut à droite).
-4. Désactivez **« Analyser les applis avec Play Protect »**, puis confirmez.
-
-> Une fois CYRAVA installé et activé (étape 3), vous pouvez réactiver Play Protect au même endroit. S'il affiche ensuite un avertissement sur CYRAVA, choisissez de **conserver** l'appli.
-
-✅ **Contrôle** : la page Play Protect indique que l'analyse est désactivée.
+> **Good to know before you start**
+> - CYRAVA works on **Android 8 or later**. The "restricted settings" steps only apply to **Android 13 and later**.
+> - CYRAVA **has no Internet access** and **only** reads the apps you tick.
+> - Menu names may vary slightly depending on the phone brand (Samsung, Xiaomi, Pixel…).
+> - The app is available in **English and French**: **Settings › Language**.
 
 ---
 
-## Étape 1 — Télécharger et installer l'APK
+## Step 0 — Turn off Google Play Protect (important)
 
-1. Depuis le navigateur du téléphone, ouvrez l'onglet **Releases** de ce dépôt GitHub.
-2. Téléchargez le fichier **.apk** de la dernière version.
-   > N'installez CYRAVA **que** depuis cette page : un APK trouvé ailleurs peut avoir été modifié.
-3. Touchez la notification de téléchargement (ou **Mes fichiers › Téléchargements**), puis le fichier `.apk`.
-4. Si Android affiche *« … n'est pas autorisé à installer des applis inconnues de cette source »* :
-   touchez **Paramètres**, activez **Autoriser depuis cette source**, puis revenez en arrière.
-5. Touchez **Installer**.
-   - **Play Protect** affiche quand même un avertissement ? → **Plus de détails › Installer quand même**. S'il bloque, revoyez l'étape 0.
-   - **Samsung récent**, installation bloquée ? → **Paramètres › Sécurité et confidentialité › Blocage automatique** : désactivez-le le temps de l'installation, puis réactivez-le.
+CYRAVA is not on the Play Store and uses the accessibility service: **Play Protect is very likely to block the installation**, or flag it as dangerous. Turn it off **before** installing:
 
-✅ **Contrôle** : l'icône CYRAVA apparaît dans vos applis.
+1. Open the **Google Play Store** app.
+2. Tap your **profile picture** (top right) › **Play Protect**.
+3. Tap the **gear ⚙️** (top right).
+4. Turn off **"Scan apps with Play Protect"**, then confirm.
 
----
+> Once CYRAVA is installed and turned on (step 3), you can turn Play Protect back on in the same place. If it then shows a warning about CYRAVA, choose to **keep** the app.
 
-## Étape 2 — Autoriser les « paramètres restreints » (Android 13 et plus)
-
-Pour une appli installée hors Play Store, Android **grise** le service d'accessibilité tant que vous ne l'avez pas autorisé. C'est une protection d'Android, pas un bug.
-
-1. Ouvrez CYRAVA. Sur l'**Accueil**, touchez **Ouvrir les réglages d'accessibilité**.
-2. Allez dans **Applis installées › CYRAVA – Digital Privacy**.
-3. L'interrupteur est grisé ou un message **« Paramètre restreint »** s'affiche : touchez **OK**.
-   > ⚠️ Cette tentative est **obligatoire** : le menu de l'étape 5 n'apparaît qu'après elle.
-4. Revenez dans CYRAVA et touchez **Ouvrir Infos sur l'appli**
-   (ou : **Paramètres › Applications › CYRAVA**).
-5. Touchez **⋮** (trois points, en haut à droite) › **Autoriser les paramètres restreints**.
-6. Confirmez avec votre code, schéma ou empreinte.
-
-✅ **Contrôle** : l'interrupteur de CYRAVA dans Accessibilité n'est plus grisé.
-
-> **Le menu ⋮ n'affiche pas « Autoriser les paramètres restreints » ?**
-> Refaites les étapes 1 à 3 (essayer d'activer le service), puis revenez à l'étape 4.
+✅ **Check**: the Play Protect page says scanning is turned off.
 
 ---
 
-## Étape 3 — Activer le service d'accessibilité
+## Step 1 — Download and install the APK
 
-1. **Paramètres › Accessibilité › Applis installées › CYRAVA – Digital Privacy**
-   (ou bouton **Ouvrir les réglages d'accessibilité** dans CYRAVA).
-2. Activez l'interrupteur.
-3. Android affiche un avertissement générique sur le contrôle de l'écran : acceptez-le.
-   CYRAVA ne lit que les applis cochées et n'a pas Internet.
-4. Revenez dans CYRAVA.
+1. From your phone's browser, open the **Releases** tab of this GitHub repository.
+2. Download the **.apk** file of the latest version.
+   > **Only** install CYRAVA from this page: an APK found elsewhere may have been modified.
+3. Tap the download notification (or **My Files › Downloads**), then the `.apk` file.
+4. If Android shows *"… is not allowed to install unknown apps from this source"*:
+   tap **Settings**, turn on **Allow from this source**, then go back.
+5. Tap **Install**.
+   - **Play Protect** still shows a warning? → **More details › Install anyway**. If it blocks, go back to step 0.
+   - **Recent Samsung**, installation blocked? → **Settings › Security and privacy › Auto Blocker**: turn it off during installation, then turn it back on.
 
-✅ **Contrôle** : l'accueil n'affiche plus **« Protection inactive »**.
-
-À partir de là, **plus besoin d'ouvrir CYRAVA** : il travaille en arrière-plan. Après un redémarrage ou une mise à jour, le service reste activé.
-
----
-
-## Étape 4 — Empêcher le téléphone d'arrêter CYRAVA
-
-Surtout utile sur **Samsung** (et Xiaomi, Huawei, Oppo…), qui coupent volontiers les services en arrière-plan.
-
-1. Dans CYRAVA, carte **Batterie** de l'accueil : touchez **Ne pas optimiser CYRAVA** et acceptez.
-2. Samsung : **Paramètres › Batterie › Limites d'utilisation en arrière-plan › Applis jamais en veille › +** › cochez **CYRAVA**.
-3. Facultatif : **Paramètres › Applications › CYRAVA › Batterie › Non restreinte**.
-
-> L'accueil affiche **« Service arrêté »** ? Désactivez puis réactivez le service d'accessibilité (étape 3).
+✅ **Check**: the CYRAVA icon appears among your apps.
 
 ---
 
-## Étape 5 — Choisir les applis et le profil
+## Step 2 — Allow "restricted settings" (Android 13 and later)
 
-1. Onglet **Applications** : activez l'interrupteur des applis à surveiller.
-   - **Navigateurs conseillés** : **Chrome** ou **Firefox**.
-   - **Samsung Internet n'est pas pris en charge** (il ne transmet pas le contenu des pages).
-   - Ne cochez **jamais** : banque, gestionnaire de mots de passe, messagerie, jeux avec anti-triche.
-2. **Réglages › Profil de refus** : choisissez **Strict** pour les essais.
-   > En profil **Observation**, CYRAVA analyse mais ne touche à rien : il n'y a donc rien à tester.
+For an app installed outside the Play Store, Android **greys out** the accessibility service until you allow it. This is an Android protection, not a bug.
 
----
+1. Open CYRAVA. On **Home**, tap **Open accessibility settings**.
+2. Go to **Installed apps › CYRAVA – Digital Privacy**.
+3. The switch is greyed out or a **"Restricted setting"** message appears: tap **OK**.
+   > ⚠️ This attempt is **required**: the step 5 menu only appears after it.
+4. Go back to CYRAVA and tap **Open app info**
+   (or: **Settings › Apps › CYRAVA**).
+5. Tap **⋮** (three dots, top right) › **Allow restricted settings**.
+6. Confirm with your PIN, pattern or fingerprint.
 
-## Étape 6 — Faire un essai
+✅ **Check**: CYRAVA's switch in Accessibility is no longer greyed out.
 
-1. Dans Chrome, ouvrez un onglet en **navigation privée** (un site qui a déjà reçu votre choix n'affiche plus sa fenêtre).
-2. Ouvrez un site qui affiche une fenêtre de cookies (site d'actualité, de recettes, de commerce…).
-3. **Ne touchez pas l'écran** pendant une dizaine de secondes.
-4. Ouvrez CYRAVA › onglet **Historique** et regardez la ligne du site.
-
-**Après un échec**, attendez **10 minutes** avant de retester la même page : CYRAVA ne réessaie pas la même fenêtre avant ce délai.
-
-> **Bon à savoir**
-> - Une fenêtre qui disparaît ne prouve pas que le refus est enregistré. Seule la mention **« désactivé(s) et vérifié(s) »** dans l'historique indique des cases relues désactivées.
-> - Pour vérifier vous-même : rouvrez la page, touchez « Cookies » ou « Gérer mes préférences » en bas de page, et regardez l'état des cases.
-> - CYRAVA ne supprime pas les cookies déjà déposés : il refuse les nouveaux.
+> **The ⋮ menu does not show "Allow restricted settings"?**
+> Repeat steps 1 to 3 (try to turn on the service), then go back to step 4.
 
 ---
 
-## Étape 7 — Donner votre avis
+## Step 3 — Turn on the accessibility service
 
-Ouvrez l'onglet **Issues** de ce dépôt GitHub, puis **New issue**, et choisissez :
+1. **Settings › Accessibility › Installed apps › CYRAVA – Digital Privacy**
+   (or the **Open accessibility settings** button in CYRAVA).
+2. Turn on the switch.
+3. Android shows a generic warning about screen control: accept it.
+   CYRAVA only reads the ticked apps and has no Internet access.
+4. Go back to CYRAVA.
 
-| Situation | Modèle à choisir |
+✅ **Check**: Home no longer shows **"Protection off"**.
+
+From then on, **you no longer need to open CYRAVA**: it works in the background. After a restart or an update, the service stays on.
+
+---
+
+## Step 4 — Stop the phone from shutting CYRAVA down
+
+Especially useful on **Samsung** (and Xiaomi, Huawei, Oppo…), which readily stop background services.
+
+1. In CYRAVA, **Battery** card on Home: tap **Don't optimise CYRAVA** and accept.
+2. Samsung: **Settings › Battery › Background usage limits › Never sleeping apps › +** › tick **CYRAVA**.
+3. Optional: **Settings › Apps › CYRAVA › Battery › Unrestricted**.
+
+> Home says the service is switched on but stopped? Turn the accessibility service off and on again (step 3).
+
+---
+
+## Step 5 — Choose the apps and the profile
+
+1. **Apps** tab: turn on the switch of the apps to monitor.
+   - **Recommended browsers**: **Chrome** or **Firefox**.
+   - **Samsung Internet is not supported** (it does not pass on page content).
+   - **Never** tick: banking, password manager, messaging, games with anti-cheat.
+2. **Settings › Rejection profile**: choose **Strict** for testing.
+   > In the **Observation** profile, CYRAVA analyses but touches nothing: so there is nothing to test.
+
+---
+
+## Step 6 — Try it
+
+1. In Chrome, open an **incognito** tab (a site that has already received your choice no longer shows its pop-up).
+2. Open a site that shows a cookie pop-up (news, recipes, shopping site…).
+3. **Do not touch the screen** for about ten seconds.
+4. Open CYRAVA › **History** tab and look at the site's row.
+
+**After a failure**, wait **10 minutes** before testing the same page again: CYRAVA does not retry the same pop-up before then.
+
+> **Good to know**
+> - A pop-up disappearing does not prove the rejection was saved. Only the "switches verified off" result in the history means boxes were re-read as off.
+> - To check for yourself: reopen the page, tap "Cookies" or "Manage my preferences" at the bottom of the page, and look at the state of the boxes.
+> - CYRAVA does not delete cookies already set: it rejects new ones.
+
+---
+
+## Step 7 — Give your feedback
+
+Open this GitHub repository's **Issues** tab, then **New issue**, and choose:
+
+| Situation | Form to choose |
 |---|---|
-| CYRAVA a cliqué sur **« Accepter »**, « Autoriser », un achat ou un abonnement | 🚨 **CYRAVA a cliqué sur une acceptation** (bug grave) |
-| Fenêtre non reconnue, refus partiel, bouton non trouvé, appli bloquée | 🐞 **Une fenêtre de cookies n'est pas (bien) refusée** |
+| CYRAVA tapped **"Accept"**, "Allow", a purchase or a subscription | 🚨 **CYRAVA tapped an accept button** (serious bug) |
+| Pop-up not recognised, partial rejection, button not found, app stuck | 🐞 **A cookie pop-up is not (properly) rejected** |
 
-**À joindre si possible :**
+The forms are in English and French; you can write in either language.
 
-- le **site ou l'appli** concerné, la date et l'heure ;
-- le **modèle du téléphone** et la **version d'Android** ;
-- la **version de CYRAVA** (nom du fichier `.apk` installé) ;
-- une **capture** de la ligne de l'Historique ;
-- le **fichier de diagnostic** : **Réglages › Centre de diagnostic › Capturer dans 5 secondes** (fenêtre affichée à l'écran), puis **Partager**.
-  > Ce fichier contient le texte affiché à l'écran à ce moment-là, jamais le contenu des champs de saisie ni des mots de passe. Relisez-le avant de le publier.
+**Attach if possible:**
+
+- the **site or app** concerned, the date and time;
+- the **phone model** and **Android version**;
+- the **CYRAVA version** (name of the installed `.apk` file);
+- a **screenshot** of the History row;
+- the **diagnostic file**: **Settings › Diagnostic centre › Capture in 5 seconds** (pop-up shown on screen), then **Share**.
+  > This file contains the text shown on screen at that moment, never the content of input fields or passwords. Read it before publishing it.
 
 ---
 
-## Désinstaller ou mettre en pause
+## Uninstall or pause
 
-- **Pause** : **Paramètres › Accessibilité › CYRAVA** › désactivez l'interrupteur. CYRAVA s'arrête immédiatement et ne se réactive jamais tout seul.
-- **Mise à jour** : installez le nouvel APK **par-dessus** l'ancien ; réglages et historique sont conservés.
-- **Désinstaller** : appui long sur l'icône › **Désinstaller**.
+- **Pause**: **Settings › Accessibility › CYRAVA** › turn off the switch. CYRAVA stops immediately and never turns itself back on.
+- **Update**: install the new APK **over** the old one; settings and history are kept.
+- **Uninstall**: long-press the icon › **Uninstall**.
 
-Merci de tester CYRAVA !
+Thank you for testing CYRAVA!
